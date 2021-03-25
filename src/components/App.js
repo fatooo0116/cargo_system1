@@ -1,9 +1,19 @@
 import React from "react";
 import { hot } from "react-hot-loader";
-import { DebounceInput } from "react-debounce-input";
+
 import "./App.scss";
+import 'bootstrap/dist/css/bootstrap.min.scss';   
 
 import Panel from "./myapp/Panel";
+
+import { 
+   Navbar,
+   Nav,
+   Form,
+   Button,
+   NavDropdown,
+   FormControl  
+  } from 'react-bootstrap';
 
 
 
@@ -31,39 +41,33 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>WP React Plugin</h1>
-        <div>
 
-        <Panel />
+          <Navbar  id="global_nav"   expand="lg">
+            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="#home">Home</Nav.Link>
+                <Nav.Link href="#link">Link</Nav.Link>
+                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Form inline>
+                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                <Button variant="outline-success">Search</Button>
+              </Form>
+            </Navbar.Collapse>
+          </Navbar>
 
-          <div className="input-container">
-            <label htmlFor="normal-input">
-              <span>Normal Input</span>
-              <input
-                className="n-input"
-                id="normal-input"
-                value={this.state.blogname}
-                onChange={this.handleBlognameChange}
-              />
-            </label>
-
-            <label htmlFor="debounced-input">
-              <span>Debounced Input</span>
-              <DebounceInput
-                className="d-input"
-                id="debounced-input"
-                value={this.state.blogname}
-                minLength={0}
-                debounceTimeout={300}
-                onChange={this.handleBlognameChange}
-              />
-            </label>
-          </div>
-          <div style={{ marginTop: 20 }}>
-            You entered: {this.state.blogname}
-            <span id="wp-spinner" className="spinner" />
-          </div>
-        </div>
+       
+          <Panel  />
+          
+       
       </div>
     );
   }

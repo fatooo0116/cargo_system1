@@ -1,39 +1,65 @@
-input.d-input {
-  //margin-left: 15px;
-  border: 1px #ccc solid;
-  line-height: 1em;
-  height: 35px;
+
+@import "../sass/rwd.scss";
+@import "../sass/nav.scss";
+
+
+#wpcontent{
+  background-color: #f8f8fb;
 }
 
-body{
-  // background:#999;
-}
 
 
+#aloha_app{
 
-input.n-input {
-  //margin-left: 38px;
-  border: 1px #ccc solid;
-  line-height: 1em;
-  height: 35px;
-}
+  font-family:'Poppins',sans-serif;
 
-.input-container {
-  display: flex;
-}
-
-// admin only styles
-.wp-admin {
-  input.n-input {
-    margin-right: 50px;
+  .table thead th{
+    border-bottom:0px;
   }
+  
+  .card{
+    margin-bottom: 24px;
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38 ,63 ,0.03);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid #f6f6f6;
+    border-radius: .25rem;
+    padding:0;
 
-  .input-container span {
-    display: block;
-    margin-bottom: 3px;
-  }
+    h3{
+      font-size: 20px;;
+    }
 
-  .plugin-description {
-    margin-bottom: 20px;
+    .card-body{
+      padding:10px 20px 15px;
+      border:0px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 0 solid #f6f6f6;
+      border-radius: .25rem;
+      font-size: 13px;;
+
+      thead{
+        background:#eff2f7;        
+      }
+      th{
+        border:0px;
+      }
+      th,td{
+        padding: .75rem;
+        border-color: #eff2f7;
+      }
+    }
+
   }
 }
