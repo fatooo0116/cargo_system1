@@ -9,6 +9,7 @@ import {
 
 import DataTable, { createTheme } from 'react-data-table-component';
 
+
 createTheme('solarized', {
     text: {
       primary: '#268bd2',
@@ -47,7 +48,7 @@ class PanelProduct extends React.Component {
 
       axios.post('/wp-json/cargo/v1/get_products', {
         page: 1,
-        post_per_page: 10
+        post_per_page: 100
       })
       .then(function (res) {
         console.log(res);
@@ -73,6 +74,16 @@ class PanelProduct extends React.Component {
             sortable: true,
           },
           {
+            name: '產品名',
+            selector: 'product_name',
+            sortable: true,            
+          },
+          {
+            name: '產品明英文',
+            selector: 'product_eng_name',
+            sortable: true,            
+          },
+          {
             name: '產品類別',
             selector: 'type_name',
             sortable: true,
@@ -86,8 +97,32 @@ class PanelProduct extends React.Component {
           {
             name: '計量編號',
             selector: 'unit_sn',
-            sortable: true,
-            right: true,
+            sortable: true,            
+          },
+          {
+            name: '計量編號',
+            selector: 'unit_sn_cht',
+            sortable: true,           
+          },
+          {
+            name: 'CUFT',
+            selector: 'cuft',           
+          },
+          {
+            name: '包裝ㄧ',
+            selector: 'out_pack',           
+          },
+          {
+            name: '包裝二',
+            selector: 'in_pack',           
+          },
+          {
+            name: '淨重',
+            selector: 'net_weight',           
+          },
+          {
+            name: '總重',
+            selector: 'gross_weight',           
           },
         ];
 
@@ -99,7 +134,7 @@ class PanelProduct extends React.Component {
                     <div className="card-body">
 
                     <DataTable
-                        title="客戶管理"
+                        title="產品"
                         columns={columns}
                         data={data}
                     />
