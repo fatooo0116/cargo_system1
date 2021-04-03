@@ -2,9 +2,11 @@ import React from "react";
 import { hot } from "react-hot-loader";
 
 import "./App.scss";
-import 'bootstrap/dist/css/bootstrap.min.scss';   
+ 
 
-import Panel from "./myapp/Panel";
+import PanelProduct from "./myapp/PanelProduct";
+
+
 
 import { 
    Navbar,
@@ -65,7 +67,7 @@ class App extends React.Component {
           </Navbar>
 
        
-          <Panel  />
+          <PanelProduct  />
           
        
       </div>

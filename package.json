@@ -10,11 +10,14 @@
   "author": "David Gwyer",
   "license": "GPL-3.0+",
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "react": "^16.8.6",
     "react-bootstrap": "^1.5.2",
+    "react-data-table-component": "^6.11.7",
     "react-debounce-input": "^3.2.0",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
