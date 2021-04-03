@@ -17,6 +17,7 @@
     "react-data-table-component": "^6.11.7",
     "react-debounce-input": "^3.2.0",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {

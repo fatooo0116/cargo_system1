@@ -33,8 +33,7 @@ createTheme('solarized', {
   });
 
 
-
-class PanelProduct extends React.Component {
+class PanelCustomerType extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,7 +44,7 @@ class PanelProduct extends React.Component {
     componentDidMount() {
 
       let me = this;
-      axios.post('/wp-json/cargo/v1/get_products', {
+      axios.post('/wp-json/cargo/v1/get_customers_type', {
         page: 1,
         post_per_page: 99900
       })
@@ -68,61 +67,21 @@ class PanelProduct extends React.Component {
 
         const columns = [
           {
-            name: '產品編號',
-            selector: 'product_id',
+            name: '類別編號',
+            selector: 'customer_catgory_id',
             sortable: true,
           },
           {
-            name: '產品名',
-            selector: 'product_name',
+            name: '類別名稱',
+            selector: 'customer_catgory_name',
             sortable: true,            
           },
           {
-            name: '產品明英文',
-            selector: 'product_eng_name',
+            name: '其他',
+            selector: 'other',
             sortable: true,            
-          },
-          {
-            name: '產品類別',
-            selector: 'type_name',
-            sortable: true,
-          },
-          {
-            name: '單位編號',
-            selector: 'unit_sn',
-            sortable: true,
-            right: true,
-          },
-          {
-            name: '計量編號',
-            selector: 'unit_sn',
-            sortable: true,            
-          },
-          {
-            name: '計量編號',
-            selector: 'unit_sn_cht',
-            sortable: true,           
-          },
-          {
-            name: 'CUFT',
-            selector: 'cuft',           
-          },
-          {
-            name: '包裝ㄧ',
-            selector: 'out_pack',           
-          },
-          {
-            name: '包裝二',
-            selector: 'in_pack',           
-          },
-          {
-            name: '淨重',
-            selector: 'net_weight',           
-          },
-          {
-            name: '總重',
-            selector: 'gross_weight',           
-          },
+          }
+          
         ];
 
 
@@ -133,7 +92,7 @@ class PanelProduct extends React.Component {
                     <div className="card-body">
 
                     <DataTable
-                        title="產品"
+                        title="客戶類別"
                         columns={columns}
                         data={data}
                         pagination={true}
@@ -146,4 +105,4 @@ class PanelProduct extends React.Component {
     }
 }
 
-export default hot(module)(PanelProduct);
+export default hot(module)(PanelCustomerType);

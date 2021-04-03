@@ -8,7 +8,11 @@ import {
 
 
 import DataTable, { createTheme } from 'react-data-table-component';
+import { 
 
+  Button,
+  
+ } from 'react-bootstrap';
 
 createTheme('solarized', {
     text: {
@@ -32,9 +36,15 @@ createTheme('solarized', {
     },
   });
 
+  const handleChange = (state) => {
+    // You can use setState or dispatch with something like Redux so we can use the retrieved data
+    console.log('Selected Rows: ', state.selectedRows);
+  };
 
 
-class PanelProduct extends React.Component {
+
+
+class PanelCustomer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,7 +55,7 @@ class PanelProduct extends React.Component {
     componentDidMount() {
 
       let me = this;
-      axios.post('/wp-json/cargo/v1/get_products', {
+      axios.post('/wp-json/cargo/v1/get_customers', {
         page: 1,
         post_per_page: 99900
       })
@@ -59,6 +69,9 @@ class PanelProduct extends React.Component {
     }
 
 
+
+
+
     render() {
 
         const {data} = this.state;
@@ -68,62 +81,59 @@ class PanelProduct extends React.Component {
 
         const columns = [
           {
-            name: '產品編號',
-            selector: 'product_id',
+            name: '客戶編號',
+            selector: 'customer_id',
             sortable: true,
           },
           {
-            name: '產品名',
-            selector: 'product_name',
+            name: '名稱',
+            selector: 'cname',
             sortable: true,            
           },
           {
-            name: '產品明英文',
-            selector: 'product_eng_name',
+            name: '聯絡人',
+            selector: 'contact',
             sortable: true,            
           },
           {
-            name: '產品類別',
-            selector: 'type_name',
+            name: '聯絡人職稱',
+            selector: 'contact_job',
             sortable: true,
           },
           {
-            name: '單位編號',
-            selector: 'unit_sn',
-            sortable: true,
-            right: true,
+            name: '聯絡人電話1',
+            selector: 'contact_tel1',     
           },
           {
-            name: '計量編號',
-            selector: 'unit_sn',
-            sortable: true,            
+            name: '聯絡人電話2',
+            selector: 'contact_tel2',
           },
           {
-            name: '計量編號',
-            selector: 'unit_sn_cht',
-            sortable: true,           
+            name: '聯絡人電話3',
+            selector: 'contact_tel3',
           },
           {
-            name: 'CUFT',
-            selector: 'cuft',           
+            name: '聯絡人手機',
+            selector: 'contact_mobile',
           },
           {
-            name: '包裝ㄧ',
-            selector: 'out_pack',           
+            name: '聯絡人傳真',
+            selector: 'contact_fax',
           },
           {
-            name: '包裝二',
-            selector: 'in_pack',           
+            name: '聯絡人Email',
+            selector: 'contact_email',
           },
           {
-            name: '淨重',
-            selector: 'net_weight',           
-          },
-          {
-            name: '總重',
-            selector: 'gross_weight',           
-          },
+            name: "Action",
+            button: true,
+            sortable: false,
+            cell: () => <Button size="sm" >edit</Button>
+          }
+
         ];
+
+
 
 
         return (
@@ -133,10 +143,13 @@ class PanelProduct extends React.Component {
                     <div className="card-body">
 
                     <DataTable
-                        title="產品"
+                        title="客戶"
                         columns={columns}
                         data={data}
                         pagination={true}
+                        
+                     
+                        
                     />
 
                     </div> 
@@ -146,4 +159,4 @@ class PanelProduct extends React.Component {
     }
 }
 
-export default hot(module)(PanelProduct);
+export default hot(module)(PanelCustomer);

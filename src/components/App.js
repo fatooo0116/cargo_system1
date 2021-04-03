@@ -5,8 +5,12 @@ import "./App.scss";
  
 
 import PanelProduct from "./myapp/PanelProduct";
-
-
+import PanelCustomer from "./myapp/PanelCustomer";
+import PanelStaff from "./myapp/PanelStaff";
+import PanelDep from './myapp/PanelDep';
+import PanelProductType from './myapp/PanelProductType';
+import PanelCustomerAddr from './myapp/PanelCustomerAddr';
+import PanelCustomerType from './myapp/PanelCustomerType';
 
 import { 
    Navbar,
@@ -23,6 +27,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      table:1,
       count: 6,
       postTypes: {},
       postResults: {},
@@ -41,6 +46,9 @@ class App extends React.Component {
   }
 
   render() {
+
+    const {table} = this.state;
+
     return (
       <div>
 
@@ -49,15 +57,17 @@ class App extends React.Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                <Nav.Link onClick={()=>{ this.setState({table:2}); }}>客戶</Nav.Link>
+                <Nav.Link onClick={()=>{ this.setState({table:1}); }}>產品</Nav.Link>
+
+                <NavDropdown title="設定" id="basic-nav-dropdown">
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:3}); }}>客戶類別</NavDropdown.Item>
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:4}); }}>客戶地址</NavDropdown.Item>    
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:5}); }}>部門資料</NavDropdown.Item> 
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:6}); }}>人員資料</NavDropdown.Item> 
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>產品類別</NavDropdown.Item>  
                 </NavDropdown>
+
               </Nav>
               <Form inline>
                 <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -66,9 +76,16 @@ class App extends React.Component {
             </Navbar.Collapse>
           </Navbar>
 
-       
-          <PanelProduct  />
+          {(table==1) ? <PanelProduct  /> : ''}
+          {(table==2) ? <PanelCustomer  /> : ''}
+          {(table==3) ? <PanelCustomerType /> : ''}
+          {(table==4) ? <PanelCustomerAddr  /> : ''}
+          {(table==5) ? <PanelDep  /> : ''}
+          {(table==6) ? <PanelStaff  /> : ''}
+          {(table==7) ? <PanelProductType  /> : ''}
           
+
+        
        
       </div>
     );
