@@ -27,6 +27,9 @@ class WP_React_Plugin_Options {
   }
 
   public function render_plugin_options_page() {
+   
+    wp_enqueue_style( 'style-bootstrap', plugins_url( './lib_css/bootstrap.css', __FILE__),'','','all');
+
     echo '<div class="wp-react-plugin"></div>';
   }
 

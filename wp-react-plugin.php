@@ -46,5 +46,7 @@ class WP_React_Plugin {
     }
 }
 
-$wp_react_plugin = new WP_React_Plugin();
-$wp_react_plugin->init();
+if(is_admin() ){
+  $wp_react_plugin = new WP_React_Plugin();
+  $wp_react_plugin->init();
+}
