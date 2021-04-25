@@ -11,3 +11,20 @@
         border-color:#fff;
     }
 }
+
+
+.small_nav{
+    margin-top:10px;
+    padding:10px 15px;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0 , 0.04);
+    background:#fff;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid #f6f6f6;
+    border-radius: .25rem;
+    display: flex;
+    > div{
+        margin-right:10px;
+    }
+}

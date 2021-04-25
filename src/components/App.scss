@@ -64,3 +64,9 @@
 
   }
 }
+
+@media (min-width: 768px){
+  .container, .container-md, .container-sm, .card{
+      max-width: none ! important;
+  }
+}
