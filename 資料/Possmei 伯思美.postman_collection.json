@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "87ad133b-835f-4e9f-aed5-821ce10e463b",
+		"name": "Possmei 伯思美",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product Get Table",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"page\":1,\n    \"post_per_page\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cargo.com/wp-json/cargo/v1/get_products",
+					"host": [
+						"cargo",
+						"com"
+					],
+					"path": [
+						"wp-json",
+						"cargo",
+						"v1",
+						"get_products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dep Get Table",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"page\":1,\n    \"post_per_page\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cargo.com/wp-json/cargo/v1/get_products",
+					"host": [
+						"cargo",
+						"com"
+					],
+					"path": [
+						"wp-json",
+						"cargo",
+						"v1",
+						"get_products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dep Create Table",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dep_id\":\"XS\",\n    \"dep_name\":\"dep text\",\n    \"dep_eng_name\":\"dep eng text\",\n    \"other\":\"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cargo.com/wp-json/cargo/v1/create_dep",
+					"host": [
+						"cargo",
+						"com"
+					],
+					"path": [
+						"wp-json",
+						"cargo",
+						"v1",
+						"create_dep"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dep Del Table",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"pid\":11  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cargo.com/wp-json/cargo/v1/del_dep",
+					"host": [
+						"cargo",
+						"com"
+					],
+					"path": [
+						"wp-json",
+						"cargo",
+						"v1",
+						"del_dep"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Get Table",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"page\":1,\n    \"post_per_page\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "cargo.com/wp-json/cargo/v1/get_customers",
+					"host": [
+						"cargo",
+						"com"
+					],
+					"path": [
+						"wp-json",
+						"cargo",
+						"v1",
+						"get_customers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
