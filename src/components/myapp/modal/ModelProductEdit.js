@@ -7,9 +7,9 @@ import {
         } from 'react-bootstrap';
 
 
-import { edit_dep } from '../rest/func_restdep';
+// import { edit_dep } from '../rest/func_restdep';
 
-class ModelDepEdit extends React.Component {
+class ModelProductEdit extends React.Component {
     constructor(props) {
         super(props);
 
@@ -163,4 +163,4 @@ class ModelDepEdit extends React.Component {
   }
 
 
-export default hot(module)(ModelDepEdit);
+export default hot(module)(ModelProductEdit);

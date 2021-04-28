@@ -8,6 +8,11 @@ import {
         } from 'react-bootstrap';
 
 
+import  ModelProductCreate from './modal/ModelProductCreate';
+import  ModelProductEdit from './modal/ModelProductEdit';
+        
+import { get_all_product, del_product } from './rest/func_rest_product';        
+
 import DataTable, { createTheme } from 'react-data-table-component';
 
 
@@ -92,6 +97,81 @@ class PanelProduct extends React.Component {
     }
 
 
+
+
+    
+
+
+    fetch_all = () => {
+      let me = this;
+      get_all_ctype(function(resx){
+        me.setState({
+          data:resx
+        });
+      });
+    }
+
+
+    toggleRow = (cid) => {
+
+      let all_checked = [];
+      if(this.state.checked.includes(cid.id)){        
+        all_checked = [...this.state.checked].filter(function(value){ 
+          return value != cid.id;
+         });
+        
+      }else{
+        all_checked = [...this.state.checked,cid.id];
+      };
+
+      console.log( all_checked);
+      this.setState({checked:all_checked});
+    }
+
+
+
+
+    deleteData = () =>{
+      let checked = [...this.state.checked];
+      if(window.confirm('確定刪除')){
+        console.log(checked );
+        let me = this;
+        del_ptype(checked,function(obj){         
+         
+          get_all_Customer(function(resx){
+            me.setState({data:resx});
+          });
+        });
+      }
+    }
+
+
+
+   /*  private function */
+        removeByValue = (val, arr) =>{
+          for( var i = 0; i < arr.length; i++){                                    
+            if ( arr[i] == val) { 
+                arr.splice(i, 1); 
+                i--; 
+            }
+          }     
+          return  arr;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     render() {
 
         const {data,isLoading} = this.state;
@@ -103,7 +183,12 @@ class PanelProduct extends React.Component {
 
         const columns = [
           {
-            cell: (data) => (data.woo_id==0) ? <Button raised  size="sm"   disabled={isLoading} primary onClick={() => { (isLoading)? null : this.handleAction(data) }}>{isLoading ? 'Loading…' : '連結產品'}</Button> : <a href={"/wp-admin/post.php?post="+data.woo_id+"&action=edit"} target="_blank">產品</a>,
+            cell: (cid) => <input
+            type="checkbox"
+            className="checkbox"
+            checked={this.state.checked.includes(cid.id)}
+            onChange={(e) => this.toggleRow(cid)}
+          />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -164,6 +249,12 @@ class PanelProduct extends React.Component {
             name: '總重',
             selector: 'gross_weight',           
           },
+          {
+            cell: (pid) => <ModelProductEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+          }
         ];
 
 
