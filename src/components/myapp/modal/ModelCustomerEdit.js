@@ -6,8 +6,7 @@ import {
          Modal
         } from 'react-bootstrap';
 
-
-// import { edit_dep } from '../rest/func_restdep';
+import { edit_customer } from '../rest/func_rest_customer';
 
 class ModelCustomerEdit extends React.Component {
     constructor(props) {
@@ -21,16 +20,29 @@ class ModelCustomerEdit extends React.Component {
          cur_id:0,
          errors: {}
         }
+
+
+      
+        let me = this;
+        wp.media.editor.send.attachment = function(props, attachment){
+          let fields = me.state.fields;
+          fields.trade_mark = attachment.url;
+         
+         
+          me.setState({
+            fields:fields
+          });
+          setTimeout(function(){
+            console.log(fields);
+          },500);
+        }
     }
     
 
     componentDidMount() {
       const { pdata } = this.props;
        
-      let fields = {
-        dep_id: pdata.dep_id,
-        dep_name: pdata.dep_name,
-      };
+      let fields = pdata;
       
       this.setState({
         fields : fields,
@@ -44,6 +56,7 @@ class ModelCustomerEdit extends React.Component {
       let errors = {};
       let formIsValid = true;
 
+      /*
      if(!fields["dep_name"]){
         formIsValid = false;
         errors["dep_name"] = "Cannot be empty";
@@ -52,6 +65,7 @@ class ModelCustomerEdit extends React.Component {
       formIsValid = false;
        errors["dep_id"] = "Cannot be empty";
     }
+    */
 
      this.setState({errors: errors});
      return formIsValid;
@@ -95,7 +109,7 @@ class ModelCustomerEdit extends React.Component {
           console.log(fields);
 
           
-          edit_dep(fields,function(data){
+          edit_customer(fields,function(data){
           
                      
             me.setState({
@@ -117,9 +131,22 @@ class ModelCustomerEdit extends React.Component {
 
 
 
+    medaiUpload = () =>{
+      console.log("media");
+      console.log(window.wp.media);
+  
+      window.wp.media.editor.open();
+      // wp.media.editor.send.attachment;
+  
+    }
+
+
+
+
+
     render() {
 
-      const {is_Open, dep_id, dep_name } = this.state;
+      const {is_Open} = this.state;
       const {name} = this.props;
 
      // console.log(this.props);
@@ -136,16 +163,67 @@ class ModelCustomerEdit extends React.Component {
               <Modal.Title>編輯資料</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>            
+            <Modal.Body>     
               <label>
-                部門編號: <input type="text" onChange={this.handleChange.bind(this, "dep_id")} value={this.state.fields["dep_id"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
+                客戶麥頭: <input type="text" onChange={this.handleChange.bind(this, "trade_mark")} value={this.state.fields["trade_mark"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["trade_mark"]}</span>
+                <Button onClick={this.medaiUpload} size="sm" >Media</Button>
+              </label>  
+
+
+              <label>
+                編號: <input type="text" onChange={this.handleChange.bind(this, "customer_id")} value={this.state.fields["customer_id"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["customer_id"]}</span>
               </label>
 
               <label>
-                業務名稱: <input type="text" onChange={this.handleChange.bind(this, "dep_name")} value={this.state.fields["dep_name"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_name"]}</span>
+                名稱: <input type="text" onChange={this.handleChange.bind(this, "cname")} value={this.state.fields["cname"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["cname"]}</span>
               </label>
+
+              <label>
+                聯絡人: <input type="text" onChange={this.handleChange.bind(this, "contact")} value={this.state.fields["contact"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact"]}</span>
+              </label>  
+              
+              <label>
+                聯絡人職稱: <input type="text" onChange={this.handleChange.bind(this, "contact_job")} value={this.state.fields["contact_job"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_job"]}</span>
+              </label>  
+
+              <label>
+                聯絡人電話1: <input type="text" onChange={this.handleChange.bind(this, "contact_tel1")} value={this.state.fields["contact_tel1"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_tel1"]}</span>
+              </label>  
+
+              <label>
+                聯絡人電話2: <input type="text" onChange={this.handleChange.bind(this, "contact_tel2")} value={this.state.fields["contact_tel2"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_tel2"]}</span>
+              </label>
+
+              <label>
+                聯絡人電話3: <input type="text" onChange={this.handleChange.bind(this, "contact_tel3")} value={this.state.fields["contact_tel3"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_tel3"]}</span>
+              </label>
+
+              <label>
+                聯絡人手機: <input type="text" onChange={this.handleChange.bind(this, "contact_mobile")} value={this.state.fields["contact_mobile"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_mobile"]}</span>
+              </label>
+
+              <label>
+                聯絡人傳真: <input type="text" onChange={this.handleChange.bind(this, "contact_fax")} value={this.state.fields["contact_fax"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_fax"]}</span>
+              </label>
+
+
+              <label>
+                聯絡人Email: <input type="text" onChange={this.handleChange.bind(this, "contact_email")} value={this.state.fields["contact_email"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["contact_email"]}</span>
+              </label>     
+
+       
+
             </Modal.Body>
             
 

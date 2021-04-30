@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 function get_all_customer(callback){    
-    axios.post('/wp-json/cargo/v1/get_dep', {
+    axios.post('/wp-json/cargo/v1/get_customers', {
         page: 1,
         post_per_page: 99900
       })
@@ -17,7 +17,7 @@ function get_all_customer(callback){
 
 
 function del_customer(checked,callback){    
-  axios.post('/wp-json/cargo/v1/del_dep', {
+  axios.post('/wp-json/cargo/v1/del_customer', {
       checked: checked,      
     })
     .then(function (res) {
@@ -32,7 +32,7 @@ function del_customer(checked,callback){
 
 function create_customer(obj,callback){   
 
-  axios.post('/wp-json/cargo/v1/create_dep', obj)
+  axios.post('/wp-json/cargo/v1/create_customer', obj)
     .then(function (res) {
      //  console.log(res);
       return callback(res.data);       
@@ -46,7 +46,7 @@ function create_customer(obj,callback){
 function edit_customer(obj,callback){   
   console.log(obj);
   
-  axios.post('/wp-json/cargo/v1/edit_dep', obj)
+  axios.post('/wp-json/cargo/v1/edit_customer', obj)
     .then(function (res) {
      
       return callback(res.data);       

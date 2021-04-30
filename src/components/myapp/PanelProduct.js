@@ -48,50 +48,34 @@ class PanelProduct extends React.Component {
         super(props);
         this.state = {
           data: [],
+          checked:[],
           is_reload:0,
           isLoading:0
         }
     }
 
+
     componentDidMount() {
 
-      this.load_product();
-    }
-
-
-    load_product = () =>{
       let me = this;
-      axios.post('/wp-json/cargo/v1/get_products', {
-        page: 1,
-        post_per_page: 99900
-      })
-      .then(function (res) {
-        console.log(res);
-        me.setState({data:res.data});
-      })
-      .catch(function (error) {
-        console.log(error);
+      get_all_product(function(data){
+          me.setState({data:data}); 
       });
     }
 
 
+
+
+
   
     handleAction = (data) =>{
-
-      // this.setState({isLoading:1});
      
-      console.log(data);
-      console.log("...生成產品...");
+     
       let me = this;
-      axios.post('/wp-json/cargo/v1/bind_woo_products', {
-        data: data,       
-      })
+      axios.post('/wp-json/cargo/v1/bind_woo_products', {})
       .then(function (res) {
         console.log(res);
-        setTimeout(function(){
-          me.load_product();
-        },10);        
-
+    
       });
       
     }
@@ -104,12 +88,13 @@ class PanelProduct extends React.Component {
 
     fetch_all = () => {
       let me = this;
-      get_all_ctype(function(resx){
+      get_all_product(function(resx){
         me.setState({
           data:resx
         });
       });
     }
+
 
 
     toggleRow = (cid) => {
@@ -124,7 +109,7 @@ class PanelProduct extends React.Component {
         all_checked = [...this.state.checked,cid.id];
       };
 
-      console.log( all_checked);
+     // console.log( all_checked);
       this.setState({checked:all_checked});
     }
 
@@ -136,9 +121,9 @@ class PanelProduct extends React.Component {
       if(window.confirm('確定刪除')){
         console.log(checked );
         let me = this;
-        del_ptype(checked,function(obj){         
+        del_product(checked,function(obj){         
          
-          get_all_Customer(function(resx){
+          get_all_product(function(resx){
             me.setState({data:resx});
           });
         });
@@ -174,7 +159,7 @@ class PanelProduct extends React.Component {
 
     render() {
 
-        const {data,isLoading} = this.state;
+        const {data,checked} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
         console.log(data);
@@ -182,6 +167,13 @@ class PanelProduct extends React.Component {
 
 
         const columns = [
+          {
+            cell: (pid) => <ModelProductEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+            width: '50px' 
+          },
           {
             cell: (cid) => <input
             type="checkbox"
@@ -192,19 +184,23 @@ class PanelProduct extends React.Component {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
+            width: '50px' 
           },
           {
-            name: '產品編號',
+            name: '編號',
             selector: 'product_id',
             sortable: true,
+            
           },
           {
-            name: '產品名',
+            name: '名稱',
             selector: 'product_name',
-            sortable: true,            
+            sortable: true,   
+            grow:3   
+                  
           },
           {
-            name: '產品明英文',
+            name: '英文名稱',
             selector: 'product_eng_name',
             sortable: true,            
           },
@@ -249,18 +245,20 @@ class PanelProduct extends React.Component {
             name: '總重',
             selector: 'gross_weight',           
           },
-          {
-            cell: (pid) => <ModelProductEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-          }
         ];
 
 
         return (
 
             <Container id="aloha_app" >
+
+                <div className="small_nav">
+                    <ModelProductCreate name="Add"    fetch_all={this.fetch_all} />  
+                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
+
+                    <Button onClick={this.handleAction}>Binding Woo</Button>
+                </div>
+
                 <Card>
                     <div className="card-body">
 

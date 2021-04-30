@@ -7,7 +7,7 @@ import {
         } from 'react-bootstrap';
 
 
-// import { edit_dep } from '../rest/func_restdep';
+import { edit_product } from '../rest/func_rest_product';      
 
 class ModelProductEdit extends React.Component {
     constructor(props) {
@@ -27,13 +27,10 @@ class ModelProductEdit extends React.Component {
     componentDidMount() {
       const { pdata } = this.props;
        
-      let fields = {
-        dep_id: pdata.dep_id,
-        dep_name: pdata.dep_name,
-      };
+     
       
       this.setState({
-        fields : fields,
+        fields : pdata,
         cur_id:pdata.id 
       });
     }
@@ -44,6 +41,7 @@ class ModelProductEdit extends React.Component {
       let errors = {};
       let formIsValid = true;
 
+      /*
      if(!fields["dep_name"]){
         formIsValid = false;
         errors["dep_name"] = "Cannot be empty";
@@ -52,6 +50,7 @@ class ModelProductEdit extends React.Component {
       formIsValid = false;
        errors["dep_id"] = "Cannot be empty";
     }
+    */
 
      this.setState({errors: errors});
      return formIsValid;
@@ -95,7 +94,7 @@ class ModelProductEdit extends React.Component {
           console.log(fields);
 
           
-          edit_dep(fields,function(data){
+          edit_product(fields,function(data){
           
                      
             me.setState({
@@ -137,15 +136,66 @@ class ModelProductEdit extends React.Component {
             </Modal.Header>
 
             <Modal.Body>            
-              <label>
-                部門編號: <input type="text" onChange={this.handleChange.bind(this, "dep_id")} value={this.state.fields["dep_id"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
+            <label>
+                產品編號: <input type="text" onChange={this.handleChange.bind(this, "product_id")} value={this.state.fields["product_id"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["product_id"]}</span>
               </label>
 
               <label>
-                業務名稱: <input type="text" onChange={this.handleChange.bind(this, "dep_name")} value={this.state.fields["dep_name"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_name"]}</span>
+                產品名稱: <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
               </label>
+
+              <label>
+                產品名稱英文: <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
+              </label>   
+
+              <label>
+                產品類別: <input type="text" onChange={this.handleChange.bind(this, "type_name")} value={this.state.fields["type_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["type_name"]}</span>
+              </label>       
+              
+              <label>
+                單位編號: <input type="text" onChange={this.handleChange.bind(this, "unit_sn")} value={this.state.fields["unit_sn"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn"]}</span>
+              </label> 
+
+              <label>
+                計量編號: <input type="text" onChange={this.handleChange.bind(this, "out_pack_unit")} value={this.state.fields["out_pack_unit"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack_unit"]}</span>
+              </label>                 
+
+              <label>
+                計量編號中文: <input type="text" onChange={this.handleChange.bind(this, "unit_sn_cht")} value={this.state.fields["unit_sn_cht"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn_cht"]}</span>
+              </label>  
+ 
+              
+              <label>
+                CUFT: <input type="text" onChange={this.handleChange.bind(this, "cuft")} value={this.state.fields["cuft"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["cuft"]}</span>
+              </label>       
+
+              <label>
+                外包裝: <input type="text" onChange={this.handleChange.bind(this, "out_pack")} value={this.state.fields["out_pack"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack"]}</span>
+              </label>  
+
+              <label>
+                內包裝: <input type="text" onChange={this.handleChange.bind(this, "in_pack")} value={this.state.fields["in_pack"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["in_pack"]}</span>
+              </label> 
+
+              <label>
+                淨重: <input type="text" onChange={this.handleChange.bind(this, "net_weight")} value={this.state.fields["net_weight"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["net_weight"]}</span>
+              </label>  
+
+              <label>
+                總重: <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
+              </label>                                                                                                                             
             </Modal.Body>
             
 

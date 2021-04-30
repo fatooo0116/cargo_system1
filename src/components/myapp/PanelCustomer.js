@@ -9,7 +9,7 @@ import {
 
 
         import  ModelCustomerCreate from './modal/ModelCustomerCreate';
-        import  ModelCustomerEdit from './modal/ModelProductEdit';
+        import  ModelCustomerEdit from './modal/ModelCustomerEdit';
         
         import { get_all_customer, del_customer } from './rest/func_rest_customer';
         
@@ -57,19 +57,12 @@ class PanelCustomer extends React.Component {
         }
     }
 
-    componentDidMount() {
 
+
+    componentDidMount() {
       let me = this;
-      axios.post('/wp-json/cargo/v1/get_customers', {
-        page: 1,
-        post_per_page: 99900
-      })
-      .then(function (res) {
-        console.log(res);
-        me.setState({data:res.data});
-      })
-      .catch(function (error) {
-        console.log(error);
+      get_all_customer(function(data){
+          me.setState({data:data}); 
       });
     }
 
@@ -79,7 +72,7 @@ class PanelCustomer extends React.Component {
 
     fetch_all = () => {
       let me = this;
-      get_all_ctype(function(resx){
+      get_all_customer(function(resx){
         me.setState({
           data:resx
         });
@@ -110,13 +103,17 @@ class PanelCustomer extends React.Component {
       let checked = [...this.state.checked];
       if(window.confirm('確定刪除')){
         console.log(checked );
+        
+        
         let me = this;
-        del_ptype(checked,function(obj){         
-         
-          get_all_Customer(function(resx){
+        del_customer(checked,function(obj){         
+          // console.log(obj);
+
+          get_all_customer(function(resx){
             me.setState({data:resx});
           });
         });
+        
       }
     }
 
@@ -166,6 +163,14 @@ class PanelCustomer extends React.Component {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
+            width: '50px' 
+          },
+          {
+            cell: (pid) => <ModelCustomerEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+            width: '50px' 
           },
           {
             name: '客戶編號',
@@ -212,12 +217,7 @@ class PanelCustomer extends React.Component {
             selector: 'contact_email',
           },
 
-          {
-            cell: (pid) => <ModelCustomerEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-          }
+
 
         ];
 
@@ -241,13 +241,16 @@ class PanelCustomer extends React.Component {
                         columns={columns}
                         data={data}
                         pagination={true}
-                        
-                     
-                        
+                                                                
                     />
 
                     </div> 
-                    </Card>
+                </Card>
+
+                <div className="small_nav">
+                    <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
+                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
+                </div>                
             </Container>            
         )
     }

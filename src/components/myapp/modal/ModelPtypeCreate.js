@@ -6,7 +6,7 @@ import {
          Modal
         } from 'react-bootstrap';
 
-// import {create_dep } from '../rest/func_restdep';
+ import {create_ptype } from '../rest/func_restptype';
 
         
 
@@ -46,13 +46,13 @@ class ModelPtypeCreate extends React.Component {
       let errors = {};
       let formIsValid = true;
 
-     if(!fields["dep_name"]){
+     if(!fields["type_id"]){
         formIsValid = false;
-        errors["dep_name"] = "Cannot be empty";
+        errors["type_id"] = "Cannot be empty";
      }
-     if(!fields["dep_id"]){
+     if(!fields["type_name"]){
       formIsValid = false;
-       errors["dep_id"] = "Cannot be empty";
+       errors["type_name"] = "Cannot be empty";
     }
 
      this.setState({errors: errors});
@@ -72,10 +72,10 @@ class ModelPtypeCreate extends React.Component {
           console.log("create ...");
           let fields = this.state.fields;
 
-         // console.log(fields);
+          console.log(fields);
           
        
-          create_dep(fields,function(data){
+          create_ptype(fields,function(data){
             me.setState({
               is_Open:false,
               fields: {}
@@ -105,7 +105,7 @@ class ModelPtypeCreate extends React.Component {
 
 
     render() {
-      const {is_Open, dep_id, dep_name } = this.state;
+      const {is_Open} = this.state;
       const {name,pdata} = this.props;
 
       console.log(this.state);
@@ -125,16 +125,36 @@ class ModelPtypeCreate extends React.Component {
           </Modal.Header>
 
           <Modal.Body>            
-            <label>
-              部門編號: <input type="text" onChange={this.handleChange.bind(this, "dep_id")} value={this.state.fields["dep_id"]} />
-              <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
-            </label>
+              <label>
+                編號: <input type="text" onChange={this.handleChange.bind(this, "type_id")} value={this.state.fields["type_id"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["type_id"]}</span>
+              </label>
 
-            <label>
-              業務名稱: <input type="text" onChange={this.handleChange.bind(this, "dep_name")} value={this.state.fields["dep_name"]} />
-              <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_name"]}</span>
-            </label>
-          </Modal.Body>
+              <label>
+                名稱: <input type="text" onChange={this.handleChange.bind(this, "type_name")} value={this.state.fields["type_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["type_name"]}</span>
+              </label>
+
+              <label>
+                英文名稱: <input type="text" onChange={this.handleChange.bind(this, "type_eng_name")} value={this.state.fields["type_eng_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["type_eng_name"]}</span>
+              </label>
+
+              <label>
+                存貨科目: <input type="text" onChange={this.handleChange.bind(this, "stock_account")} value={this.state.fields["stock_account"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["stock_account"]}</span>
+              </label> 
+
+              <label>
+                進貨科目: <input type="text" onChange={this.handleChange.bind(this, "in_account")} value={this.state.fields["in_account"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["in_account"]}</span>
+              </label>     
+
+              <label>
+                進貨退出: <input type="text" onChange={this.handleChange.bind(this, "out_account")} value={this.state.fields["out_account"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_account"]}</span>
+              </label>                         
+            </Modal.Body>
           
 
           <Modal.Footer>

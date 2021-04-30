@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 function get_all_product(callback){    
-    axios.post('/wp-json/cargo/v1/get_dep', {
+    axios.post('/wp-json/cargo/v1/get_products', {
         page: 1,
         post_per_page: 99900
       })
@@ -17,7 +17,7 @@ function get_all_product(callback){
 
 
 function del_product(checked,callback){    
-  axios.post('/wp-json/cargo/v1/del_dep', {
+  axios.post('/wp-json/cargo/v1/del_product', {
       checked: checked,      
     })
     .then(function (res) {
@@ -32,7 +32,7 @@ function del_product(checked,callback){
 
 function create_product(obj,callback){   
 
-  axios.post('/wp-json/cargo/v1/create_dep', obj)
+  axios.post('/wp-json/cargo/v1/create_product', obj)
     .then(function (res) {
      //  console.log(res);
       return callback(res.data);       
@@ -43,10 +43,11 @@ function create_product(obj,callback){
     
 };
 
+
 function edit_product(obj,callback){   
   console.log(obj);
   
-  axios.post('/wp-json/cargo/v1/edit_dep', obj)
+  axios.post('/wp-json/cargo/v1/edit_product', obj)
     .then(function (res) {
      
       return callback(res.data);       

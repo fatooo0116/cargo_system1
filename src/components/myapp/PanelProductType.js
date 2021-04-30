@@ -10,7 +10,7 @@ import {
 
 import  ModelPtypeCreate from './modal/ModelPtypeCreate';
 import  ModelPtypeEdit from './modal/ModelPtypeEdit';
-import { get_all_ptype, del_ptype } from './rest/func_restptype';
+import { get_ptype, del_ptype } from './rest/func_restptype';
         
 
 
@@ -52,17 +52,10 @@ class PanelProductType extends React.Component {
 
     componentDidMount() {
 
+
       let me = this;
-      axios.post('/wp-json/cargo/v1/product_type', {
-        page: 1,
-        post_per_page: 99900
-      })
-      .then(function (res) {
-        console.log(res);
-        me.setState({data:res.data});
-      })
-      .catch(function (error) {
-        console.log(error);
+      get_ptype(function(data){
+        me.setState({data:data});
       });
     }
 
@@ -71,7 +64,7 @@ class PanelProductType extends React.Component {
 
     fetch_all = () => {
       let me = this;
-      get_all_ptype(function(resx){
+      get_ptype(function(resx){
         me.setState({
           data:resx
         });
@@ -105,7 +98,7 @@ class PanelProductType extends React.Component {
         let me = this;
         del_ptype(checked,function(obj){         
          
-          get_all_ptype(function(resx){
+          get_ptype(function(resx){
             me.setState({data:resx});
           });
         });
@@ -149,34 +142,29 @@ class PanelProductType extends React.Component {
             button: true,
           },
           {
-            name: '類別編號',
+            name: '編號',
             selector: 'type_id',
             sortable: true,
           },
           {
-            name: '類別名稱',
+            name: '名稱',
             selector: 'type_name',
             sortable: true,            
           },
           {
-            name: '類別英文名稱',
+            name: '英文名稱',
             selector: 'type_eng_name',
             sortable: true,            
           },
           {
-            name: '產品類別',
-            selector: 'type_name',
-            sortable: true,
-          },
-          {
             name: '存貨科目',
-            selector: 'in_account',
+            selector: 'stock_account',
             sortable: true,
             right: true,
           },
           {
             name: '進貨科目',
-            selector: 'stock_account',
+            selector: 'in_account',
             sortable: true,            
           },
           {
@@ -207,7 +195,7 @@ class PanelProductType extends React.Component {
                     <div className="card-body">
 
                     <DataTable
-                        title="產品資訊"
+                        title="產品類別"
                         columns={columns}
                         data={data}
                         pagination={true}
@@ -218,7 +206,8 @@ class PanelProductType extends React.Component {
 
 
                 <div className="small_nav">
-                    
+                  <ModelPtypeCreate name="Add"    fetch_all={this.fetch_all} />  
+                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
                 </div>                    
             </Container>            
         )
