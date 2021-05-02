@@ -4,12 +4,15 @@ import axios from 'axios';
 import { 
         Container,       
          Card,  
-         Button
+         Button,
+         Form,
+         FormControl
         } from 'react-bootstrap';
 
 
         import  ModelCustomerCreate from './modal/ModelCustomerCreate';
         import  ModelCustomerEdit from './modal/ModelCustomerEdit';
+        import  ModelCustomerAddr from './modal/ModelCustomerAddr';
         
         import { get_all_customer, del_customer } from './rest/func_rest_customer';
         
@@ -40,10 +43,13 @@ createTheme('solarized', {
     },
   });
 
+
+  /*
   const handleChange = (state) => {
     // You can use setState or dispatch with something like Redux so we can use the retrieved data
     console.log('Selected Rows: ', state.selectedRows);
   };
+  */
 
 
 
@@ -64,6 +70,8 @@ class PanelCustomer extends React.Component {
       get_all_customer(function(data){
           me.setState({data:data}); 
       });
+
+    
     }
 
 
@@ -150,7 +158,7 @@ class PanelCustomer extends React.Component {
         const {data,checked} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-        console.log(data);
+       // console.log(data);
 
         const columns = [
           {
@@ -166,7 +174,14 @@ class PanelCustomer extends React.Component {
             width: '50px' 
           },
           {
-            cell: (pid) => <ModelCustomerEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            cell: (pid) => <ModelCustomerEdit name="編輯"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+            width: '50px' 
+          },
+          {
+            cell: (pid) => <ModelCustomerAddr name="地址"  pdata={pid}   fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -177,10 +192,32 @@ class PanelCustomer extends React.Component {
             selector: 'customer_id',
             sortable: true,
           },
+
           {
-            name: '名稱',
+            name: '帳款歸屬',
+            selector: 'account_id',
+            sortable: true,
+          },
+
+          {
+            name: '名稱',           
             selector: 'cname',
-            sortable: true,            
+            sortable: true,  
+            width:'250px'          
+          },
+          {
+            cell: (pid) => (pid.is_temp=='1')? '是':'否',
+            name: '臨時客戶',           
+            selector: 'is_temp',
+            sortable: true,  
+            width:'100px'            
+          },
+          {
+            cell: (pid) =>  (pid.is_global=='1')? '是':'否' ,
+            name: '外商',
+            selector: 'is_global',
+            sortable: true, 
+            width:'80px'               
           },
           {
             name: '聯絡人',
@@ -194,19 +231,23 @@ class PanelCustomer extends React.Component {
           },
           {
             name: '聯絡人電話1',
-            selector: 'contact_tel1',     
+            selector: 'contact_tel1',   
+            width:'180px'         
           },
           {
             name: '聯絡人電話2',
             selector: 'contact_tel2',
+            width:'180px'
           },
           {
             name: '聯絡人電話3',
             selector: 'contact_tel3',
+            width:'180px'
           },
           {
             name: '聯絡人手機',
             selector: 'contact_mobile',
+            width:'180px'
           },
           {
             name: '聯絡人傳真',
@@ -231,6 +272,10 @@ class PanelCustomer extends React.Component {
                 <div className="small_nav">
                     <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
+                    <Form inline>
+                      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                      <Button variant="outline-success">Search</Button>
+                    </Form>                    
                 </div>
 
                 <Card>

@@ -8,5 +8,90 @@
                  font-weight: normal;
              }
         }
+
+        #address_box{
+            b{
+                margin-bottom: 10px;
+                display:block;
+            }
+            label   {
+                display: flex;
+                input[type="text"]{
+                    width:100%;
+                    margin-right:0px;
+                    margin-left:0px;
+                    font-weight: normal;
+                    &.zipcode{
+                        margin-right:10px;
+                        max-width: 150px;;
+                    }
+                }
+            }
+            
+        }
+
+        .full_width{
+            width:100%;
+        }
+        .dfx{
+            display: flex;    
+            align-items: center;  
+            .form-label{
+                width:4em;
+            }      
+        }
+        .dfx-wrap{
+            display: flex;   
+            flex-wrap: wrap;
+        }
+
+        .nf{
+            min-width:7em;
+        }
+        .nf4{
+            min-width:4em;
+        }
+        .preview{
+            padding:10px;
+            img{
+                display:block;
+                width:100%;
+            }
+        }
+    }
+}
+
+
+.address_list{
+    overflow-y: scroll;
+    padding-top:30px;
+    table{
+        min-width: 1500px;
+        font-size: 14px;;
+        td{
+            vertical-align: middle;
+            padding:10px;
+        }
+        .ad_w1{
+            width:170px;
+        }
+        .ad_w2{
+            width:140px;
+        }
+        .ad_w3{
+            width:500px;
+        }
+        .ad_w4{
+            width:140px;
+        }
+        .ad_w5{
+            width:160px;
+        }
+        .ad_w6{
+            width:160px;
+        }
+        .ad_w7{
+            width:160px;
+        }
     }
 }

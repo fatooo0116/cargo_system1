@@ -1,9 +1,9 @@
 /*  客戶地址  */
 import axios from 'axios';
 
-function get_all_addr(callback){    
-    axios.post('/wp-json/cargo/v1/get_dep', {
-        page: 1,
+function get_customers_addr(cid,callback){    
+    axios.post('/wp-json/cargo/v1/get_customers_addr', {
+        cid: cid,
         post_per_page: 99900
       })
       .then(function (res) {
@@ -58,4 +58,4 @@ function edit_addr(obj,callback){
 };
   
 
-export { get_all_addr,del_addr,create_addr,edit_addr}
+export { get_customers_addr,del_addr,create_addr,edit_addr}
