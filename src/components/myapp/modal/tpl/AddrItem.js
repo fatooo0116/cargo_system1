@@ -7,7 +7,7 @@ import {
         } from 'react-bootstrap';
 
 // import {create_dep } from '../rest/func_restdep';
-
+import { del_addr} from '../../rest/func_restaddr';
         
 
 class AddrItem extends React.Component {
@@ -16,10 +16,18 @@ class AddrItem extends React.Component {
 
         this.state = {
           is_Open:false,
-          fields: {},
-          errors: {}
+          checked:[]
         }
     }
+
+
+    del_customer_addr = (pid) =>{
+        del_addr(pid,function(data){
+            console.log(data);
+        });
+    }
+
+
 
     render(){
 
@@ -29,7 +37,7 @@ class AddrItem extends React.Component {
         return(
             <tr className="address_item">
                 <td className="ad_w1">
-                    <Button className="edit_btn" size="sm" variant="secondary" >編輯</Button> &nbsp;
+                    <Button className="edit_btn" onClick={()=> del_customer_addr(data.id) }   size="sm" variant="secondary" >編輯</Button> &nbsp;
                     <Button className="del_btn" variant="outline-danger" size="sm" >刪除</Button>
                 </td>
                 <td className="ad_w2">{data.zip}</td>

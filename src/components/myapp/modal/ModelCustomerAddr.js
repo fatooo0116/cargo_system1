@@ -12,7 +12,7 @@ import {
 
 // import { edit_customer } from '../rest/func_rest_customer';
 
-import { get_customers_addr} from '../rest/func_restaddr';
+import { get_customers_addr,create_addr,edit_addr} from '../rest/func_restaddr';
 
 import AddrItem from './tpl/AddrItem';
 
@@ -82,7 +82,8 @@ class ModelCustomerAddr extends React.Component {
 
       me.setState({        
         is_Open:true,  
-        allAddr:[],            
+        allAddr:[],  
+        customer_id:pdata.customer_id,          
         cur_id:pdata.id,         
       }); 
     }
@@ -109,18 +110,23 @@ class ModelCustomerAddr extends React.Component {
       e.preventDefault();
 
       let me = this;
+      let fields = this.state.fields;
 
-      if(this.handleValidation()){
-          
-  
-          
-        
+      if(this.handleValidation()){                  
+          console.log(this.state);
+          create_addr(fields,function(data){
+            console.log(data);
+          });
       }else{
           alert("請完成表單")
       }
     }
     
 
+
+    reloadAddrList = () =>{
+  
+    }
   
 
 
@@ -169,29 +175,35 @@ class ModelCustomerAddr extends React.Component {
                 <Col sm={12}>
                   <b>請輸入地址</b>
                   <label className="dfx">
-                    <input type="text"  className="zipcode" onChange={this.handleChange.bind(this, "cname")}   placeholder="郵遞區號"/>
-                    <input type="text" className="full_width" onChange={this.handleChange.bind(this, "addr_id")}  placeholder="地址" />
+                    <input type="text"  className="zipcode" onChange={this.handleChange.bind(this, "zip")}   placeholder="郵遞區號"/>
+                    <input type="text" className="full_width" onChange={this.handleChange.bind(this, "address_text")}  placeholder="地址" />
                   </label>
                 </Col>           
               </Row>
 
               <Row>
                 <Col sm={4}>
-                  <label className="">
-                     <input  placeholder="職稱" type="text" onChange={this.handleChange.bind(this, "account_id")}  />                    
-                  </label>
-                </Col>
-                <Col sm={4}  >
-                  <label className="">
-                    <input type="text" onChange={this.handleChange.bind(this, "dollar_mark")}  placeholder="電話"  />
+                  <label className="">                    
+                     <input   type="hidden" onChange={this.handleChange.bind(this, "customer_id")}  value={pdata.customer_id} />   
+                     <input  placeholder="姓名" type="text" onChange={this.handleChange.bind(this, "contact")} />                    
                   </label>
                 </Col>
                 <Col sm={4}>
                   <label className="">
-                    <input type="text" onChange={this.handleChange.bind(this, "dollar_mark")} placeholder="傳真"  />
+                     <input  placeholder="職稱" type="text" onChange={this.handleChange.bind(this, "contact_title")}  />                    
                   </label>
                 </Col>
-                <Col sm={12}>
+                <Col sm={4}  >
+                  <label className="">
+                    <input type="text" onChange={this.handleChange.bind(this, "contact_phone")}  placeholder="電話"  />
+                  </label>
+                </Col>
+                <Col sm={4}>
+                  <label className="">
+                    <input type="text" onChange={this.handleChange.bind(this, "contact_fax")} placeholder="傳真"  />
+                  </label>
+                </Col>
+                <Col sm={4}>
                     <input variant="primary" className="btn btn-primary" type="submit" value="新增" />
                 </Col>                
               </Row>  

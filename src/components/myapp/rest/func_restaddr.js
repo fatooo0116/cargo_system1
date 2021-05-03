@@ -17,7 +17,7 @@ function get_customers_addr(cid,callback){
 
 
 function del_addr(checked,callback){    
-  axios.post('/wp-json/cargo/v1/del_dep', {
+  axios.post('/wp-json/cargo/v1/del_customers_addr', {
       checked: checked,      
     })
     .then(function (res) {
@@ -32,7 +32,7 @@ function del_addr(checked,callback){
 
 function create_addr(obj,callback){   
 
-  axios.post('/wp-json/cargo/v1/create_dep', obj)
+  axios.post('/wp-json/cargo/v1/create_customers_addr', obj)
     .then(function (res) {
      //  console.log(res);
       return callback(res.data);       
@@ -46,7 +46,7 @@ function create_addr(obj,callback){
 function edit_addr(obj,callback){   
   console.log(obj);
   
-  axios.post('/wp-json/cargo/v1/edit_dep', obj)
+  axios.post('/wp-json/cargo/v1/edit_customers_addr', obj)
     .then(function (res) {
      
       return callback(res.data);       
