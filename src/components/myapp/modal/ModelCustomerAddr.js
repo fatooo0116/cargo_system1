@@ -25,7 +25,15 @@ class ModelCustomerAddr extends React.Component {
          is_Open:false,
          allAddr: [],
          /*  form  */
-         fields:{},
+         fields:{
+          id:0,
+          zip:'',
+          address_text:'',
+          contact:'',
+          contact_title:'',
+          contact_phone:'',
+          contact_fax:''
+         },
          cur_id:0,
          errors: {},
          cur_user:0,
@@ -104,6 +112,11 @@ class ModelCustomerAddr extends React.Component {
       this.setState({fields});
     }
 
+    handleInitField = (field, e) => {         
+      let fields = this.state.fields;
+      fields[field] = e.target.value;        
+      this.setState({fields});
+    }
 
 
     handleSubmit = (e) =>{
@@ -111,23 +124,87 @@ class ModelCustomerAddr extends React.Component {
 
       let me = this;
       let fields = this.state.fields;
+      const { pdata } = this.props; 
 
-      if(this.handleValidation()){                  
-          console.log(this.state);
-          create_addr(fields,function(data){
-            console.log(data);
+      if(this.handleValidation()){                                  
+        fields['customer_id'] = pdata.customer_id;        
+        this.setState({fields});
+
+        if(fields.id==0){ /* Create */
+          create_addr(fields,function(){
+            me.reload();
           });
+        }else{ /* Edit */
+          edit_addr(fields,function(){
+            me.reload();
+          });
+        }
+
       }else{
           alert("請完成表單")
       }
     }
     
 
+    /*  Reload the Data to Form */
+    edit_addr = (data) =>{
+      console.log(data);
+      let me =this;
 
-    reloadAddrList = () =>{
-  
+      me.setState({
+        fields:{...data}
+      });
     }
-  
+
+
+
+
+    reload = () =>{
+      console.log('reload ...');
+      let me = this;  
+      const { pdata } = this.props; 
+      me.setState({        
+        loading:1          
+      }); 
+
+      get_customers_addr(pdata.customer_id,function(data){           
+        let fields = {
+                      id:0,
+                       zip:'',
+                       address_text:'',
+                       contact:'',
+                       contact_title:'',
+                       contact_phone:'',
+                       contact_fax:''
+                    };
+
+        me.setState({
+          allAddr:data,    
+          loading:0,
+          fields:fields        
+        });          
+      });       
+    }
+
+
+    clear_fields = () =>{
+      let  me = this;
+      let fields = {
+         id:0,
+         zip:'',
+         address_text:'',
+         contact:'',
+         contact_title:'',
+         contact_phone:'',
+         contact_fax:''
+      };
+
+      me.setState({
+        fields:fields        
+      }); 
+    }
+    
+
 
 
 
@@ -135,23 +212,18 @@ class ModelCustomerAddr extends React.Component {
 
       const {is_Open,allAddr,loading} = this.state;
       const {name,pdata} = this.props;
-
-
-      let me = this;
-
-
-      
+      let me = this;      
       let min_list = [];     
       
       if(allAddr.length>0){
         allAddr.forEach(function(item){
-          min_list.push( <AddrItem data={item} />)
+          min_list.push( <AddrItem data={item}  reload={me.reload}  edit_addr={me.edit_addr} />)
         });
       }else{
         min_list.push( <tr><td>無地址資料</td></tr>)
       } 
       
-
+      
       
 
       return(
@@ -175,8 +247,8 @@ class ModelCustomerAddr extends React.Component {
                 <Col sm={12}>
                   <b>請輸入地址</b>
                   <label className="dfx">
-                    <input type="text"  className="zipcode" onChange={this.handleChange.bind(this, "zip")}   placeholder="郵遞區號"/>
-                    <input type="text" className="full_width" onChange={this.handleChange.bind(this, "address_text")}  placeholder="地址" />
+                    <input type="text"  className="zipcode" onChange={this.handleChange.bind(this, "zip")}   placeholder="郵遞區號" value={this.state.fields['zip']} />
+                    <input type="text" className="full_width" onChange={this.handleChange.bind(this, "address_text")}  placeholder="地址" value={this.state.fields['address_text']} />
                   </label>
                 </Col>           
               </Row>
@@ -185,26 +257,32 @@ class ModelCustomerAddr extends React.Component {
                 <Col sm={4}>
                   <label className="">                    
                      <input   type="hidden" onChange={this.handleChange.bind(this, "customer_id")}  value={pdata.customer_id} />   
-                     <input  placeholder="姓名" type="text" onChange={this.handleChange.bind(this, "contact")} />                    
+                     <input  placeholder="姓名" type="text" onChange={this.handleChange.bind(this, "contact")}  value={this.state.fields['contact']} />                    
                   </label>
                 </Col>
                 <Col sm={4}>
                   <label className="">
-                     <input  placeholder="職稱" type="text" onChange={this.handleChange.bind(this, "contact_title")}  />                    
+                     <input  placeholder="職稱" type="text" onChange={this.handleChange.bind(this, "contact_title")}  value={this.state.fields['contact_title']} />                    
                   </label>
                 </Col>
                 <Col sm={4}  >
                   <label className="">
-                    <input type="text" onChange={this.handleChange.bind(this, "contact_phone")}  placeholder="電話"  />
+                    <input type="text" onChange={this.handleChange.bind(this, "contact_phone")}  placeholder="電話" value={this.state.fields['contact_phone']} />
                   </label>
                 </Col>
                 <Col sm={4}>
                   <label className="">
-                    <input type="text" onChange={this.handleChange.bind(this, "contact_fax")} placeholder="傳真"  />
+                    <input type="text" onChange={this.handleChange.bind(this, "contact_fax")} placeholder="傳真"  value={this.state.fields['contact_fax']}  />
                   </label>
                 </Col>
                 <Col sm={4}>
+                  {(this.state.fields['id']==0) ?
                     <input variant="primary" className="btn btn-primary" type="submit" value="新增" />
+                    :
+                    <><input variant="primary" className="btn btn-primary" type="submit" value="編輯送出" /> &nbsp; 
+                    <input className="btn btn-light"  onClick={this.clear_fields}   type="button" value="取消" /></>
+                    }
+
                 </Col>                
               </Row>  
 

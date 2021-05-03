@@ -9,7 +9,7 @@ import PanelCustomer from "./myapp/PanelCustomer";
 import PanelStaff from "./myapp/PanelStaff";
 import PanelDep from './myapp/PanelDep';
 import PanelProductType from './myapp/PanelProductType';
-import PanelCustomerAddr from './myapp/PanelCustomerAddr';
+// import PanelCustomerAddr from './myapp/PanelCustomerAddr';
 import PanelCustomerType from './myapp/PanelCustomerType';
 
 import { 
@@ -62,7 +62,7 @@ class App extends React.Component {
 
                 <NavDropdown title="設定" id="basic-nav-dropdown">
                   <NavDropdown.Item onClick={()=>{ this.setState({table:3}); }}>客戶類別</NavDropdown.Item>
-                  <NavDropdown.Item onClick={()=>{ this.setState({table:4}); }}>客戶地址</NavDropdown.Item>    
+                    
                   <NavDropdown.Item onClick={()=>{ this.setState({table:5}); }}>部門資料</NavDropdown.Item> 
                   <NavDropdown.Item onClick={()=>{ this.setState({table:6}); }}>人員資料</NavDropdown.Item> 
                   <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>產品類別</NavDropdown.Item>  
@@ -75,7 +75,7 @@ class App extends React.Component {
           {(table==1) ? <PanelProduct  /> : ''}
           {(table==2) ? <PanelCustomer  /> : ''}
           {(table==3) ? <PanelCustomerType /> : ''}
-          {(table==4) ? <PanelCustomerAddr  /> : ''}
+         
           {(table==5) ? <PanelDep  /> : ''}
           {(table==6) ? <PanelStaff  /> : ''}
           {(table==7) ? <PanelProductType  /> : ''}
