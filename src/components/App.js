@@ -27,7 +27,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      table:2,
+      table:1,
       count: 6,
       postTypes: {},
       postResults: {},

@@ -3,7 +3,10 @@ import { hot } from "react-hot-loader";
 
 import { 
          Button,
-         Modal
+         Modal,
+         Col,
+         Container,
+         Row
         } from 'react-bootstrap';
 
 
@@ -129,7 +132,7 @@ class ModelProductEdit extends React.Component {
          {name} 
         </Button>
   
-        <Modal  className="aloha_modal" show={is_Open} onHide={this.handleClose}>
+        <Modal  className="aloha_modal"  size="lg"  show={is_Open} onHide={this.handleClose}>
           <form onSubmit={this.handleSubmit}>
             <Modal.Header closeButton>
               <Modal.Title>編輯資料</Modal.Title>
