@@ -67,6 +67,15 @@ class ModelProductEdit extends React.Component {
       this.setState({
         is_Open:true
       });
+
+      let me = this;
+      wp.media.editor.send.attachment = function(props, attachment){
+         let { fields } = me.state;
+         fields.trade_mark = attachment.url;
+          //  console.log(attachment.url);
+
+          alert('upload '+attachment.id);
+      }       
     }
 
 
@@ -117,6 +126,13 @@ class ModelProductEdit extends React.Component {
       }
     }
 
+
+
+
+
+    medaiUpload = () =>{
+      window.wp.media.editor.open();    
+    }
 
 
 
