@@ -130,7 +130,7 @@ class ModelProductCreate extends React.Component {
           </Modal.Header>
 
           <Modal.Body id="prodcut_modal">  
-          <Container id="address_box">
+          <Container >
               <Row>
                 <Col sm={6}>
 
@@ -152,43 +152,44 @@ class ModelProductCreate extends React.Component {
 
                 </Col>                
               </Row>
-          </Container>
-          <Container id="address_box">
+
               <Row>
                 <Col sm={12}>
-                <label>
-                產品名稱: <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
-                 <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
-                </label>
+                  <label>
+                    <div className="nf7">產品名稱: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
+                  </label>
                 </Col>
 
                 <Col sm={12}>
-                <label>
-                  產品名稱英文: <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
-                  <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
-                </label> 
+                  <label>
+                    <div className="nf7">產品名稱英文: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
+                  </label> 
                 </Col>                
               </Row>
           </Container>    
  
-          <Container id="address_box">
+          <Container >
               <Row>
                 <Col sm={4}>
-                <label>
-                單位編號: <input type="text" onChange={this.handleChange.bind(this, "unit_sn")} value={this.state.fields["unit_sn"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn"]}</span>
-                </label>                   
+                  <label>
+                    <div className="nf4">單位編號: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "unit_sn")} value={this.state.fields["unit_sn"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn"]}</span>
+                  </label>                   
                 </Col>
-              </Row>
-              <Row>
+
                 <Col sm={4}>
-                <label>
-                計量編號: <input type="text" onChange={this.handleChange.bind(this, "out_pack_unit")} value={this.state.fields["out_pack_unit"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack_unit"]}</span>
-                </label>                   
+                  <label>
+                    <div className="nf4">計量編號:</div> 
+                    <input type="text" onChange={this.handleChange.bind(this, "out_pack_unit")} value={this.state.fields["out_pack_unit"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack_unit"]}</span>
+                  </label>                   
                 </Col>
-              </Row>
-              <Row>
+
                 <Col sm={4}>
                 <label>
                   計量編號中文: <input type="text" onChange={this.handleChange.bind(this, "unit_sn_cht")} value={this.state.fields["unit_sn_cht"]} />
@@ -199,36 +200,59 @@ class ModelProductCreate extends React.Component {
           </Container>
 
 
+          <Container >
+              <Row>
 
-                
+                <Col sm={6}>
+                    <label>
+                      <div className="nf4">外包裝:</div> 
+                      <input type="text" onChange={this.handleChange.bind(this, "out_pack")} value={this.state.fields["out_pack"]} />
+                      <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack"]}</span>
+                    </label>                     
+                </Col>
+
+                <Col sm={6}>
+                  <label>
+                    <div className="nf4">內包裝:</div> 
+                    <input type="text" onChange={this.handleChange.bind(this, "in_pack")} value={this.state.fields["in_pack"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["in_pack"]}</span>
+                  </label>                    
+                </Col>
+              </Row>              
+          </Container>      
+
+          <Container >
+              <Row>
+                <Col sm={4}>
+                  <label>
+                      <div className="nf4">CUFT:</div> 
+                      <input type="text" onChange={this.handleChange.bind(this, "cuft")} value={this.state.fields["cuft"]} />
+                      <span className="error_text" style={{color: "red"}}>{this.state.errors["cuft"]}</span>
+                  </label>                      
+                </Col>                
+                <Col sm={4}>
+                <label>
+                  <div className="nf4">淨重:</div>  <input type="text" onChange={this.handleChange.bind(this, "net_weight")} value={this.state.fields["net_weight"]} />
+                  <span className="error_text" style={{color: "red"}}>{this.state.errors["net_weight"]}</span>
+                </label>  
+                </Col>
+
+                <Col sm={4}>
+                <label>
+                  <div className="nf4">總重:</div>  <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
+                  <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
+                </label>   
+                </Col>
+              </Row>              
+          </Container>    
+
+
+
+
+
 
 
  
-              
-              <label>
-                CUFT: <input type="text" onChange={this.handleChange.bind(this, "cuft")} value={this.state.fields["cuft"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["cuft"]}</span>
-              </label>       
-
-              <label>
-                外包裝: <input type="text" onChange={this.handleChange.bind(this, "out_pack")} value={this.state.fields["out_pack"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack"]}</span>
-              </label>  
-
-              <label>
-                內包裝: <input type="text" onChange={this.handleChange.bind(this, "in_pack")} value={this.state.fields["in_pack"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["in_pack"]}</span>
-              </label> 
-
-              <label>
-                淨重: <input type="text" onChange={this.handleChange.bind(this, "net_weight")} value={this.state.fields["net_weight"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["net_weight"]}</span>
-              </label>  
-
-              <label>
-                總重: <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
-              </label>    
           </Modal.Body>
           
 

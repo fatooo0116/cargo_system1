@@ -4,7 +4,7 @@ import axios from 'axios';
 import { 
         Button,
         Container,       
-         Card
+         Card,TextField
         } from 'react-bootstrap';
 
 
@@ -16,6 +16,13 @@ import { get_all_product, del_product } from './rest/func_rest_product';
 import DataTable, { createTheme } from 'react-data-table-component';
 
 
+
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+  <>
+    <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
+    <Button type="button" onClick={onClear}>X</Button>
+  </>
+);
 
 
 
@@ -50,7 +57,8 @@ class PanelProduct extends React.Component {
           data: [],
           checked:[],
           is_reload:0,
-          isLoading:0
+          isLoading:0,
+          filterText:''
         }
     }
 
@@ -149,10 +157,35 @@ class PanelProduct extends React.Component {
 
 
 
+        getSubHeaderComponent = () => {
+          return (
+            <FilterComponent
+              onFilter={(e) => {
+                let newFilterText = e.target.value;
+                this.filteredItems = this.state.data.filter(
+                  (item) =>
+                    item.name &&
+                    item.name.toLowerCase().includes(newFilterText.toLowerCase())
+                );
+                this.setState({ filterText: newFilterText });
+              }}
+              onClear={this.handleClear}
+              filterText={this.state.filterText}
+            />
+          );
+        };
 
 
-
-
+        handleClear = () => {
+          const { resetPaginationToggle, filterText } = this.state;
+  
+          if (this.state.filterText) {
+            this.setState({
+              resetPaginationToggle: !resetPaginationToggle,
+              filterText: ""
+            });
+          }
+        };
 
 
 
@@ -266,7 +299,9 @@ class PanelProduct extends React.Component {
                         title="產品"
                         columns={columns}
                         data={data}
-                        pagination={true}                       
+                        pagination={true}   
+                        subHeader
+                        subHeaderComponent={this.getSubHeaderComponent()}                
                     />
 
                     </div> 

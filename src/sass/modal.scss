@@ -102,9 +102,17 @@
 #prodcut_modal{
     label{
         align-items: center;
+        display: flex;
+        align-items: center;  
         .nf4{
             min-width:5em;
           }
+          .nf7{
+            min-width:7em;
+          }
+        input[type="text"]{
+            width:100%;
+        }
     }
 
   }
