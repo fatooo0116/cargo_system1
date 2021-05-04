@@ -1,13 +1,14 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 
+
 import { 
-         Button,
-         Modal,
-         Col,
-         Container,
-         Row
-        } from 'react-bootstrap';
+  Button,
+  Modal,
+  Col,
+  Container,
+  Row
+ } from 'react-bootstrap';
 
 
 import { edit_product } from '../rest/func_rest_product';      
@@ -134,71 +135,122 @@ class ModelProductEdit extends React.Component {
   
         <Modal  className="aloha_modal"  size="lg"  show={is_Open} onHide={this.handleClose}>
           <form onSubmit={this.handleSubmit}>
+            
             <Modal.Header closeButton>
               <Modal.Title>編輯資料</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>            
-            <label>
-                產品編號: <input type="text" onChange={this.handleChange.bind(this, "product_id")} value={this.state.fields["product_id"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["product_id"]}</span>
-              </label>
+            <Modal.Body id="prodcut_modal">  
 
-              <label>
-                產品名稱: <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
-              </label>
+            <Container >
+              <Row>
+                <Col sm={6}>
 
-              <label>
-                產品名稱英文: <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
-              </label>   
+                <label>
+                  <div className="nf7">產品編號:</div>
+                  <input type="text" onChange={this.handleChange.bind(this, "product_id")} value={this.state.fields["product_id"]} />
+                  <span className="error_text" style={{color: "red"}}>{this.state.errors["product_id"]}</span>
+                </label>
 
-              <label>
-                產品類別: <input type="text" onChange={this.handleChange.bind(this, "type_name")} value={this.state.fields["type_name"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["type_name"]}</span>
-              </label>       
-              
-              <label>
-                單位編號: <input type="text" onChange={this.handleChange.bind(this, "unit_sn")} value={this.state.fields["unit_sn"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn"]}</span>
-              </label> 
+                </Col>
+                
+                <Col sm={6}>
 
-              <label>
-                計量編號: <input type="text" onChange={this.handleChange.bind(this, "out_pack_unit")} value={this.state.fields["out_pack_unit"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack_unit"]}</span>
-              </label>                 
+                <label>
+                  <div className="nf4">產品類別: </div>
+                  <input type="text" onChange={this.handleChange.bind(this, "type_name")} value={this.state.fields["type_name"]} />
+                  <span className="error_text" style={{color: "red"}}>{this.state.errors["type_name"]}</span>
+                </label>   
 
-              <label>
-                計量編號中文: <input type="text" onChange={this.handleChange.bind(this, "unit_sn_cht")} value={this.state.fields["unit_sn_cht"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn_cht"]}</span>
-              </label>  
- 
-              
-              <label>
-                CUFT: <input type="text" onChange={this.handleChange.bind(this, "cuft")} value={this.state.fields["cuft"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["cuft"]}</span>
-              </label>       
+                </Col>                
+              </Row>
 
-              <label>
-                外包裝: <input type="text" onChange={this.handleChange.bind(this, "out_pack")} value={this.state.fields["out_pack"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack"]}</span>
-              </label>  
+              <Row>
+                <Col sm={12}>
+                  <label>
+                    <div className="nf7">產品名稱: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
+                  </label>
+                </Col>
 
-              <label>
-                內包裝: <input type="text" onChange={this.handleChange.bind(this, "in_pack")} value={this.state.fields["in_pack"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["in_pack"]}</span>
-              </label> 
+                <Col sm={12}>
+                  <label>
+                    <div className="nf7">產品名稱英文: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
+                  </label> 
+                </Col>                
+              </Row>
+          </Container>   
 
-              <label>
-                淨重: <input type="text" onChange={this.handleChange.bind(this, "net_weight")} value={this.state.fields["net_weight"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["net_weight"]}</span>
-              </label>  
 
-              <label>
-                總重: <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
-              </label>                                                                                                                             
+          <Container >
+              <Row>
+                <Col sm={6}>
+                  <label>
+                    <div className="nf7">單位編號: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "unit_sn")} value={this.state.fields["unit_sn"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn"]}</span>
+                  </label>  
+                  <label>
+                    <div className="nf7">計量編號:</div> 
+                    <input type="text" onChange={this.handleChange.bind(this, "out_pack_unit")} value={this.state.fields["out_pack_unit"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack_unit"]}</span>
+                  </label>   
+                  <label>
+                    <div className="nf7">計量編號中文:</div> <input type="text" onChange={this.handleChange.bind(this, "unit_sn_cht")} value={this.state.fields["unit_sn_cht"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["unit_sn_cht"]}</span>
+                  </label>    
+                  <label>
+                      <div className="nf7">外包裝:</div> 
+                      <input type="text" onChange={this.handleChange.bind(this, "out_pack")} value={this.state.fields["out_pack"]} />
+                      <span className="error_text" style={{color: "red"}}>{this.state.errors["out_pack"]}</span>
+                  </label>   
+                  <label>
+                    <div className="nf7">內包裝:</div> 
+                    <input type="text" onChange={this.handleChange.bind(this, "in_pack")} value={this.state.fields["in_pack"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["in_pack"]}</span>
+                  </label>    
+                  
+                  <label>
+                      <div className="nf7">CUFT:</div> 
+                      <input type="text" onChange={this.handleChange.bind(this, "cuft")} value={this.state.fields["cuft"]} />
+                      <span className="error_text" style={{color: "red"}}>{this.state.errors["cuft"]}</span>
+                  </label>   
+
+                  <label>
+                    <div className="nf7">淨重:</div>  <input type="text" onChange={this.handleChange.bind(this, "net_weight")} value={this.state.fields["net_weight"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["net_weight"]}</span>
+                  </label>   
+
+                  <label>
+                    <div className="nf7">總重:</div>  <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
+                  </label>                                                                                                     
+                </Col>
+                <Col sm={6}>
+
+                  <label className="dfx-wrap">
+                    產品圖片: <input type="hidden" onChange={this.handleChange.bind(this, "trade_mark")} value={this.state.fields["trade_mark"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["trade_mark"]}</span>
+                    <Button onClick={this.medaiUpload} size="sm" >Upload</Button>
+                    <div className="preview">
+                        {(this.state.fields["trade_mark"])? <img src={this.state.fields["trade_mark"]}/> :''}
+                    </div>
+                  </label>  
+
+                </Col>                
+              </Row>
+          </Container >    
+
+
+     
+
+   
+
+
+                                                                                                                           
             </Modal.Body>
             
 
