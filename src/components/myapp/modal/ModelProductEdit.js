@@ -11,7 +11,11 @@ import {
  } from 'react-bootstrap';
 
 
-import { edit_product } from '../rest/func_rest_product';      
+import { 
+          edit_product,
+          upload_product_img,
+          get_product_img
+        } from '../rest/func_rest_product';      
 
 class ModelProductEdit extends React.Component {
     constructor(props) {
@@ -69,12 +73,40 @@ class ModelProductEdit extends React.Component {
       });
 
       let me = this;
+
+      const { pdata } = this.props;
+      console.log(pdata);
+      if(pdata.woo_id){
+        /* get post thumbnail */
+        get_product_img(pdata.woo_id,function(data){
+          // console.log(data);
+          if(data){
+            me.setState({
+              preview:data
+            });
+          }
+        });
+      }
+     
+     
       wp.media.editor.send.attachment = function(props, attachment){
          let { fields } = me.state;
-         fields.trade_mark = attachment.url;
-          //  console.log(attachment.url);
+         fields.trade_mark = attachment.url;     
 
-          alert('upload '+attachment.id);
+          let  woo_post_id = me.props.pdata.woo_id;
+          // alert('upload '+attachment.id);
+          upload_product_img(
+            {
+              woo_post_id:woo_post_id,
+              attachment_id:attachment.id,
+            }
+            ,function(data){
+              if(data){
+                me.setState({
+                  preview:data
+                });
+              }
+          });
       }       
     }
 
@@ -108,14 +140,12 @@ class ModelProductEdit extends React.Component {
 
           
           edit_product(fields,function(data){
-          
-                     
+                               
             me.setState({
               is_Open:false,
               fields: {}
             });
-            me.props.fetch_all();
-            
+            me.props.fetch_all();            
             
           });
           
@@ -139,7 +169,7 @@ class ModelProductEdit extends React.Component {
     render() {
 
       const {is_Open, dep_id, dep_name } = this.state;
-      const {name} = this.props;
+      const {name,pdata} = this.props;
 
      // console.log(this.props);
 
@@ -246,25 +276,17 @@ class ModelProductEdit extends React.Component {
                   </label>                                                                                                     
                 </Col>
                 <Col sm={6}>
-
+                  {(pdata.woo_id)?
                   <label className="dfx-wrap">
-                    產品圖片: <input type="hidden" onChange={this.handleChange.bind(this, "trade_mark")} value={this.state.fields["trade_mark"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["trade_mark"]}</span>
-                    <Button onClick={this.medaiUpload} size="sm" >Upload</Button>
+                    產品圖片: <Button onClick={this.medaiUpload} size="sm" >Upload</Button>
                     <div className="preview">
-                        {(this.state.fields["trade_mark"])? <img src={this.state.fields["trade_mark"]}/> :''}
+                        {(this.state.preview)? <img src={this.state.preview}  onClick={this.medaiUpload} /> :''}
                     </div>
-                  </label>  
+                  </label> : ''}
 
                 </Col>                
               </Row>
           </Container >    
-
-
-     
-
-   
-
 
                                                                                                                            
             </Modal.Body>

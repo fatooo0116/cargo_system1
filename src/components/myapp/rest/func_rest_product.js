@@ -59,4 +59,44 @@ function edit_product(obj,callback){
 };
   
 
-export { get_all_product,del_product,create_product,edit_product}
+
+function upload_product_img(obj,callback){     
+   
+  
+  axios.post('/wp-json/cargo/v1/upload_product_img', obj)
+    .then(function (res) {
+     
+      return callback(res.data);       
+    })
+    .catch(function (error) {
+      console.log(error);
+    });        
+};
+  
+
+
+function get_product_img(woo_id,callback){
+    axios.post('/wp-json/cargo/v1/get_product_img',{
+      woo_id:woo_id
+    })
+    .then(function (res) {
+    
+      return callback(res.data);       
+    })
+    .catch(function (error) {
+      console.log(error);
+    });  
+}
+
+
+
+
+
+export { 
+          get_all_product,
+          del_product,
+          create_product,
+          edit_product,
+          upload_product_img,
+          get_product_img
+        }

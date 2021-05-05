@@ -55,6 +55,7 @@ class PanelProduct extends React.Component {
         super(props);
         this.state = {
           data: [],
+          ori:[],
           checked:[],
           is_reload:0,
           isLoading:0,
@@ -67,7 +68,10 @@ class PanelProduct extends React.Component {
 
       let me = this;
       get_all_product(function(data){
-          me.setState({data:data}); 
+          me.setState({
+            data:data,
+            ori:data
+          }); 
       });
     }
 
@@ -76,16 +80,13 @@ class PanelProduct extends React.Component {
 
 
   
-    handleAction = (data) =>{
-     
-     
+    handleAction = (data) =>{          
       let me = this;
       axios.post('/wp-json/cargo/v1/bind_woo_products', {})
       .then(function (res) {
         console.log(res);
     
-      });
-      
+      });      
     }
 
 
@@ -93,15 +94,16 @@ class PanelProduct extends React.Component {
 
     
 
-
+    /*
     fetch_all = () => {
       let me = this;
       get_all_product(function(resx){
-        me.setState({
+        me.setState({          
           data:resx
         });
       });
     }
+    */
 
 
 
@@ -158,16 +160,28 @@ class PanelProduct extends React.Component {
 
 
         getSubHeaderComponent = () => {
+          let me =this;
           return (
             <FilterComponent
+
               onFilter={(e) => {
                 let newFilterText = e.target.value;
-                this.filteredItems = this.state.data.filter(
-                  (item) =>
-                    item.name &&
-                    item.name.toLowerCase().includes(newFilterText.toLowerCase())
-                );
-                this.setState({ filterText: newFilterText });
+                console.log(newFilterText);                
+                let ori_data = [...me.state.ori];
+              //  console.log(ori_data);
+
+             
+                let filteredItems = ori_data.filter(
+                    (item) => item.product_name && item.product_name.includes(newFilterText) | item.product_id.includes(newFilterText)                    
+                  );
+           
+                
+               console.log(filteredItems);
+                
+                me.setState({ 
+                  data:filteredItems,
+                  filterText: newFilterText 
+                });
               }}
               onClear={this.handleClear}
               filterText={this.state.filterText}
@@ -177,14 +191,13 @@ class PanelProduct extends React.Component {
 
 
         handleClear = () => {
-          const { resetPaginationToggle, filterText } = this.state;
-  
-          if (this.state.filterText) {
+          
+            let ori = [...this.state.ori]; 
             this.setState({
-              resetPaginationToggle: !resetPaginationToggle,
+              data:ori,
               filterText: ""
             });
-          }
+          
         };
 
 
@@ -195,13 +208,13 @@ class PanelProduct extends React.Component {
         const {data,checked} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-        console.log(data);
+        // console.log(data);
         
 
 
         const columns = [
           {
-            cell: (pid) => <ModelProductEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            cell: (pid) => <ModelProductEdit name="Edit"  pdata={pid}    />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -229,8 +242,8 @@ class PanelProduct extends React.Component {
             name: '名稱',
             selector: 'product_name',
             sortable: true,   
-            grow:3   
-                  
+            grow:3,   
+            cell: (pid) => (pid.woo_id)? <a href={"/wp-admin/post.php?post="+pid.woo_id+"&action=edit"}  target="_blank"  >{pid.product_name}</a> : pid.product_name , 
           },
           {
             name: '英文名稱',
@@ -286,7 +299,7 @@ class PanelProduct extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelProductCreate name="Add"    fetch_all={this.fetch_all} />  
+                    <ModelProductCreate name="Add"    />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
 
                     <Button onClick={this.handleAction}>Binding Woo</Button>
