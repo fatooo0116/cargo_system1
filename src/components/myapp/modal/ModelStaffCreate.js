@@ -3,7 +3,8 @@ import { hot } from "react-hot-loader";
 
 import { 
          Button,
-         Modal
+         Modal,
+         Form
         } from 'react-bootstrap';
 
 // import {create_dep } from '../rest/func_restdep';
@@ -105,11 +106,21 @@ class ModelStaffCreate extends React.Component {
 
 
     render() {
-      const {is_Open, dep_id, dep_name } = this.state;
-      const {name,pdata} = this.props;
+      const {is_Open,fields} = this.state;
 
-      console.log(this.state);
-    
+      const {name,all_dep} = this.props;
+
+      // console.log(this.props);
+      let me = this;
+      let dep_select = [];
+
+     // console.log(fields);
+      
+
+     all_dep.forEach(function(item){
+      let is_select = (fields["dep_id"]==item.dep_id)? true : false;          
+      dep_select.push(<option value={item.dep_id}  selected={is_select} >{item.dep_name}</option>);
+    });  
 
       return(
         <div>
@@ -126,14 +137,27 @@ class ModelStaffCreate extends React.Component {
 
           <Modal.Body>            
             <label>
-              部門編號: <input type="text" onChange={this.handleChange.bind(this, "dep_id")} value={this.state.fields["dep_id"]} />
-              <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
-            </label>
+                員工編號: <input type="text" onChange={this.handleChange.bind(this, "staff_id")} value={this.state.fields["dep_id"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
+              </label>
 
-            <label>
-              業務名稱: <input type="text" onChange={this.handleChange.bind(this, "dep_name")} value={this.state.fields["dep_name"]} />
-              <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_name"]}</span>
-            </label>
+
+              <Form.Group  className="dfx"    controlId="dep_select_id">
+                 <Form.Label>部門編號</Form.Label>
+                <Form.Control as="select" custom  onChange={this.handleChange.bind(this, "dep_id")}>
+                  {dep_select}                        
+                </Form.Control>
+              </Form.Group>
+
+              <label>
+                中文姓名: <input type="text" onChange={this.handleChange.bind(this, "staff_name")} value={this.state.fields["staff_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["staff_name"]}</span>
+              </label>
+
+              <label>
+                英文姓名: <input type="text" onChange={this.handleChange.bind(this, "staff_eng_name")} value={this.state.fields["staff_eng_name"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["staff_eng_name"]}</span>
+              </label>
           </Modal.Body>
           
 

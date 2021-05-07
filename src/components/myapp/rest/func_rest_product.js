@@ -89,6 +89,16 @@ function get_product_img(woo_id,callback){
 }
 
 
+function get_product_type(callback){
+  axios.post('/wp-json/cargo/v1/terms','')
+  .then(function (res) {
+  
+    return callback(res.data);       
+  })
+  .catch(function (error) {
+    console.log(error);
+  });  
+}
 
 
 
@@ -98,5 +108,6 @@ export {
           create_product,
           edit_product,
           upload_product_img,
-          get_product_img
+          get_product_img,
+          get_product_type
         }

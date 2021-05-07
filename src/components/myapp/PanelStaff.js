@@ -8,10 +8,11 @@ import {
         } from 'react-bootstrap';
 
 import  ModelStaffCreate from './modal/ModelStaffCreate';
-import  ModelStaffEdit from './modal/ModelProductEdit';
+import  ModelStaffEdit from './modal/ModelStaffEdit';
 
 import { get_all_staff, del_staff } from './rest/func_reststaff';
 
+import { get_all_dep } from './rest/func_restdep';
 
 import DataTable, { createTheme } from 'react-data-table-component';
 
@@ -44,7 +45,9 @@ class PanelStaff extends React.Component {
         super(props);
         this.state = {
           data: [],
-          checked:[]
+          checked:[],
+          all_dep:[],
+          toggledClearRows:false
         }
     }
 
@@ -56,12 +59,29 @@ class PanelStaff extends React.Component {
         post_per_page: 99900
       })
       .then(function (res) {
-        console.log(res);
-        me.setState({data:res.data});
+       
+        let mdata = res.data;
+        
+        get_all_dep(function(all_dep){
+        
+          mdata.forEach(function(item){           
+            item['dep_name'] = all_dep.filter(function(itex){  return  itex.dep_id==item.dep_id })[0].dep_name;         
+          });
+
+          console.log(mdata);
+
+          me.setState({
+            data:mdata,
+            all_dep:all_dep
+          });
+        });
+
       })
       .catch(function (error) {
         console.log(error);
       });
+
+
     }
 
 
@@ -78,21 +98,6 @@ class PanelStaff extends React.Component {
     }
 
 
-    toggleRow = (cid) => {
-
-      let all_checked = [];
-      if(this.state.checked.includes(cid.id)){        
-        all_checked = [...this.state.checked].filter(function(value){ 
-          return value != cid.id;
-         });
-        
-      }else{
-        all_checked = [...this.state.checked,cid.id];
-      };
-
-      console.log( all_checked);
-      this.setState({checked:all_checked});
-    }
 
 
 
@@ -102,7 +107,7 @@ class PanelStaff extends React.Component {
       if(window.confirm('確定刪除')){
         console.log(checked );
         let me = this;
-        del_ptype(checked,function(obj){         
+        del_staff(checked,function(obj){         
          
           get_all_staff(function(resx){
             me.setState({data:resx});
@@ -127,40 +132,49 @@ class PanelStaff extends React.Component {
 
 
 
+        handleChange = (state) => {
+          // You can use setState or dispatch with something like Redux so we can use the retrieved data
+          this.setState({checked:state.selectedRows})
+        };
 
+      handleClearRows = () => {
+       
+          this.setState({ toggledClearRows: !this.state.toggledClearRows})
+        }
 
-
+      
 
 
 
 
     render() {
 
-        const {data,checked} = this.state;
+        const {data,checked,all_dep} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-        console.log(data);
+      //  console.log(data);
+
+
+
+
+       // console.log(data);
 
         const columns = [
           {
-            cell: (cid) => <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.state.checked.includes(cid.id)}
-            onChange={(e) => this.toggleRow(cid)}
-          />,
+            cell: (pid) => <ModelStaffEdit name="Edit"  pdata={pid} all_dep={all_dep}  fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
           },
+
           {
             name: '員工編號',
             selector: 'staff_id',
             sortable: true,
           },
           {
-            name: '部門編號',
-            selector: 'dep_id',
+            name: '部門編號',           
+            selector: 'dep_name',
             sortable: true,            
           },
           {
@@ -173,12 +187,7 @@ class PanelStaff extends React.Component {
             selector: 'staff_eng_name',
             sortable: true,
           },
-          {
-            cell: (pid) => <ModelStaffEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-          }
+
           
         ];
 
@@ -188,8 +197,8 @@ class PanelStaff extends React.Component {
             <Container id="aloha_app" >
 
               <div className="small_nav">
-                    <ModelStaffCreate name="Add"    fetch_all={this.fetch_all} />  
-                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
+                    <ModelStaffCreate name="Add"    fetch_all={this.fetch_all}   all_dep={all_dep} />  
+                    {( checked.length >0 )? <Button onClick={this.deleteData}  >DEL</Button>:''}
                 </div>
 
 
@@ -201,10 +210,22 @@ class PanelStaff extends React.Component {
                         columns={columns}
                         data={data}
                         pagination={true}
+                        paginationPerPage="100"
+                        paginationRowsPerPageOptions={["30","50","100"]}    
+
+                        selectableRows={true}
+                        selectableRowsVisibleOnly={true}
+                        onSelectedRowsChange={this.handleChange}
+                        clearSelectedRows={this.toggledClearRows}                        
                     />
 
                     </div> 
                     </Card>
+
+                    <div className="small_nav">
+                    <ModelStaffCreate name="Add"    fetch_all={this.fetch_all}   all_dep={all_dep} />  
+                    {( checked.length >0 )? <Button onClick={this.deleteData}  >DEL</Button>:''}
+                </div>                    
             </Container>            
         )
     }

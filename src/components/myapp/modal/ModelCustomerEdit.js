@@ -12,7 +12,6 @@ import {
 
 import { edit_customer } from '../rest/func_rest_customer';
 
-import { get_all_ctype } from '../rest/func_restctype';
 
 
 
@@ -27,7 +26,7 @@ class ModelCustomerEdit extends React.Component {
          fields: {},
          cur_id:0,
          errors: {},
-         ctype:[]
+         
         }
 
 
@@ -36,15 +35,6 @@ class ModelCustomerEdit extends React.Component {
 
     componentDidMount(){
       let me = this;
-      get_all_ctype(function(data){      
-        
-      //  console.log(data);
-
-        me.setState({
-         ctype:data
-        });
-        
-      });
     }
 
 
@@ -157,8 +147,8 @@ class ModelCustomerEdit extends React.Component {
 
     render() {
 
-      const {is_Open,ctype} = this.state;
-      const {name} = this.props;
+      const {is_Open} = this.state;
+      const {name,ctype} = this.props;
 
       let ctype_select  = [];
 

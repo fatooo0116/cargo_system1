@@ -11,7 +11,7 @@ import {
 import  ModelProductCreate from './modal/ModelProductCreate';
 import  ModelProductEdit from './modal/ModelProductEdit';
         
-import { get_all_product, del_product } from './rest/func_rest_product';        
+import { get_all_product, del_product,get_product_type } from './rest/func_rest_product';        
 
 import DataTable, { createTheme } from 'react-data-table-component';
 
@@ -57,9 +57,11 @@ class PanelProduct extends React.Component {
           data: [],
           ori:[],
           checked:[],
+          ptype:[],
           is_reload:0,
           isLoading:0,
-          filterText:''
+          filterText:'',
+          toggledClearRows: false
         }
     }
 
@@ -73,55 +75,58 @@ class PanelProduct extends React.Component {
             ori:data
           }); 
       });
-    }
 
 
-
-
-
-  
-    handleAction = (data) =>{          
-      let me = this;
-      axios.post('/wp-json/cargo/v1/bind_woo_products', {})
-      .then(function (res) {
-        console.log(res);
     
+      get_product_type(function(data){
+          me.setState({
+            ptype:data,            
+          }); 
       });      
     }
 
 
 
 
+
+    /*   綁定 Woo Product [begin]  */
+    handleAction = (data) =>{          
+      let me = this;
+      axios.post('/wp-json/cargo/v1/bind_woo_prod_by_page', {
+        checked:this.state.checked
+      })
+      .then(function (res) {
+        console.log(res);
+        get_all_product(function(data){
+          me.setState({
+            data:data,
+            ori:data,
+            checked:[]
+          }); 
+        });
+      });      
+    }
+  /*   綁定 Woo Product [end]  */
+
+
+
+
     
 
-    /*
+    
     fetch_all = () => {
       let me = this;
       get_all_product(function(resx){
         me.setState({          
-          data:resx
+          data:resx,
+          ori:resx,
         });
       });
     }
-    */
+    
 
 
 
-    toggleRow = (cid) => {
-
-      let all_checked = [];
-      if(this.state.checked.includes(cid.id)){        
-        all_checked = [...this.state.checked].filter(function(value){ 
-          return value != cid.id;
-         });
-        
-      }else{
-        all_checked = [...this.state.checked,cid.id];
-      };
-
-     // console.log( all_checked);
-      this.setState({checked:all_checked});
-    }
 
 
 
@@ -134,7 +139,10 @@ class PanelProduct extends React.Component {
         del_product(checked,function(obj){         
          
           get_all_product(function(resx){
-            me.setState({data:resx});
+            me.setState({
+              data:resx,
+              checked:[]
+            });
           });
         });
       }
@@ -201,37 +209,40 @@ class PanelProduct extends React.Component {
         };
 
 
+      handleChange = (state) => {
+          // You can use setState or dispatch with something like Redux so we can use the retrieved data
+          this.setState({checked:state.selectedRows})
+        };
+
+      handleClearRows = () => {
+       
+          this.setState({ toggledClearRows: !this.state.toggledClearRows})
+        }
+      
+
+
+
+
 
 
     render() {
 
-        const {data,checked} = this.state;
+        const {data,checked,ptype} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-        // console.log(data);
+         console.log(data);
         
-
+        let me = this;
 
         const columns = [
           {
-            cell: (pid) => <ModelProductEdit name="Edit"  pdata={pid}    />,
+            cell: (pid) => <ModelProductEdit name="Edit"  ptype={ptype}  pdata={pid}  fetch_all={me.fetch_all}   />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
             width: '50px' 
           },
-          {
-            cell: (cid) => <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.state.checked.includes(cid.id)}
-            onChange={(e) => this.toggleRow(cid)}
-          />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-            width: '50px' 
-          },
+          
           {
             name: '編號',
             selector: 'product_id',
@@ -243,7 +254,7 @@ class PanelProduct extends React.Component {
             selector: 'product_name',
             sortable: true,   
             grow:3,   
-            cell: (pid) => (pid.woo_id)? <a href={"/wp-admin/post.php?post="+pid.woo_id+"&action=edit"}  target="_blank"  >{pid.product_name}</a> : pid.product_name , 
+            cell: (pid) => (pid.woo_id > 0)? <a href={"/wp-admin/post.php?post="+pid.woo_id+"&action=edit"}  target="_blank"  >{pid.product_name}</a> : pid.product_name , 
           },
           {
             name: '英文名稱',
@@ -295,14 +306,15 @@ class PanelProduct extends React.Component {
 
 
         return (
-
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelProductCreate name="Add"    />  
-                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
+                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype} />  
+                    {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
 
-                    <Button onClick={this.handleAction}>Binding Woo</Button>
+
+                    &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
+
                 </div>
 
                 <Card>
@@ -314,7 +326,13 @@ class PanelProduct extends React.Component {
                         data={data}
                         pagination={true}   
                         subHeader
-                        subHeaderComponent={this.getSubHeaderComponent()}                
+                        selectableRows={true}
+                        selectableRowsVisibleOnly={true}
+                        onSelectedRowsChange={this.handleChange}
+                        clearSelectedRows={this.toggledClearRows}
+                        subHeaderComponent={this.getSubHeaderComponent()}  
+                        paginationPerPage="100"
+                        paginationRowsPerPageOptions={["30","50","100"]}              
                     />
 
                     </div> 

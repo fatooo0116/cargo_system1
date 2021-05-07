@@ -156,7 +156,7 @@ class ModelCustomerCreate extends React.Component {
 
       return(
         <div>
-        <Button variant="outline-dark" onClick={this.handleShow}>
+        <Button variant="outline-dark"  onClick={this.handleShow}>
          {name}
         </Button>
   

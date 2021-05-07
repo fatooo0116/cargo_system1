@@ -17,13 +17,17 @@ import {
           get_product_img
         } from '../rest/func_rest_product';      
 
+
+import ProductTypeCheckBox from './tpl/ProductTypeCheckBox';
+
+
 class ModelProductEdit extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
          is_Open:false,
-
+         ptype_checked:[],
          /*  form  */
          fields: {},
          cur_id:0,
@@ -39,7 +43,7 @@ class ModelProductEdit extends React.Component {
       
       this.setState({
         fields : pdata,
-        cur_id:pdata.id 
+        cur_id:pdata.id,       
       });
     }
 
@@ -134,12 +138,16 @@ class ModelProductEdit extends React.Component {
 
       if(this.handleValidation()){
           
-          let fields = me.state;
+          let {fields,ptype_checked,cur_id} = me.state;
 
           console.log(fields);
 
           
-          edit_product(fields,function(data){
+          edit_product({
+                        fields:fields,
+                        ptype_checked:ptype_checked,
+                        cur_id:cur_id
+                      },function(data){
                                
             me.setState({
               is_Open:false,
@@ -158,6 +166,11 @@ class ModelProductEdit extends React.Component {
 
 
 
+    update_checked_ptype = (data) =>{
+      this.setState({ptype_checked:data});
+    }
+
+
 
 
     medaiUpload = () =>{
@@ -168,8 +181,9 @@ class ModelProductEdit extends React.Component {
 
     render() {
 
-      const {is_Open, dep_id, dep_name } = this.state;
-      const {name,pdata} = this.props;
+      const {is_Open, ptype_checked} = this.state;
+      const {name,pdata,ptype} = this.props;
+
 
      // console.log(this.props);
 
@@ -201,6 +215,7 @@ class ModelProductEdit extends React.Component {
                 </Col>
                 
                 <Col sm={6}>
+                  <ProductTypeCheckBox ptype={ptype}   update_checked_ptype={this.update_checked_ptype} ptype_checked={ptype_checked} />
 
                 <label>
                   <div className="nf4">產品類別: </div>

@@ -1,3 +1,8 @@
+#dep_select_id{
+    width:250px;
+    margin-left:20px;
+}
+
 .aloha_modal{
     .modal-body{
         label{
@@ -115,4 +120,21 @@
         }
     }
 
+  }
+
+
+
+  /*   price modal   */ 
+  #price_modal{
+      #price_table{
+        display: flex;
+        width: 50%;
+        flex-wrap: wrap;
+        .item{
+            display: flex;
+            input{
+                width:40px;
+            }
+        }
+      }
   }

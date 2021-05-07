@@ -6,19 +6,39 @@ import {
          Card,  
          Button,
          Form,
-         FormControl
+         FormControl,
+         Modal
         } from 'react-bootstrap';
 
 
         import  ModelCustomerCreate from './modal/ModelCustomerCreate';
         import  ModelCustomerEdit from './modal/ModelCustomerEdit';
         import  ModelCustomerAddr from './modal/ModelCustomerAddr';
+
+        import { get_all_ctype } from './rest/func_restctype';
+
+        /*  price setting */
+        import ModalProdcutPrice from './modal/ModalProdcutPrice';
+
         
         import { get_all_customer, del_customer } from './rest/func_rest_customer';
-        
+
+        import { get_all_product} from './rest/func_rest_product';        
+   
 
 
 import DataTable, { createTheme } from 'react-data-table-component';
+
+
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+  <>
+    <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
+    <Button type="button" onClick={onClear}>X</Button>
+  </>
+);
+
+
+
 
 
 createTheme('solarized', {
@@ -58,8 +78,15 @@ class PanelCustomer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+          filterText:'',
           data: [],
-          checked:[]
+          ori:[],
+          products:[],
+          checked:[],
+          ctype:[],
+          price_is_Open:false,
+          cur_price_modal_customer:'',
+          toggledClearRows: false
         }
     }
 
@@ -68,11 +95,57 @@ class PanelCustomer extends React.Component {
     componentDidMount() {
       let me = this;
       get_all_customer(function(data){
-          me.setState({data:data}); 
+          me.setState({
+            data:data,
+            ori:data
+          });         
       });
 
+      get_all_product(function(products){
+        me.setState({products:products}); 
+      });
+
+      get_all_ctype(function(data){      
+          me.setState({
+           ctype:data
+          });
+      });
     
     }
+
+
+
+
+    getSubHeaderComponent = () => {
+      let me =this;
+      return (
+        <FilterComponent
+
+          onFilter={(e) => {
+            let newFilterText = e.target.value;
+            // console.log(newFilterText);                
+            let ori_data = [...me.state.ori];
+          //  console.log(ori_data);
+
+         
+            let filteredItems = ori_data.filter(
+                (item) => item.cname && item.cname.includes(newFilterText) | item.customer_id.includes(newFilterText)                    
+              );
+       
+            
+           console.log(filteredItems);
+            
+            me.setState({ 
+              data:filteredItems,
+              filterText: newFilterText 
+            });
+          }}
+          onClear={this.handleClear}
+          filterText={this.state.filterText}
+        />
+      );
+    };
+
 
 
 
@@ -141,47 +214,66 @@ class PanelCustomer extends React.Component {
 
 
 
+        openPriceModal = (pid) =>{
+          this.setState({ 
+            price_is_Open : true,
+            cur_price_modal_customer:pid
+          });
+        }
+
+  
+        hidePriceModal = () =>{     
+            this.setState({
+              price_is_Open:false,
+              cur_price_modal_customer:''
+            });      
+          }   
 
 
+        handleClear = () => {            
+          let ori = [...this.state.ori]; 
+          this.setState({
+            data:ori,
+            filterText: ""
+          });
+        };
 
 
+      handleChange = (state) => {
+          // You can use setState or dispatch with something like Redux so we can use the retrieved data
+          this.setState({checked:state.selectedRows})
+      };
 
-
-
-
-
-
+      handleClearRows = () => {
+          this.setState({ toggledClearRows: !this.state.toggledClearRows})
+        }
 
 
     render() {
 
-        const {data,checked} = this.state;
+        const {data,ctype,checked,products,price_is_Open,cur_price_modal_customer} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-       // console.log(data);
+       
 
         const columns = [
+
           {
-            cell: (cid) => <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.state.checked.includes(cid.id)}
-            onChange={(e) => this.toggleRow(cid)}
-          />,
+            cell: (pid) => <ModelCustomerEdit name="編輯"  ctype={ctype}  pdata={pid}   fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
             width: '50px' 
           },
           {
-            cell: (pid) => <ModelCustomerEdit name="編輯"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            cell: (pid) => <ModelCustomerAddr name="地址"   pdata={pid}   fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
             width: '50px' 
           },
           {
-            cell: (pid) => <ModelCustomerAddr name="地址"  pdata={pid}   fetch_all={this.fetch_all}  />,
+            cell: (pid) => <button  className="btn btm-default btn-outline-dark btn-sm"  pdata={pid}  onClick={() => this.openPriceModal(pid)}  >價格</button>,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -262,6 +354,13 @@ class PanelCustomer extends React.Component {
 
         ];
 
+ 
+
+
+
+
+       //  console.log(data);
+
 
 
 
@@ -271,32 +370,41 @@ class PanelCustomer extends React.Component {
 
                 <div className="small_nav">
                     <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
-                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
-                    <Form inline>
-                      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                      <Button variant="outline-success">Search</Button>
-                    </Form>                    
+                    {( checked.length >0 )? <Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>:''}                          
                 </div>
 
                 <Card>
                     <div className="card-body">
-
-                    <DataTable
-                        title="客戶"
-                        columns={columns}
-                        data={data}
-                        pagination={true}
-                                                                
-                    />
-
+                      <DataTable
+                          title="客戶"
+                          columns={columns}
+                          data={data}
+                          pagination={true}
+                          subHeader
+                          subHeaderComponent={this.getSubHeaderComponent()} 
+                          selectableRows={true}
+                        selectableRowsVisibleOnly={true}
+                        onSelectedRowsChange={this.handleChange}
+                        clearSelectedRows={this.toggledClearRows}    
+                        paginationPerPage="100"
+                        paginationRowsPerPageOptions={["30","50","100"]}                                      
+                      />
                     </div> 
                 </Card>
+                
 
                 <div className="small_nav">
                     <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
                 </div>                
-            </Container>            
+
+
+
+
+
+              <ModalProdcutPrice  cur_price_modal_customer={cur_price_modal_customer} products={products}   hidePriceModal={this.hidePriceModal} is_Open={price_is_Open}   />               
+            </Container>   
+                     
         )
     }
 }

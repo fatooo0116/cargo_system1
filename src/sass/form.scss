@@ -11,5 +11,46 @@
                 margin-top:5px;
             }
         }
+
+
+        .checkbox_outter{
+            border: 1px solid #a9a9a9;
+            border-radius: 5px;
+            padding: 5px 0 5px 0;
+            margin-bottom: 15px;
+            height:138px;
+            overflow-y: scroll;
+            .child_item{
+                padding-left:15px;
+                margin-bottom: 10px;
+            }
+            .child_item2{
+                padding-left:30px;
+                margin-bottom: 10px;
+            }
+            .form-group{
+                margin-bottom: 0;
+                .form-check{
+                    padding-left:10px;
+                    display:flex;
+                    align-items: center;
+                    margin-bottom: 10px;;
+                    &:last-child{
+                        margin-bottom: 0px;;
+                    }
+                    input{
+                        display: block;
+                        position: relative;
+                        margin-top: 3px;
+                    }
+                    label{
+                        display: block;
+                        margin-bottom: 0;;
+                        font-size: 14px;;
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
     }
 }
