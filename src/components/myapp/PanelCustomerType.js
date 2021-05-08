@@ -45,7 +45,8 @@ class PanelCustomerType extends React.Component {
         super(props);
         this.state = {
           data: [],
-          checked:[]
+          checked:[],
+          toggledClearRows: false
         }
     }
 
@@ -63,23 +64,7 @@ class PanelCustomerType extends React.Component {
 
 
 
-    toggleRow = (cid) => {
-      
-      // console.log(cid);
 
-      let all_checked = [];
-      if(this.state.checked.includes(cid.id)){        
-        all_checked = [...this.state.checked].filter(function(value){ 
-          return value != cid.id;
-         });
-        
-      }else{
-        all_checked = [...this.state.checked,cid.id];
-      };
-
-      console.log( all_checked);
-      this.setState({checked:all_checked});
-    }
 
 
     deleteData = () =>{
@@ -132,7 +117,15 @@ class PanelCustomerType extends React.Component {
 
 
 
+    handleChange = (state) => {
+      // You can use setState or dispatch with something like Redux so we can use the retrieved data
+      this.setState({checked:state.selectedRows})
+    };
 
+    handleClearRows = () => {
+      this.setState({ toggledClearRows: !this.state.toggledClearRows})
+    }
+  
 
 
 
@@ -146,16 +139,11 @@ class PanelCustomerType extends React.Component {
 
         const columns = [
           {
-            cell: (cid) => <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.state.checked.includes(cid.id)}
-            onChange={(e) => this.toggleRow(cid)}
-          />,
+            cell: (pid) => <ModelCtypeEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-          },
+          },          
           {
             name: '類別編號',
             selector: 'customer_catgory_id',
@@ -166,16 +154,17 @@ class PanelCustomerType extends React.Component {
             selector: 'customer_catgory_name',
             sortable: true,            
           },
+
+          {
+            name: '類別英文名稱',
+            selector: 'customer_catgory_eng_name',
+            sortable: true,            
+          },
+
           {
             name: '其他',
             selector: 'other',
             sortable: true,            
-          },
-          {
-            cell: (pid) => <ModelCtypeEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
           },
         ];
 
@@ -183,23 +172,36 @@ class PanelCustomerType extends React.Component {
         return (
 
             <Container id="aloha_app" >
-                <Card>
-                    <div className="card-body">
 
-                    <div className="small_nav">
+                <div className="small_nav">
                       <ModelCtypeCreate name="Add"    fetch_all={this.fetch_all} />  
                         {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
-                    </div>
+                </div>
+
+                <Card>
+                    <div className="card-body">
 
                     <DataTable
                         title="客戶類別"
                         columns={columns}
                         data={data}
                         pagination={true}
+                        paginationPerPage="100"
+                        paginationRowsPerPageOptions={["30","50","100"]}   
+                        selectableRows={true}
+                        selectableRowsVisibleOnly={true}
+                        onSelectedRowsChange={this.handleChange}
+                        clearSelectedRows={this.toggledClearRows}                           
                     />
 
                     </div> 
                     </Card>
+
+                  <div className="small_nav">
+                      <ModelCtypeCreate name="Add"    fetch_all={this.fetch_all} />  
+                        {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
+                  </div>
+
             </Container>            
         )
     }

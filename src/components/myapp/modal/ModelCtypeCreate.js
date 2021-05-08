@@ -6,7 +6,7 @@ import {
          Modal
         } from 'react-bootstrap';
 
-// import {create_dep } from '../rest/func_restdep';
+import {create_ctype } from '../rest/func_restctype';
 
         
 
@@ -46,6 +46,7 @@ class ModelCtypeCreate extends React.Component {
       let errors = {};
       let formIsValid = true;
 
+      /*
      if(!fields["dep_name"]){
         formIsValid = false;
         errors["dep_name"] = "Cannot be empty";
@@ -54,6 +55,7 @@ class ModelCtypeCreate extends React.Component {
       formIsValid = false;
        errors["dep_id"] = "Cannot be empty";
     }
+    */
 
      this.setState({errors: errors});
      return formIsValid;
@@ -75,7 +77,7 @@ class ModelCtypeCreate extends React.Component {
          // console.log(fields);
           
        
-          create_dep(fields,function(data){
+         create_ctype(fields,function(data){
             me.setState({
               is_Open:false,
               fields: {}
@@ -125,15 +127,26 @@ class ModelCtypeCreate extends React.Component {
           </Modal.Header>
 
           <Modal.Body>            
-            <label>
-              部門編號: <input type="text" onChange={this.handleChange.bind(this, "dep_id")} value={this.state.fields["dep_id"]} />
-              <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
+            <label className="dfx">
+              <div className="nf">類別編號:</div> <input type="text" onChange={this.handleChange.bind(this, "customer_catgory_id")} value={this.state.fields["customer_catgory_id"]} />
+              <span className="error_text" style={{color: "red"}}>{this.state.errors["customer_catgory_id"]}</span>
             </label>
 
-            <label>
-              業務名稱: <input type="text" onChange={this.handleChange.bind(this, "dep_name")} value={this.state.fields["dep_name"]} />
-              <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_name"]}</span>
+            <label className="dfx">
+              <div className="nf">類別名稱:</div> <input type="text" onChange={this.handleChange.bind(this, "customer_catgory_name")} value={this.state.fields["customer_catgory_name"]} />
+              <span className="error_text" style={{color: "red"}}>{this.state.errors["customer_catgory_name"]}</span>
             </label>
+
+            <label className="dfx">
+              <div className="nf">類別英文名稱:</div> <input type="text" onChange={this.handleChange.bind(this, "customer_catgory_eng_name")} value={this.state.fields["customer_catgory_eng_name"]} />
+              <span className="error_text" style={{color: "red"}}>{this.state.errors["customer_catgory_eng_name"]}</span>
+            </label>
+
+            <label className="dfx">
+              <div className="nf">其他:</div> <input type="text" onChange={this.handleChange.bind(this, "other")} value={this.state.fields["other"]} />
+              <span className="error_text" style={{color: "red"}}>{this.state.errors["other"]}</span>
+            </label>
+
           </Modal.Body>
           
 

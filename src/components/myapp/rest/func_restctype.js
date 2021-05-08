@@ -18,7 +18,7 @@ function get_all_ctype(callback){
 
 
 function del_ctype(checked,callback){    
-  axios.post('/wp-json/cargo/v1/del_dep', {
+  axios.post('/wp-json/cargo/v1/del_customers_type', {
       checked: checked,      
     })
     .then(function (res) {
@@ -33,7 +33,7 @@ function del_ctype(checked,callback){
 
 function create_ctype(obj,callback){   
 
-  axios.post('/wp-json/cargo/v1/create_dep', obj)
+  axios.post('/wp-json/cargo/v1/create_customers_type', obj)
     .then(function (res) {
      //  console.log(res);
       return callback(res.data);       
@@ -47,7 +47,7 @@ function create_ctype(obj,callback){
 function edit_ctype(obj,callback){   
   console.log(obj);
   
-  axios.post('/wp-json/cargo/v1/edit_dep', obj)
+  axios.post('/wp-json/cargo/v1/edit_customers_type', obj)
     .then(function (res) {
      
       return callback(res.data);       

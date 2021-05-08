@@ -45,7 +45,8 @@ class PanelDep extends React.Component {
         super(props);
         this.state = {
           data: [],
-          checked:[]
+          checked:[],
+          toggledClearRows: false
         }
     }
 
@@ -66,23 +67,6 @@ class PanelDep extends React.Component {
 
 
 
-    toggleRow = (cid) => {
-      
-      // console.log(cid);
-
-      let all_checked = [];
-      if(this.state.checked.includes(cid.id)){        
-        all_checked = [...this.state.checked].filter(function(value){ 
-          return value != cid.id;
-         });
-        
-      }else{
-        all_checked = [...this.state.checked,cid.id];
-      };
-
-      console.log( all_checked);
-      this.setState({checked:all_checked});
-    }
 
 
     deleteData = () =>{
@@ -127,6 +111,19 @@ class PanelDep extends React.Component {
 
 
 
+    handleChange = (state) => {
+      // You can use setState or dispatch with something like Redux so we can use the retrieved data
+      this.setState({checked:state.selectedRows})
+    };
+
+    handleClearRows = () => {
+      this.setState({ toggledClearRows: !this.state.toggledClearRows})
+    }
+  
+
+
+
+
 
     render() {
 
@@ -136,12 +133,7 @@ class PanelDep extends React.Component {
        
         const columns = [
           {
-            cell: (cid) => <input
-            type="checkbox"
-            className="checkbox"
-            checked={this.state.checked.includes(cid.id)}
-            onChange={(e) => this.toggleRow(cid)}
-          />,
+            cell: (pid) => <ModelDepEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -156,12 +148,7 @@ class PanelDep extends React.Component {
             selector: 'dep_name',
             sortable: true,            
           },
-          {
-            cell: (pid) => <ModelDepEdit name="Edit"  pdata={pid}   fetch_all={this.fetch_all}  />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,
-          },
+
         ];
 
 
@@ -182,7 +169,13 @@ class PanelDep extends React.Component {
                             title="部門"
                             columns={columns}
                             data={data}
-                            pagination={true}                           
+                            pagination={true}   
+                            paginationPerPage="100"
+                            paginationRowsPerPageOptions={["30","50","100"]}   
+                            selectableRows={true}
+                            selectableRowsVisibleOnly={true}
+                            onSelectedRowsChange={this.handleChange}
+                            clearSelectedRows={this.toggledClearRows}                        
                         />
 
                       </div> 

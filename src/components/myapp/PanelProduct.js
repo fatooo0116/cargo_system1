@@ -311,10 +311,7 @@ class PanelProduct extends React.Component {
                 <div className="small_nav">
                     <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype} />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
-
-
                     &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
-
                 </div>
 
                 <Card>
@@ -337,6 +334,12 @@ class PanelProduct extends React.Component {
 
                     </div> 
                     </Card>
+
+                    <div className="small_nav">
+                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype} />  
+                    {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
+                    &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
+                </div>
             </Container>            
         )
     }
