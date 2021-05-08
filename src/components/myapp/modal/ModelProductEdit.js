@@ -14,7 +14,7 @@ import {
 import { 
           edit_product,
           upload_product_img,
-          get_product_img
+          get_product_img_and_cat
         } from '../rest/func_rest_product';      
 
 
@@ -31,7 +31,8 @@ class ModelProductEdit extends React.Component {
          /*  form  */
          fields: {},
          cur_id:0,
-         errors: {}
+         errors: {},
+         
         }
     }
     
@@ -39,8 +40,7 @@ class ModelProductEdit extends React.Component {
     componentDidMount() {
       const { pdata } = this.props;
        
-     
-      
+           
       this.setState({
         fields : pdata,
         cur_id:pdata.id,       
@@ -82,11 +82,16 @@ class ModelProductEdit extends React.Component {
       console.log(pdata);
       if(pdata.woo_id){
         /* get post thumbnail */
-        get_product_img(pdata.woo_id,function(data){
-          // console.log(data);
+        get_product_img_and_cat(pdata.woo_id,function(data){
+           console.log(data);
+          
+    
+
           if(data){
+            
             me.setState({
-              preview:data
+              preview:data.post_img,
+              ptype_checked:data.product_cat
             });
           }
         });
@@ -181,7 +186,7 @@ class ModelProductEdit extends React.Component {
 
     render() {
 
-      const {is_Open, ptype_checked} = this.state;
+      const {is_Open, ptype_checked,product_cat} = this.state;
       const {name,pdata,ptype} = this.props;
 
 
@@ -216,14 +221,7 @@ class ModelProductEdit extends React.Component {
                 
                 <Col sm={6}>
                   <ProductTypeCheckBox ptype={ptype}   update_checked_ptype={this.update_checked_ptype} ptype_checked={ptype_checked} />
-
-                <label>
-                  <div className="nf4">產品類別: </div>
-                  <input type="text" onChange={this.handleChange.bind(this, "type_name")} value={this.state.fields["type_name"]} />
-                  <span className="error_text" style={{color: "red"}}>{this.state.errors["type_name"]}</span>
-                </label>   
-
-                </Col>                
+                </Col>                                
               </Row>
 
               <Row>

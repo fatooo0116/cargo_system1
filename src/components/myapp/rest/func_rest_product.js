@@ -75,8 +75,8 @@ function upload_product_img(obj,callback){
   
 
 
-function get_product_img(woo_id,callback){
-    axios.post('/wp-json/cargo/v1/get_product_img',{
+function get_product_img_and_cat(woo_id,callback){
+    axios.post('/wp-json/cargo/v1/get_product_img_and_cat',{
       woo_id:woo_id
     })
     .then(function (res) {
@@ -108,6 +108,6 @@ export {
           create_product,
           edit_product,
           upload_product_img,
-          get_product_img,
+          get_product_img_and_cat,
           get_product_type
         }

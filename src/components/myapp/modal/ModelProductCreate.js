@@ -11,7 +11,9 @@ import {
 
  import {create_product } from '../rest/func_rest_product';      
 
-        
+    
+import ProductTypeCheckBox from './tpl/ProductTypeCheckBox';
+    
 
 class ModelProductCreate extends React.Component {
     constructor(props) {
@@ -20,7 +22,9 @@ class ModelProductCreate extends React.Component {
         this.state = {
           is_Open:false,
           fields: {},
-          errors: {}
+          errors: {},
+          ptype_checked:[],
+          attachment_id:0
         }
     }
     
@@ -30,9 +34,24 @@ class ModelProductCreate extends React.Component {
     }
 
     handleShow = () =>{
+
+      let me = this;
+
       this.setState({
         is_Open:true
       });
+
+      wp.media.editor.send.attachment = function(props, attachment){
+        let { fields } = me.state;
+
+        // fields.trade_mark = attachment.url;     
+        // let  woo_post_id = me.props.pdata.woo_id;
+        // alert('upload '+attachment.id);
+        me.setState({
+          attachment_id:attachment.id,
+          attachment_url:attachment.url
+        });
+      }        
     }
 
 
@@ -80,7 +99,11 @@ class ModelProductCreate extends React.Component {
          // console.log(fields);
           
        
-         create_product(fields,function(data){
+         create_product(
+           {
+             fields:fields,
+             ptype_checked:ptype_checked
+           },function(data){
             me.setState({
               is_Open:false,
               fields: {}
@@ -106,12 +129,21 @@ class ModelProductCreate extends React.Component {
         }
 
 
+    update_checked_ptype = (data) =>{
+          this.setState({ptype_checked:data});
+      }
+
+
+    medaiUpload = () =>{
+        window.wp.media.editor.open();    
+      }
+  
 
 
 
     render() {
       const {is_Open, dep_id, dep_name } = this.state;
-      const {name,pdata} = this.props;
+      const {name,ptype} = this.props;
 
       console.log(this.state);
     
@@ -145,14 +177,8 @@ class ModelProductCreate extends React.Component {
                 </Col>
                 
                 <Col sm={6}>
-
-                <label>
-                  <div className="nf4">產品類別: </div>
-                  <input type="text" onChange={this.handleChange.bind(this, "type_name")} value={this.state.fields["type_name"]} />
-                  <span className="error_text" style={{color: "red"}}>{this.state.errors["type_name"]}</span>
-                </label>   
-
-                </Col>                
+                  <ProductTypeCheckBox ptype={ptype}    update_checked_ptype={this.update_checked_ptype}  />
+                </Col>                  
               </Row>
 
               <Row>
@@ -219,7 +245,17 @@ class ModelProductCreate extends React.Component {
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
                   </label>                                                                                                     
                 </Col>
-                              
+
+                <Col sm={6}>
+                 
+                  <label className="dfx-wrap">
+                    產品圖片: <Button onClick={this.medaiUpload} size="sm" >Upload</Button>
+                    <div className="preview">
+                        {(this.state.attachment_url)? <img src={this.state.attachment_url}  onClick={this.medaiUpload} /> :''}
+                    </div>
+                  </label>
+                </Col>  
+
               </Row>
           </Container >  
 
