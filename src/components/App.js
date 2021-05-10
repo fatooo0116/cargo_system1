@@ -30,7 +30,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      table:1,
+      table:2,
       count: 6,
       postTypes: {},
       postResults: {},

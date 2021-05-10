@@ -249,6 +249,32 @@ class PanelCustomer extends React.Component {
         }
 
 
+      /*  Binding Woocommerce  Customer  */
+      handleBindWoo  = () =>{ 
+        let me = this;
+        axios.post('/wp-json/cargo/v1/bind_woo_customer_by_page', {
+          checked:this.state.checked,
+        })
+        .then(function (res) {
+          console.log(res);
+
+          get_all_customer(function(data){
+            me.setState({
+              data:data,
+              ori:data,
+              checked:[]
+            });        
+          });
+
+        });   
+      }
+
+
+
+
+
+
+
     render() {
 
         const {data,ctype,checked,products,price_is_Open,cur_price_modal_customer} = this.state;
@@ -359,7 +385,7 @@ class PanelCustomer extends React.Component {
 
 
 
-       //  console.log(data);
+         console.log(data);
 
 
 
@@ -371,6 +397,7 @@ class PanelCustomer extends React.Component {
                 <div className="small_nav">
                     <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>:''}                          
+                    &nbsp; {( checked.length >0 )? <Button onClick={this.handleBindWoo}>Binding Woo</Button> : ''}
                 </div>
 
                 <Card>
