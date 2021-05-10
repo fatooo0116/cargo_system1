@@ -93,7 +93,7 @@ class PanelProduct extends React.Component {
     handleAction = (data) =>{          
       let me = this;
       axios.post('/wp-json/cargo/v1/bind_woo_prod_by_page', {
-        checked:this.state.checked
+        checked:this.state.checked,
       })
       .then(function (res) {
         console.log(res);
