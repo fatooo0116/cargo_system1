@@ -141,8 +141,13 @@ class PanelProduct extends React.Component {
           get_all_product(function(resx){
             me.setState({
               data:resx,
-              checked:[]
+              checked:[],
+             toggledClearRows: true,
+             filterText:''
             });
+
+            console.log(me.state);
+           // me.handleClearRows();
           });
         });
       }
@@ -210,10 +215,12 @@ class PanelProduct extends React.Component {
 
 
       handleChange = (state) => {
-          // You can use setState or dispatch with something like Redux so we can use the retrieved data
+          
           this.setState({checked:state.selectedRows})
         };
 
+
+        
       handleClearRows = () => {
        
           this.setState({ toggledClearRows: !this.state.toggledClearRows})
@@ -309,7 +316,7 @@ class PanelProduct extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype} />  
+                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype}   fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
                 </div>
@@ -326,7 +333,7 @@ class PanelProduct extends React.Component {
                         selectableRows={true}
                         selectableRowsVisibleOnly={true}
                         onSelectedRowsChange={this.handleChange}
-                        clearSelectedRows={this.toggledClearRows}
+                        clearSelectedRows={this.state.toggledClearRows}
                         subHeaderComponent={this.getSubHeaderComponent()}  
                         paginationPerPage="100"
                         paginationRowsPerPageOptions={["30","50","100"]}              

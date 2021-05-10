@@ -29,14 +29,10 @@ class ModelProductCreate extends React.Component {
     }
     
 
-    componentDidMount() {
-
-    }
+    componentDidMount(){}
 
     handleShow = () =>{
-
       let me = this;
-
       this.setState({
         is_Open:true
       });
@@ -94,7 +90,7 @@ class ModelProductCreate extends React.Component {
 
       if(this.handleValidation()){
           console.log("create ...");
-          let fields = this.state.fields;
+          let {fields,ptype_checked,attachment_id} = this.state;
 
          // console.log(fields);
           
@@ -102,11 +98,14 @@ class ModelProductCreate extends React.Component {
          create_product(
            {
              fields:fields,
-             ptype_checked:ptype_checked
+             ptype_checked:ptype_checked,
+             attachment_id:attachment_id
            },function(data){
             me.setState({
               is_Open:false,
-              fields: {}
+              fields: {},
+              ptype_checked:[],
+              attachment_id:0
             });
             me.props.fetch_all();
           });
@@ -130,7 +129,7 @@ class ModelProductCreate extends React.Component {
 
 
     update_checked_ptype = (data) =>{
-          this.setState({ptype_checked:data});
+         this.setState({ptype_checked:data});
       }
 
 
@@ -142,7 +141,7 @@ class ModelProductCreate extends React.Component {
 
 
     render() {
-      const {is_Open, dep_id, dep_name } = this.state;
+      const {is_Open,ptype_checked } = this.state;
       const {name,ptype} = this.props;
 
       console.log(this.state);
@@ -164,7 +163,7 @@ class ModelProductCreate extends React.Component {
           <Modal.Body id="prodcut_modal">  
 
 
- <Container >
+          <Container >
               <Row>
                 <Col sm={6}>
 
@@ -177,7 +176,7 @@ class ModelProductCreate extends React.Component {
                 </Col>
                 
                 <Col sm={6}>
-                  <ProductTypeCheckBox ptype={ptype}    update_checked_ptype={this.update_checked_ptype}  />
+                  <ProductTypeCheckBox ptype={ptype}  ptype_checked={ptype_checked}   update_checked_ptype={this.update_checked_ptype}  />
                 </Col>                  
               </Row>
 
