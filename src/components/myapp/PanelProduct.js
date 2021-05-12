@@ -256,6 +256,7 @@ class PanelProduct extends React.Component {
             sortable: true,
             
           },
+
           {
             name: '名稱',
             selector: 'product_name',

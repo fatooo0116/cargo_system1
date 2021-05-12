@@ -259,11 +259,15 @@ class PanelCustomer extends React.Component {
           console.log(res);
 
           get_all_customer(function(data){
+            
             me.setState({
               data:data,
               ori:data,
-              checked:[]
-            });        
+              checked:[],
+              // toggledClearRows: true
+            });    
+            
+            me.handleClearRows();
           });
 
         });   
@@ -308,7 +312,16 @@ class PanelCustomer extends React.Component {
           {
             name: '客戶編號',
             selector: 'customer_id',
+            cell: (pid) => (pid.woo_id > 0)? <a href={"/wp-admin/user-edit.php?user_id="+pid.woo_id}  target="_blank"  >{pid.customer_id}</a> : pid.customer_id , 
             sortable: true,
+          },
+
+
+          {
+            name: 'Woo_id',
+            selector: 'woo_id',
+            sortable: true,
+            
           },
 
           {
@@ -385,8 +398,6 @@ class PanelCustomer extends React.Component {
 
 
 
-         console.log(data);
-
 
 
 
@@ -412,7 +423,8 @@ class PanelCustomer extends React.Component {
                           selectableRows={true}
                         selectableRowsVisibleOnly={true}
                         onSelectedRowsChange={this.handleChange}
-                        clearSelectedRows={this.toggledClearRows}    
+                       
+                        clearSelectedRows={this.state.toggledClearRows}
                         paginationPerPage="100"
                         paginationRowsPerPageOptions={["30","50","100"]}                                      
                       />
