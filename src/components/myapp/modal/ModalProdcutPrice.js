@@ -6,9 +6,12 @@ import {
          Modal
         } from 'react-bootstrap';
 
-// import {create_dep } from '../rest/func_restdep';
 
+
+import { get_all_product} from '../rest/func_rest_product';           
 import DataTable, { createTheme } from 'react-data-table-component';
+import ChangePriceUnit from './tpl/ChangePriceUnit';
+
 
 
 createTheme('solarized', {
@@ -34,72 +37,134 @@ createTheme('solarized', {
   });
 
 
+
+  const FilterComp = ({ filterText, onFilter, onClear }) => (
+    <>
+    <input id="search_p" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
+    <Button id="search_btn" type="button" onClick={onClear}>X</Button>
+    </>
+  );
+
+
+
         
-class ModalProdcutPrice extends React.Component {
+class ModalProdcutPrice extends React.Component{
     constructor(props) {
         super(props);
 
-        this.state = {
-        
+        this.state = {        
+          price:[],
+          is_Open:false,
           products:[],
-          fields: {},
-          errors: {}
+          ori:[],
+          filterText:''
         }
     }    
 
 
-    componentDidMount() {
-        
+    componentDidMount() {     
+        let me = this;
+
+          get_all_product(function(products){
+            me.setState({
+              products:products,
+              ori:products
+            }); 
+          });
     }
   
 
-
-
-
-
   
-      handleSubmit = () =>{ 
   
-      }   
+
+
+
+    getSubHeaderComponent = () => {
+      let me =this;
+      return (
+        <FilterComp
+
+          onFilter={(e) => {
+            let newFilterText = e.target.value;                
+            let ori_data = [...me.state.ori];
+
+            //  console.log(ori_data);
+
+         
+            let filteredItems = ori_data.filter(
+                (item) => item.product_name && item.product_name.includes(newFilterText) | item.product_id.includes(newFilterText)                    
+              );
+       
+            
+           // console.log(filteredItems);
+            
+            me.setState({ 
+              products:filteredItems,
+              filterText: newFilterText 
+            });
+          }}
+          onClear={this.handleClear}
+          filterText={this.state.filterText}
+        />
+      );
+    };
+
+
+
 
 
 
     render(){
       //  const {is_Open} = this.state;
-        const { products,
+        const { 
                 is_Open,
                 hidePriceModal,
                 cur_price_modal_customer
              } = this.props;
 
+        const { products } = this.state;
+
+
+             /*
+             if(products.length>0 & cur_price_table.length>0){
+                products.forEach(function(item){
+                  let obj = cur_price_table.filter(function(table_item){
+                    return item.id == table_item.product_id
+                  });
+                  item['pprice'] = obj[0].price;                 
+                });
+             }
+             */
+
+
 
              const columns = [
+              {
+                name: '#',
+                selector: 'id',
+                sortable: true,  
+                width: '10%',                                     
+              },
                 {
                     name: '名稱',
                     selector: 'product_name',
                     sortable: true,  
-                    width: '70%',                      
+                    width: '50%',                      
                     cell: (pid) => (pid.woo_id > 0)? <a href={"/wp-admin/post.php?post="+pid.woo_id+"&action=edit"}  target="_blank"  >{pid.product_name}</a> : pid.product_name , 
                   },
-                {
-                    cell: (pid) => <input type="text" />,
-                    ignoreRowClick: true,
-                    allowOverflow: true,
-                    button: true,
-                   
-                  },
                   {
-                    cell: (pid) => <Button size="sm" >Save</Button>,
+                    name: '價格設定',
+                    cell: (pid) => {
+                      return <ChangePriceUnit  pid={pid}  cid={cur_price_modal_customer}   />
+                    },
                     ignoreRowClick: true,
                     allowOverflow: true,
                     button: true,
-                    width: '120px' 
-                  },
+                    width: '40%',
+                  }      
             ]
 
-
             // console.log(cur_price_modal_customer.id);
-
  
         return (
             <Modal id="price_modal" size="lg"  show={is_Open} onHide={hidePriceModal}>
@@ -109,20 +174,17 @@ class ModalProdcutPrice extends React.Component {
                     </Modal.Header>
             
                     <Modal.Body>            
-                        <DataTable                          
+                        <DataTable 
+                            subHeader                         
                             columns={columns}
                             data={products}
                             pagination={true}   
+                            onChangePage = { (page) => console.log(page)}
+                            subHeaderComponent={this.getSubHeaderComponent()}  
                           //  subHeader
                           //  subHeaderComponent={this.getSubHeaderComponent()}                
                         />
-                    </Modal.Body>
-            
-    
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={hidePriceModal}>關閉</Button>
-                        <input variant="primary" className="btn btn-primary" type="submit" value="儲存送出" />
-                    </Modal.Footer>
+                    </Modal.Body>          
             </form>
           </Modal> 
         )

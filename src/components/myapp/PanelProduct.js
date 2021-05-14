@@ -204,13 +204,11 @@ class PanelProduct extends React.Component {
 
 
         handleClear = () => {
-          
             let ori = [...this.state.ori]; 
             this.setState({
               data:ori,
               filterText: ""
             });
-          
         };
 
 

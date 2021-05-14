@@ -23,9 +23,7 @@ import {
         
         import { get_all_customer, del_customer } from './rest/func_rest_customer';
 
-        import { get_all_product} from './rest/func_rest_product';        
-   
-
+       
 
 import DataTable, { createTheme } from 'react-data-table-component';
 
@@ -81,12 +79,13 @@ class PanelCustomer extends React.Component {
           filterText:'',
           data: [],
           ori:[],
-          products:[],
+         
           checked:[],
           ctype:[],
           price_is_Open:false,
           cur_price_modal_customer:'',
-          toggledClearRows: false
+          toggledClearRows: false,
+          cur_price_table:[]
         }
     }
 
@@ -101,9 +100,7 @@ class PanelCustomer extends React.Component {
           });         
       });
 
-      get_all_product(function(products){
-        me.setState({products:products}); 
-      });
+
 
       get_all_ctype(function(data){      
           me.setState({
@@ -214,12 +211,19 @@ class PanelCustomer extends React.Component {
 
 
 
-        openPriceModal = (pid) =>{
+        openPriceModal = (cid) =>{
+
+          let me = this;
+          /* 取得 price  by pid */
+
+
           this.setState({ 
             price_is_Open : true,
-            cur_price_modal_customer:pid
+            cur_price_modal_customer:cid
           });
         }
+
+
 
   
         hidePriceModal = () =>{     
@@ -281,7 +285,15 @@ class PanelCustomer extends React.Component {
 
     render() {
 
-        const {data,ctype,checked,products,price_is_Open,cur_price_modal_customer} = this.state;
+        const {
+          data,
+          ctype,
+          checked,
+         
+          price_is_Open,
+          cur_price_modal_customer,
+         
+        } = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
        
@@ -441,7 +453,7 @@ class PanelCustomer extends React.Component {
 
 
 
-              <ModalProdcutPrice  cur_price_modal_customer={cur_price_modal_customer} products={products}   hidePriceModal={this.hidePriceModal} is_Open={price_is_Open}   />               
+              <ModalProdcutPrice  cur_price_modal_customer={cur_price_modal_customer}   hidePriceModal={this.hidePriceModal} is_Open={price_is_Open}   />               
             </Container>   
                      
         )

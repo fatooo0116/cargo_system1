@@ -1,4 +1,40 @@
 
+#search_p{
+    margin-right: 10px;
+    height:34px;;
+}
+#search_btn{
+    height:34px;
+}
+
+
+.table_column{
+    display: flex;
+    .cur_price{
+        width: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        b{
+            font-weight: normal;
+            margin-left:10px;
+            color:#f00;
+        }
+    }
+    .btn{
+        margin-left:10px;
+    }
+    input[type="number"]{
+        width:80px;
+    }
+    .my_loading{
+        width:80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 .modal-dialog{
     .modal-body{
         label{
