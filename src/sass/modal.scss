@@ -3,6 +3,42 @@
     margin-left:20px;
 }
 
+.table_column .my_loading{
+    background-size:50% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+select[name="company_address_select"]{
+    width:100%;
+}
+
+
+#alert_modal{
+    top:30%;
+    text-align: center;
+    h4{
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+       // color: #ff3434;
+        font-size: 20px;
+        font-weight: 400;
+        align-items: center;
+        padding-top: 10px;
+    
+    
+        svg{
+            margin-right:5px;
+        }
+    }
+}
+.modal-backdrop{
+    z-index: 1050 ! important;
+}
+
+
+
 .aloha_modal{
     .modal-body{
         label{
@@ -136,5 +172,15 @@
                 width:40px;
             }
         }
+      }
+  }
+
+
+  .df_select{
+      display:flex;
+      align-items: center;
+      label{
+          display:block;
+          margin:0 10px 0 0 ! important;          
       }
   }

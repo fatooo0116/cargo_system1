@@ -8,9 +8,14 @@ import PanelProduct from "./myapp/PanelProduct";
 import PanelCustomer from "./myapp/PanelCustomer";
 import PanelStaff from "./myapp/PanelStaff";
 import PanelDep from './myapp/PanelDep';
-import PanelProductType from './myapp/PanelProductType';
+// import PanelProductType from './myapp/PanelProductType';
 // import PanelCustomerAddr from './myapp/PanelCustomerAddr';
 import PanelCustomerType from './myapp/PanelCustomerType';
+
+import PanelSetCategory  from './myapp/PanelSetCategory';
+
+
+
 
 import { 
    Navbar,
@@ -56,19 +61,20 @@ class App extends React.Component {
       <div>
 
           <Navbar  id="global_nav"   expand="lg">
-            <Navbar.Brand href="#home">設定</Navbar.Brand>
+           
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link onClick={()=>{ this.setState({table:2}); }}>客戶</Nav.Link>
-                <Nav.Link onClick={()=>{ this.setState({table:1}); }}>產品</Nav.Link>
+                <Nav.Link  className={(table==2)? 'curx':''} onClick={()=>{ this.setState({table:2}); }}>客戶</Nav.Link>
+                <Nav.Link  className={(table==1)? 'curx':''} onClick={()=>{ this.setState({table:1}); }}>產品</Nav.Link>
 
-                <NavDropdown title="設定" id="basic-nav-dropdown">
+                <NavDropdown className={(table>2)? 'curx':''} title="設定" id="basic-nav-dropdown">
                   <NavDropdown.Item onClick={()=>{ this.setState({table:3}); }}>客戶類別</NavDropdown.Item>
                     
                   <NavDropdown.Item onClick={()=>{ this.setState({table:5}); }}>部門資料</NavDropdown.Item> 
                   <NavDropdown.Item onClick={()=>{ this.setState({table:6}); }}>人員資料</NavDropdown.Item> 
-                  <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>產品類別</NavDropdown.Item>  
+                  
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>類別轉檔</NavDropdown.Item> 
                 </NavDropdown>
 
               </Nav>
@@ -81,7 +87,9 @@ class App extends React.Component {
          
           {(table==5) ? <PanelDep  /> : ''}
           {(table==6) ? <PanelStaff  /> : ''}
-          {(table==7) ? <PanelProductType  /> : ''}
+
+          {(table==7) ? <PanelSetCategory /> : ''}
+         
           
 
         

@@ -14,6 +14,9 @@ import {create_customer } from '../rest/func_rest_customer';
 
 import { get_all_ctype } from '../rest/func_restctype';
 
+import AlertBox from '../msgBox/AlertBox';
+
+
 
 class ModelCustomerCreate extends React.Component {
     constructor(props) {
@@ -23,7 +26,10 @@ class ModelCustomerCreate extends React.Component {
           is_Open:false,
           fields: {},
           errors: {},
-          ctype:[]
+          ctype:[],
+          is_alert_open:false,
+          alert_msg:'',
+          alert_status:0
         }
     }
     
@@ -102,12 +108,36 @@ class ModelCustomerCreate extends React.Component {
          
           
        
-         create_customer(fields,function(data){
-            me.setState({
-              is_Open:false,
-              fields: {}
-            });
-            me.props.fetch_all();
+         create_customer(fields,function(pdata){
+
+         
+          let data = JSON.parse(pdata);
+
+            if(data.status){
+              /*  Create Success  */
+              me.setState({
+                is_Open:false,
+                fields: {},
+                is_alert_open:true,
+                alert_msg:'建立客戶',
+                alert_status:1
+              });
+
+            }else{
+              /*  Create Error  */
+              me.setState({
+                is_Open:false,
+                fields: {},
+                is_alert_open:true,
+                alert_msg:data.error,
+                alert_status:0
+              });
+            }
+
+            // console.log(data);
+            // me.error_modal();
+            
+            me.props.fetch_all();            
           });
           
 
@@ -143,8 +173,18 @@ class ModelCustomerCreate extends React.Component {
 
 
 
+
+
+
+
+
+
+
+
+
     render() {
-      const {is_Open,ctype} = this.state;
+    
+      const {is_Open,ctype,is_alert_open,alert_msg,alert_status} = this.state;
       const {name} = this.props;
    
     
@@ -152,6 +192,20 @@ class ModelCustomerCreate extends React.Component {
       ctype.forEach(function(item){
         ctype_select.push(<option value={item.customer_catgory_id} >{item.customer_catgory_name}</option>);
       })
+
+
+      let payment = ['none','EXW','FOB','FOR','CIF','C&F'];
+      let payment_select = [];
+      payment.forEach(function(item){       
+       // console.log(is_select);
+        if(item=='none'){
+          payment_select.push(<option value='none'  >請選擇</option>);
+        }else{
+          payment_select.push(<option value={item}  >{item}</option>);
+        }
+        
+      });
+
 
 
       return(
@@ -231,6 +285,38 @@ class ModelCustomerCreate extends React.Component {
                   </Col>
                 </Row>  
 
+
+
+
+                <Row>
+                <Col sm={12}>
+                  <label className="dfx">
+                    <div className="nf4">公司信箱:</div> 
+                    <input  style={{'width':'72%'}}  type="text" onChange={this.handleChange.bind(this, "cemail")} value={this.state.fields["cemail"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["cemail"]}</span>
+                  </label>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col sm={5}>
+                  <label className="dfx">
+                    <div className="nf4">付款方式:</div> <input type="text" onChange={this.handleChange.bind(this, "payment")} value={this.state.fields["payment"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["payment"]}</span>
+                  </label>
+                </Col>
+                <Col sm={7}  >
+                    <Form.Group  className="df_select"  controlId="exampleForm.SelectCustom">
+                      <Form.Label>TERM OF PAYMENT:</Form.Label><br/>
+                      <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "termofpayment")}>
+                        {payment_select}                        
+                      </Form.Control>
+                    </Form.Group>
+                </Col>
+              </Row> 
+
+
+
                 <hr/>
                 <Row>
                   <Col sm={6}>
@@ -301,6 +387,12 @@ class ModelCustomerCreate extends React.Component {
           </form>
 
         </Modal>
+
+        {(is_alert_open)?
+        <AlertBox name={alert_msg}
+                  alert_status={alert_status}
+                  is_Open={is_alert_open} 
+                  hideAlertModal={()=> this.setState({is_alert_open:false}) } />:''}
 
 
         </div>

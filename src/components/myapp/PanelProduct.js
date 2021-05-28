@@ -269,8 +269,10 @@ class PanelProduct extends React.Component {
           },
           {
             name: '產品類別',
-            selector: 'type_name',
+            selector: 'cat',
             sortable: true,
+            width: '250px',
+            cell: (pid) => (pid.cat)? <span className="small_font">{pid.cat}</span> : '' ,
           },
           {
             name: '單位編號',

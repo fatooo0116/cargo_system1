@@ -23,7 +23,7 @@ class WP_React_Plugin_Options {
   * Create new plugin options page under the Settings menu.
   */
   public function create_admin_menu_page() {
-    // $this->plugin_options_page = add_options_page('WP React Plugin', 'WP React Plugin', 'manage_options', __FILE__, array( $this, 'render_plugin_options_page' ) );
+    // $this->plugin_options_page = add_options_page('伯思美設定', '伯思美設定', 'manage_options', __FILE__, array( $this, 'render_plugin_options_page' ) );
 
     // $this->plugin_options_page = add_menu_page('WP React Plugin', 'WP React Plugin', 'manage_options', __FILE__, array( $this, 'render_plugin_options_page' ) ,  );
 

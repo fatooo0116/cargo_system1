@@ -69,6 +69,8 @@ class ChangePriceUnit extends React.Component {
             {
                 price:price,
                 cid:cid.id,
+                woo_cid:cid.woo_id,
+                woo_pid:pid.woo_id,
                 pid:pid.id,                     
             },function(data){
                 
@@ -100,7 +102,7 @@ class ChangePriceUnit extends React.Component {
                     <div className="cur_price">目前價格 <b>{default_price}</b></div>
                     {(is_ready)?
                     <input type="number"   onChange={(e) => this.setState({ price:e.target.value }) } />
-                    : <div className="my_loading">Loading</div>}
+                    : <div className="my_loading"></div>}
                     <Button size="sm"  onClick={this.update_price} >Save</Button>
                 </div>
         )    

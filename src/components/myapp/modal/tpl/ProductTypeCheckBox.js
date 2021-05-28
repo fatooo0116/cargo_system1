@@ -65,6 +65,12 @@ class ProductTypeCheckBox extends React.Component {
                         if(child.hasOwnProperty('children')){ 
                             child.children.forEach(function(child1){
                                 tpl.push(<div className="child_item2"><Form.Check   type="checkbox" parent={child1.parent} className="" id={"key"+child1.term_id}   onChange={me.updatePType}  value={child1.term_name}   checked={(ptype_checked)? ptype_checked.includes(item.term_name.toString()) : ''}  label={child1.term_name} /></div> );
+                               
+                                if(child1.hasOwnProperty('children')){ 
+                                    child1.children.forEach(function(child2){
+                                        tpl.push(<div className="child_item3"><Form.Check   type="checkbox" parent={child2.parent} className="" id={"key"+child2.term_id}   onChange={me.updatePType}  value={child2.term_name}   checked={(ptype_checked)? ptype_checked.includes(item.term_name.toString()) : ''}  label={child2.term_name} /></div> );
+                                    });
+                                }
                             });
                         }
                     });

@@ -9,6 +9,6 @@
 
 .table_column .my_loading{
     background-image:url(img/loading.gif);
-    background-size:90% auto;
+    background-size:50% auto;
     background-position: center;
 }

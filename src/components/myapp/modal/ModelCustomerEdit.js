@@ -13,7 +13,7 @@ import {
 import { edit_customer } from '../rest/func_rest_customer';
 
 
-
+import AlertBox from '../msgBox/AlertBox';
 
 
 class ModelCustomerEdit extends React.Component {
@@ -26,9 +26,13 @@ class ModelCustomerEdit extends React.Component {
          fields: {},
          cur_id:0,
          errors: {},
-         
+  
+         is_alert_open:false,
+         alert_msg:'',
+         alert_status:0
         }
 
+        
 
     }
     
@@ -68,10 +72,15 @@ class ModelCustomerEdit extends React.Component {
     handleShow = () =>{
       const { pdata } = this.props;
       
+      console.log(pdata);
+
+
+      
+
       this.setState({
         is_Open:true,
           fields : pdata,
-          cur_id:pdata.id,         
+          cur_id:pdata.id,               
       });  
       
             let me = this;
@@ -112,13 +121,36 @@ class ModelCustomerEdit extends React.Component {
           
           let fields = me.state;
           edit_customer(fields,function(data){
-          
-                  
+
+            let obj =  JSON.parse(data);
+            /*
+            is_alert_open:true,
+            alert_msg:data.error,
+            alert_status:0
+            */
+            console.log(obj);
+
+            
+           if(obj.status==1){
             me.setState({
               is_Open:false,
-              fields: {}
+              is_alert_open:true,
+              fields: {},
+              alert_msg:'更新成功',
+              alert_status:1
             });
-            me.props.fetch_all();
+           }else{
+            me.setState({
+              is_Open:false,
+              is_alert_open:true,
+              fields: {},
+              alert_msg:obj.error,
+              alert_status:0
+            });
+           }
+           
+      
+           // 
           });
           
         
@@ -147,7 +179,14 @@ class ModelCustomerEdit extends React.Component {
 
     render() {
 
-      const {is_Open} = this.state;
+      const {
+            is_Open,
+            fields,
+            alert_msg,
+            alert_status,
+            is_alert_open
+          } = this.state;
+
       const {name,ctype} = this.props;
 
       let ctype_select  = [];
@@ -158,8 +197,21 @@ class ModelCustomerEdit extends React.Component {
         ctype_select.push(<option value={item.customer_catgory_id}  selected={is_select} >{item.customer_catgory_name}</option>);
       })
 
+      
 
+      let payment = ['none','EXW','FOB','FOR','CIF','C&F'];
+      let payment_select = [];
+      payment.forEach(function(item){
+        let is_select = (item==me.state.fields['termofpayment'])? 'true':'';   
+       // console.log(is_select);
+       // payment_select.push(<option value={item} selected={is_select} >{item}</option>);
+        if(item=='none'){
+          payment_select.push(<option value='none' selected={is_select} >請選擇</option>);
+        }else{
+          payment_select.push(<option value={item} selected={is_select} >{item}</option>);
+        }
 
+      });
    
      
 
@@ -238,7 +290,35 @@ class ModelCustomerEdit extends React.Component {
                 </Col>
                 <Col sm={2}>
                 </Col>
-              </Row>  
+              </Row>
+
+              <Row>
+                <Col sm={12}>
+                  <label className="dfx">
+                    <div className="nf4">公司信箱:</div> 
+                    <input  style={{'width':'72%'}}  type="text" onChange={this.handleChange.bind(this, "cemail")} value={this.state.fields["cemail"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["cemail"]}</span>
+                  </label>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col sm={5}>
+                  <label className="dfx">
+                    <div className="nf4">付款方式:</div> <input type="text" onChange={this.handleChange.bind(this, "payment")} value={this.state.fields["payment"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["payment"]}</span>
+                  </label>
+                </Col>
+                <Col sm={7}  >
+                    <Form.Group  className="df_select"  controlId="exampleForm.SelectCustom">
+                      <Form.Label>TERM OF PAYMENT:</Form.Label><br/>
+                      <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "termofpayment")}>
+                        {payment_select}                        
+                      </Form.Control>
+                    </Form.Group>
+                </Col>
+              </Row> 
+
 
               <hr/>
               <Row>
@@ -310,7 +390,15 @@ class ModelCustomerEdit extends React.Component {
             </form>
         </Modal> : '' }
 
-
+        {(is_alert_open)?
+        <AlertBox name={alert_msg}
+                  alert_status={alert_status}
+                  is_Open={is_alert_open} 
+                  hideAlertModal={()=>{ 
+                                      this.setState({is_alert_open:false});
+                                      this.props.fetch_all();
+                                      }} />:''}
+     
         </div>
       )
     };

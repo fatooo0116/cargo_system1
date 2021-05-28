@@ -23,9 +23,10 @@ import {
         
         import { get_all_customer, del_customer } from './rest/func_rest_customer';
 
-       
+        import DataTable, { createTheme } from 'react-data-table-component';
 
-import DataTable, { createTheme } from 'react-data-table-component';
+        
+
 
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -112,6 +113,28 @@ class PanelCustomer extends React.Component {
 
 
 
+    onFilterText = (newFilterText) => {     
+              
+      let me = this;
+      let ori_data = [...me.state.ori];
+    //  console.log(ori_data);
+
+   
+      let filteredItems = ori_data.filter(
+          (item) => item.cname && item.cname.includes(newFilterText) | item.customer_id.includes(newFilterText)                    
+        );
+ 
+      
+     console.log(filteredItems);
+      
+      me.setState({ 
+        data:filteredItems,
+        filterText: newFilterText 
+      });
+    }
+
+
+
 
     getSubHeaderComponent = () => {
       let me =this;
@@ -120,22 +143,7 @@ class PanelCustomer extends React.Component {
 
           onFilter={(e) => {
             let newFilterText = e.target.value;
-            // console.log(newFilterText);                
-            let ori_data = [...me.state.ori];
-          //  console.log(ori_data);
-
-         
-            let filteredItems = ori_data.filter(
-                (item) => item.cname && item.cname.includes(newFilterText) | item.customer_id.includes(newFilterText)                    
-              );
-       
-            
-           console.log(filteredItems);
-            
-            me.setState({ 
-              data:filteredItems,
-              filterText: newFilterText 
-            });
+            me.onFilterText(newFilterText);
           }}
           onClear={this.handleClear}
           filterText={this.state.filterText}
@@ -152,8 +160,14 @@ class PanelCustomer extends React.Component {
       let me = this;
       get_all_customer(function(resx){
         me.setState({
-          data:resx
+          data:resx,   
+          ori:resx       
         });
+
+        if(me.state.filterText){
+            me.onFilterText(me.state.filterText);
+        }
+
       });
     }
 
@@ -327,13 +341,17 @@ class PanelCustomer extends React.Component {
             cell: (pid) => (pid.woo_id > 0)? <a href={"/wp-admin/user-edit.php?user_id="+pid.woo_id}  target="_blank"  >{pid.customer_id}</a> : pid.customer_id , 
             sortable: true,
           },
-
-
           {
-            name: 'Woo_id',
-            selector: 'woo_id',
+            name: '公司Email',
+            selector: 'cemail',
             sortable: true,
-            
+            width: '200px' 
+          },
+          {
+            name: '名稱',           
+            selector: 'cname',
+            sortable: true,  
+            width:'250px'          
           },
 
           {
@@ -343,11 +361,11 @@ class PanelCustomer extends React.Component {
           },
 
           {
-            name: '名稱',           
-            selector: 'cname',
-            sortable: true,  
-            width:'250px'          
+            name: 'woo',
+            selector: 'woo_id',
+            sortable: true,            
           },
+
           {
             cell: (pid) => (pid.is_temp=='1')? '是':'否',
             name: '臨時客戶',           
@@ -407,11 +425,8 @@ class PanelCustomer extends React.Component {
 
  
 
-
-
-
-
-
+        console.log(data);
+       
 
         return (
 
