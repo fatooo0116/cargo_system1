@@ -14,7 +14,7 @@ import PanelCustomerType from './myapp/PanelCustomerType';
 
 import PanelSetCategory  from './myapp/PanelSetCategory';
 
-
+import PanelProductAjax from "./myapp/PanelProductAjax";
 
 
 import { 
@@ -35,7 +35,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      table:2,
+      table:1,
       count: 6,
       postTypes: {},
       postResults: {},
@@ -81,7 +81,7 @@ class App extends React.Component {
             </Navbar.Collapse>
           </Navbar>
 
-          {(table==1) ? <PanelProduct  /> : ''}
+          {(table==1) ? <PanelProductAjax  /> : ''}
           {(table==2) ? <PanelCustomer  /> : ''}
           {(table==3) ? <PanelCustomerType /> : ''}
          
