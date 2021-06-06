@@ -17,11 +17,13 @@ import DataTable, { createTheme } from 'react-data-table-component';
 
 
 
+
+
 const FilterComponent = ({ filterText, onFilter, onClear ,onSearch }) => (
   <>
     <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
-    <Button type="button" onClick={onSearch}>搜尋</Button>
-    <Button type="button" onClick={onClear}>清除</Button>
+    <Button type="button"   onClick={onSearch}>搜尋</Button>
+    <Button type="button" variant="secondary" onClick={onClear}>清除</Button>
   </>
 );
 
@@ -66,7 +68,8 @@ class PanelProductAjax extends React.Component {
           all_result:0,
           perPage:50,
           sort_column:'',
-          sort_dir:''
+          sort_dir:'',
+          cur_page:1,
         }
     }
 
@@ -124,7 +127,11 @@ class PanelProductAjax extends React.Component {
         checked:this.state.checked,
       })
       .then(function (res) {
-        console.log(res);
+        // console.log(res);
+
+        console.log("reload");
+
+        /*
         get_all_product(function(data){
           me.setState({
             data:data,           
@@ -132,6 +139,10 @@ class PanelProductAjax extends React.Component {
             filterText:''
           }); 
         });
+        */
+
+         me.fetch_cur_page();
+
       });      
     }
   /*   綁定 Woo Product [end]  */
@@ -139,16 +150,25 @@ class PanelProductAjax extends React.Component {
 
 
 
+
+
+   fetch_cur_page = () =>{
+    const {cur_page} = this.state;
+    this.handlePageChange(cur_page);
+   }
     
 
     
     fetch_all = () => {
+      /*
       let me = this;
       get_all_product(function(resx){
         me.setState({          
           data:resx,         
         });
       });
+      */
+     
     }
     
 
@@ -164,18 +184,9 @@ class PanelProductAjax extends React.Component {
         console.log(checked );
         let me = this;
         del_product(checked,function(obj){         
-         
-          get_all_product(function(resx){
-            me.setState({
-              data:resx,
-              checked:[],
-             toggledClearRows: true,
-             filterText:''
-            });
-
-            console.log(me.state);
-           // me.handleClearRows();
-          });
+ 
+            me.fetch_cur_page();
+ 
         });
       }
     }
@@ -229,7 +240,7 @@ class PanelProductAjax extends React.Component {
           axios.post('/wp-json/cargo/v1/sort_products_ajax', {
             perpage:perPage,
             page:1,
-            filterText:filterText
+            filterText:filterText.trim()
           })
           .then(function (res) {
 
@@ -315,23 +326,27 @@ class PanelProductAjax extends React.Component {
         const {perPage,sort_column,sort_dir,filterText} = this.state;
         let me = this;  
 
-        me.setState({loading:true});
+       // me.setState({loading:true});
      
           axios.post('/wp-json/cargo/v1/sort_products_ajax', {
               perpage:perPage,
               page:page,
               column:sort_column.selector,
               dir:sort_dir,
-              filterText:filterText
+              filterText:filterText,
+              cur_page:page,              
             })
             .then(function (res) {
             
               me.setState({
                 data:res.data.results,               
                 all_result:res.data.count,
-                loading:false
+            //    loading:false,
+                cur_page:page,               
               }); 
       
+              me.handleClearRows();
+
             })
             .catch(function (error) {
               console.log(error);
@@ -381,13 +396,13 @@ class PanelProductAjax extends React.Component {
         const {data,checked,ptype,loading,all_result,perPage} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-         console.log(data);
+        console.log(data);
         
         let me = this;
 
         const columns = [
           {
-            cell: (pid) => <ModelProductEdit name="Edit"  ptype={ptype}  pdata={pid}  fetch_all={me.fetch_all}   />,
+            cell: (pid) => <ModelProductEdit name="Edit"  ptype={ptype}  pdata={pid}  fetch_all={me.fetch_cur_page}   />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -398,7 +413,16 @@ class PanelProductAjax extends React.Component {
             name: '編號',
             selector: 'product_id',
             sortable: true,
-            
+            width: '100px',
+          },
+
+          {
+            name: '',
+            selector: 'product_img',
+            sortable: true,   
+            grow:3,   
+            width: '70px',
+            cell: (pid) => (pid.img)? <a href={pid.img}  title={pid.img}  target="_blank"  class="preview_img"  ></a> : <div class="preview_empty"></div> , 
           },
 
           {
@@ -409,6 +433,9 @@ class PanelProductAjax extends React.Component {
             width: '280px',
             cell: (pid) => (pid.woo_id > 0)? <a href={"/wp-admin/post.php?post="+pid.woo_id+"&action=edit"}  target="_blank"  >{pid.product_name}</a> : pid.product_name , 
           },
+
+
+
           {
             name: '英文名稱',
             selector: 'product_eng_name',
@@ -466,7 +493,7 @@ class PanelProductAjax extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype}    />  
+                    <ModelProductCreate name="Add"   fetch_all={this.fetch_cur_page }  ptype={ptype}    />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleAction}>Binding Woo</Button> : ''}
                 </div>
@@ -503,7 +530,7 @@ class PanelProductAjax extends React.Component {
                     </Card>
 
                     <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype} />  
+                    <ModelProductCreate name="Add"   fetch_all={me.fetch_cur_page}  ptype={ptype} />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
                 </div>

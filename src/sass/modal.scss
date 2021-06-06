@@ -95,8 +95,10 @@ select[name="company_address_select"]{
         .preview{
             padding:10px;
             img{
-                display:block;
-                width:100%;
+                display: block;
+                
+                max-height: 250px;
+                width: auto;
             }
         }
     }

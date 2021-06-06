@@ -60,15 +60,15 @@ class ProductTypeCheckBox extends React.Component {
                 if(item.hasOwnProperty('children')){                   
                     tpl.push(<Form.Check type="checkbox" parent={item.parent} className="" id={"key"+item.term_id}   onChange={me.updatePType}  value={item.term_name}   checked={(ptype_checked)? ptype_checked.includes(item.term_name.toString()) : ''}  label={item.term_name} /> );
                     item.children.forEach(function(child){
-                        tpl.push(<div className="child_item"><Form.Check   type="checkbox" parent={child.parent} className="" id={"key"+child.term_id}   onChange={me.updatePType}  value={child.term_name}   checked={(ptype_checked)? ptype_checked.includes(item.term_name.toString()) : ''}  label={child.term_name} /></div> );
+                        tpl.push(<div className="child_item"><Form.Check   type="checkbox" parent={child.parent} className="" id={"key"+child.term_id}   onChange={me.updatePType}  value={child.term_name}   checked={(ptype_checked)? ptype_checked.includes(child.term_name.toString()) : ''}  label={child.term_name} /></div> );
 
                         if(child.hasOwnProperty('children')){ 
                             child.children.forEach(function(child1){
-                                tpl.push(<div className="child_item2"><Form.Check   type="checkbox" parent={child1.parent} className="" id={"key"+child1.term_id}   onChange={me.updatePType}  value={child1.term_name}   checked={(ptype_checked)? ptype_checked.includes(item.term_name.toString()) : ''}  label={child1.term_name} /></div> );
+                                tpl.push(<div className="child_item2"><Form.Check   type="checkbox" parent={child1.parent} className="" id={"key"+child1.term_id}   onChange={me.updatePType}  value={child1.term_name}   checked={(ptype_checked)? ptype_checked.includes(child1.term_name.toString()) : ''}  label={child1.term_name} /></div> );
                                
                                 if(child1.hasOwnProperty('children')){ 
                                     child1.children.forEach(function(child2){
-                                        tpl.push(<div className="child_item3"><Form.Check   type="checkbox" parent={child2.parent} className="" id={"key"+child2.term_id}   onChange={me.updatePType}  value={child2.term_name}   checked={(ptype_checked)? ptype_checked.includes(item.term_name.toString()) : ''}  label={child2.term_name} /></div> );
+                                        tpl.push(<div className="child_item3"><Form.Check   type="checkbox" parent={child2.parent} className="" id={"key"+child2.term_id}   onChange={me.updatePType}  value={child2.term_name}   checked={(ptype_checked)? ptype_checked.includes(child2.term_name.toString()) : ''}  label={child2.term_name} /></div> );
                                     });
                                 }
                             });

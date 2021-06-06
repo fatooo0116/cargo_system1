@@ -116,12 +116,14 @@ class PanelProduct extends React.Component {
     
     fetch_all = () => {
       let me = this;
+      /*
       get_all_product(function(resx){
         me.setState({          
           data:resx,
           ori:resx,
         });
       });
+      */
     }
     
 

@@ -16,6 +16,8 @@ import PanelSetCategory  from './myapp/PanelSetCategory';
 
 import PanelProductAjax from "./myapp/PanelProductAjax";
 
+import PanelMutiUploadImage from "./myapp/PanelMutiUploadImage";
+
 
 import { 
    Navbar,
@@ -75,6 +77,8 @@ class App extends React.Component {
                   <NavDropdown.Item onClick={()=>{ this.setState({table:6}); }}>人員資料</NavDropdown.Item> 
                   
                   <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>類別轉檔</NavDropdown.Item> 
+
+                  
                 </NavDropdown>
 
               </Nav>
@@ -90,9 +94,7 @@ class App extends React.Component {
 
           {(table==7) ? <PanelSetCategory /> : ''}
          
-          
-
-        
+       
        
       </div>
     );
