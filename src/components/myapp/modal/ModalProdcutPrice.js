@@ -74,6 +74,13 @@ class ModalProdcutPrice extends React.Component{
     }
   
 
+    handleClear = () =>{
+      this.setState({
+        products:this.state.ori,
+        filterText:''
+      });
+    }
+
   
   
 
@@ -95,9 +102,7 @@ class ModalProdcutPrice extends React.Component{
                 (item) => item.product_name && item.product_name.includes(newFilterText) | item.product_id.includes(newFilterText)                    
               );
        
-            
-           // console.log(filteredItems);
-            
+       
             me.setState({ 
               products:filteredItems,
               filterText: newFilterText 
@@ -139,17 +144,26 @@ class ModalProdcutPrice extends React.Component{
 
 
              const columns = [
+               /*
               {
                 name: '#',
                 selector: 'id',
                 sortable: true,  
-                width: '10%',                                     
+                width: '0%',                                     
               },
+              */
                 {
+                    name: '產品編號',
+                    selector: 'product_id',
+                    sortable: true,  
+                    width: '100px',                                         
+                  },
+
+                  {
                     name: '名稱',
                     selector: 'product_name',
                     sortable: true,  
-                    width: '50%',                      
+                    width: '40%',                      
                     cell: (pid) => (pid.woo_id > 0)? <a href={"/wp-admin/post.php?post="+pid.woo_id+"&action=edit"}  target="_blank"  >{pid.product_name}</a> : pid.product_name , 
                   },
                   {
