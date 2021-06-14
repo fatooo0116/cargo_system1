@@ -177,6 +177,9 @@ class ModelCustomerEdit extends React.Component {
 
 
 
+
+
+
     render() {
 
       const {
@@ -187,7 +190,7 @@ class ModelCustomerEdit extends React.Component {
             is_alert_open
           } = this.state;
 
-      const {name,ctype} = this.props;
+      const {name,ctype,staff} = this.props;
 
       let ctype_select  = [];
 
@@ -213,6 +216,19 @@ class ModelCustomerEdit extends React.Component {
 
       });
    
+
+
+
+
+
+      let staff_select  = [];
+      staff.forEach(function(item){
+        
+        staff_select.push(<option value={item.staff_id}   selected={(item.staff_id == me.state.fields['staff_id'])} >{item.staff_name}</option>);
+      })
+
+
+
      
 
       return(
@@ -284,8 +300,11 @@ class ModelCustomerEdit extends React.Component {
                 </Col>
                 <Col sm={5}  >
                   <label className="dfx">
-                    <div className="nf4">幣別:</div> <input type="text" onChange={this.handleChange.bind(this, "dollar_mark")} value={this.state.fields["dollar_mark"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["dollar_mark"]}</span>
+                    <div className="nf4">幣別:</div>                     
+                    <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "dollar_mark")}>
+                        <option  value="USD"  selected={(this.state.fields['dollar_mark']=='USD')} >USD</option>        
+                        <option  value="NTD" selected={(this.state.fields['dollar_mark']=='NTD')} >NTD</option>        
+                      </Form.Control>                    
                   </label>
                 </Col>
                 <Col sm={2}>
@@ -304,15 +323,18 @@ class ModelCustomerEdit extends React.Component {
 
               <Row>
                 <Col sm={5}>
-                  <label className="dfx">
-                    <div className="nf4">付款方式:</div> <input type="text" onChange={this.handleChange.bind(this, "payment")} value={this.state.fields["payment"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["payment"]}</span>
-                  </label>
+                  <Form.Group  className="dfx1"  controlId="exampleForm.SelectCustom">
+                      <Form.Label style={{"margin-bottom":"0px"}} >負責業務</Form.Label>
+                      <Form.Control style={{"width":"100%"}}  as="select" custom  onChange={this.handleChange.bind(this, "staff_id")}>
+                        <option value="">請選擇業務</option>
+                        {staff_select}                       
+                      </Form.Control>
+                    </Form.Group>
                 </Col>
-                <Col sm={7}  >
-                    <Form.Group  className="df_select"  controlId="exampleForm.SelectCustom">
-                      <Form.Label>TERM OF PAYMENT:</Form.Label><br/>
-                      <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "termofpayment")}>
+                <Col sm={5}  >
+                    <Form.Group  className="df_select1"  controlId="exampleForm.SelectCustom">
+                      <Form.Label style={{"margin-bottom":"0px"}} >TERM OF PAYMENT:</Form.Label>
+                      <Form.Control  style={{"width":"100%"}} as="select"   onChange={this.handleChange.bind(this, "termofpayment")}>
                         {payment_select}                        
                       </Form.Control>
                     </Form.Group>

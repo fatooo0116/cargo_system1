@@ -11,6 +11,9 @@ import {
 import { get_all_product} from '../rest/func_rest_product';           
 import DataTable, { createTheme } from 'react-data-table-component';
 import ChangePriceUnit from './tpl/ChangePriceUnit';
+import PriceUpload from './tpl/PriceUpload';
+
+
 
 
 
@@ -187,7 +190,9 @@ class ModalProdcutPrice extends React.Component{
                         <Modal.Title>{cur_price_modal_customer.cname} 價格設定</Modal.Title>
                     </Modal.Header>
             
-                    <Modal.Body>            
+                    <Modal.Body>      
+                        <PriceUpload />
+
                         <DataTable 
                             subHeader                         
                             columns={columns}

@@ -42,6 +42,7 @@ class ModelStaffEdit extends React.Component {
       let errors = {};
       let formIsValid = true;
 
+      /*
      if(!fields["dep_name"]){
         formIsValid = false;
         errors["dep_name"] = "Cannot be empty";
@@ -50,6 +51,7 @@ class ModelStaffEdit extends React.Component {
       formIsValid = false;
        errors["dep_id"] = "Cannot be empty";
     }
+    */
 
      this.setState({errors: errors});
      return formIsValid;
@@ -93,7 +95,7 @@ class ModelStaffEdit extends React.Component {
           console.log(fields);
 
           
-          edit_dep(fields,function(data){
+          edit_staff(fields,function(data){
           
                      
             me.setState({
@@ -154,8 +156,9 @@ class ModelStaffEdit extends React.Component {
 
 
               <Form.Group  className="dfx"    controlId="dep_select_id">
-                 <Form.Label>部門編號</Form.Label>
+                 <Form.Label>所屬部門</Form.Label>
                 <Form.Control as="select" custom  onChange={this.handleChange.bind(this, "dep_id")}>
+                  <option>請選擇部門</option>
                   {dep_select}                        
                 </Form.Control>
               </Form.Group>
@@ -170,6 +173,11 @@ class ModelStaffEdit extends React.Component {
                 英文姓名: <input type="text" onChange={this.handleChange.bind(this, "staff_eng_name")} value={this.state.fields["staff_eng_name"]} />
                 <span className="error_text" style={{color: "red"}}>{this.state.errors["staff_eng_name"]}</span>
               </label>
+
+              <label>
+                電子郵件: <input type="text" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["email"]}</span>
+              </label>              
             </Modal.Body>
             
 

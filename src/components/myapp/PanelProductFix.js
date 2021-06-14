@@ -8,9 +8,9 @@ import {
         } from 'react-bootstrap';
 
 
-import  ModelPtypeCreate from './modal/ModelPtypeCreate';
-import  ModelPtypeEdit from './modal/ModelPtypeEdit';
-import { get_ptype, del_ptype } from './rest/func_restptype';
+// import  ModelPtypeCreate from './modal/ModelPtypeCreate';
+// import  ModelPtypeEdit from './modal/ModelPtypeEdit';
+// import { get_ptype, del_ptype } from './rest/func_restptype';
         
 
 
@@ -41,69 +41,44 @@ createTheme('solarized', {
 
 
 
-class PanelProductType extends React.Component {
+class PanelProductFix extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
           data: [],
-          checked:[]
+          checked:[],
+          result:''
         }
     }
 
     componentDidMount() {
 
 
+  
+    }
+
+
+
+
+
+
+    fixPrice = () =>{
+     
       let me = this;
-      get_ptype(function(data){
-        me.setState({data:data});
+      axios.post('/wp-json/cargo/v1/product_fix_price')
+      .then(function (res) {
+          console.log(res);
+          me.setState({result:res.data});
+      })
+      .catch(function (error) {
+        console.log(error);
       });
+
     }
 
 
 
 
-    fetch_all = () => {
-      let me = this;
-      get_ptype(function(resx){
-        me.setState({
-          data:resx
-        });
-      });
-    }
-
-
-    toggleRow = (cid) => {
-
-      let all_checked = [];
-      if(this.state.checked.includes(cid.id)){        
-        all_checked = [...this.state.checked].filter(function(value){ 
-          return value != cid.id;
-         });
-        
-      }else{
-        all_checked = [...this.state.checked,cid.id];
-      };
-
-      console.log( all_checked);
-      this.setState({checked:all_checked});
-    }
-
-
-
-
-    deleteData = () =>{
-      let checked = [...this.state.checked];
-      if(window.confirm('確定刪除')){
-        console.log(checked );
-        let me = this;
-        del_ptype(checked,function(obj){         
-         
-          get_ptype(function(resx){
-            me.setState({data:resx});
-          });
-        });
-      }
-    }
 
 
 
@@ -124,10 +99,8 @@ class PanelProductType extends React.Component {
 
     render() {
 
-        const {data,checked} = this.state;
-        // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
+        const {result} = this.state;
 
-        console.log(data);
 
         const columns = [
           {
@@ -185,33 +158,24 @@ class PanelProductType extends React.Component {
 
             <Container id="aloha_app" >
 
-                <div className="small_nav">
-                    <ModelPtypeCreate name="Add"    fetch_all={this.fetch_all} />  
-                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
-                </div>
-
-
-                <Card>
+                <Card>                 
                     <div className="card-body">
+                    <h3>產品修正</h3>
 
-                    <DataTable
-                        title="產品類別"
-                        columns={columns}
-                        data={data}
-                        pagination={true}
-                    />
+                      <Button  onClick={this.fixPrice}>產品修正</Button>
+                      
+                      <div className="result" style={{padding:"20px 10px 10px"}}>
+                        {JSON.stringify(result)}
+                      </div>
 
                     </div> 
                 </Card>
 
 
-                <div className="small_nav">
-                  <ModelPtypeCreate name="Add"    fetch_all={this.fetch_all} />  
-                    {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
-                </div>                    
+                     
             </Container>            
         )
     }
 }
 
-export default hot(module)(PanelProductType);
+export default hot(module)(PanelProductFix);

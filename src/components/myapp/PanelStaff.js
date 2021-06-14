@@ -40,20 +40,43 @@ createTheme('solarized', {
   });
 
 
+  const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <>
+      <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
+      <Button type="button" onClick={onClear}>X</Button>
+    </>
+  );
+  
+
+
+
+
+
 class PanelStaff extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
           data: [],
+          ori:[],
           checked:[],
           all_dep:[],
           toggledClearRows:false
         }
     }
 
-    componentDidMount() {
 
+    componentDidMount() {
+      this.fetch_all();
+    }
+
+
+
+
+
+    fetch_all = () => {
       let me = this;
+
+      
       axios.post('/wp-json/cargo/v1/get_staff', {
         page: 1,
         post_per_page: 99900
@@ -64,14 +87,20 @@ class PanelStaff extends React.Component {
         
         get_all_dep(function(all_dep){
         
-          mdata.forEach(function(item){           
-            item['dep_name'] = all_dep.filter(function(itex){  return  itex.dep_id==item.dep_id })[0].dep_name;         
+          mdata.forEach(function(item){       
+            
+            let temp = all_dep.filter(function(itex){  return  itex.dep_id==item.dep_id });
+            if(temp.length>0){
+              item['dep_name'] =temp[0].dep_name; 
+            }
+                         
           });
 
           console.log(mdata);
 
           me.setState({
             data:mdata,
+            ori:mdata,
             all_dep:all_dep
           });
         });
@@ -79,21 +108,6 @@ class PanelStaff extends React.Component {
       })
       .catch(function (error) {
         console.log(error);
-      });
-
-
-    }
-
-
-
-
-
-    fetch_all = () => {
-      let me = this;
-      get_all_ctype(function(resx){
-        me.setState({
-          data:resx
-        });
       });
     }
 
@@ -137,12 +151,61 @@ class PanelStaff extends React.Component {
           this.setState({checked:state.selectedRows})
         };
 
-      handleClearRows = () => {
-       
+       handleClearRows = () => {       
           this.setState({ toggledClearRows: !this.state.toggledClearRows})
         }
 
       
+
+
+
+
+        onFilterText = (newFilterText) => {     
+              
+          let me = this;
+          let ori_data = [...me.state.ori];
+        //  console.log(ori_data);
+    
+       
+          let filteredItems = ori_data.filter(
+              (item) => item.staff_id && item.staff_id.includes(newFilterText) | item.staff_name.includes(newFilterText)                    
+            );
+     
+          
+         console.log(filteredItems);
+          
+          me.setState({ 
+            data:filteredItems,
+            filterText: newFilterText 
+          });
+        }
+    
+
+
+
+        getSubHeaderComponent = () => {
+          let me =this;
+          return (
+            <FilterComponent
+    
+              onFilter={(e) => {
+                let newFilterText = e.target.value;
+                me.onFilterText(newFilterText);
+              }}
+              onClear={this.handleClear}
+              filterText={this.state.filterText}
+            />
+          );
+        };
+    
+
+        handleClear = () => {            
+          let ori = [...this.state.ori]; 
+          this.setState({
+            data:ori,
+            filterText: ""
+          });
+        };
 
 
 
@@ -178,6 +241,11 @@ class PanelStaff extends React.Component {
             sortable: true,            
           },
           {
+            name: 'Email',           
+            selector: 'email',
+            sortable: true,            
+          },
+          {
             name: '姓名',
             selector: 'staff_name',
             sortable: true,            
@@ -209,14 +277,17 @@ class PanelStaff extends React.Component {
                         title="人員資料"
                         columns={columns}
                         data={data}
-                        pagination={true}
-                        paginationPerPage="100"
-                        paginationRowsPerPageOptions={["30","50","100"]}    
-
+ 
+                        subHeader
+                        subHeaderComponent={this.getSubHeaderComponent()} 
                         selectableRows={true}
                         selectableRowsVisibleOnly={true}
                         onSelectedRowsChange={this.handleChange}
-                        clearSelectedRows={this.toggledClearRows}                        
+                        clearSelectedRows={this.toggledClearRows}      
+                        
+                        pagination={true}
+                        paginationPerPage="100"
+                        paginationRowsPerPageOptions={["30","50","100"]}   
                     />
 
                     </div> 

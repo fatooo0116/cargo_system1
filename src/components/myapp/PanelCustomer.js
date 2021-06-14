@@ -26,7 +26,7 @@ import {
         import DataTable, { createTheme } from 'react-data-table-component';
 
         
-
+        import {get_all_staff} from './rest/func_reststaff';
 
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -81,6 +81,7 @@ class PanelCustomer extends React.Component {
           data: [],
           ori:[],
          
+          staff:[],
           checked:[],
           ctype:[],
           price_is_Open:false,
@@ -107,6 +108,13 @@ class PanelCustomer extends React.Component {
           me.setState({
            ctype:data
           });
+      });
+
+      get_all_staff(function(data){
+        console.log(data);
+        me.setState({
+          staff:data
+         });
       });
     
     }
@@ -167,6 +175,8 @@ class PanelCustomer extends React.Component {
         if(me.state.filterText){
             me.onFilterText(me.state.filterText);
         }
+
+  
 
       });
     }
@@ -303,7 +313,7 @@ class PanelCustomer extends React.Component {
           data,
           ctype,
           checked,
-         
+         staff,
           price_is_Open,
           cur_price_modal_customer,
          
@@ -311,11 +321,14 @@ class PanelCustomer extends React.Component {
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
        
+        console.log(staff);
+      
+
 
         const columns = [
 
           {
-            cell: (pid) => <ModelCustomerEdit name="編輯"  ctype={ctype}  pdata={pid}   fetch_all={this.fetch_all}  />,
+            cell: (pid) => <ModelCustomerEdit name="編輯"  ctype={ctype}  staff={staff} pdata={pid}   fetch_all={this.fetch_all}  />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -359,13 +372,13 @@ class PanelCustomer extends React.Component {
             selector: 'account_id',
             sortable: true,
           },
-
           {
-            name: 'woo',
-            selector: 'woo_id',
-            sortable: true,            
+            cell: (pid) => (staff.filter((item) => item.staff_id==pid.staff_id).length>0)? staff.filter((item) => item.staff_id==pid.staff_id)[0].staff_name : '',
+            name: '負責業務',           
+           // selector: 'staff_id',
+            sortable: true,  
+            width:'100px'            
           },
-
           {
             cell: (pid) => (pid.is_temp=='1')? '是':'否',
             name: '臨時客戶',           
@@ -419,13 +432,17 @@ class PanelCustomer extends React.Component {
             selector: 'contact_email',
           },
 
-
+          {
+            name: 'woo',
+            selector: 'woo_id',
+            sortable: true,            
+          },
 
         ];
 
  
 
-        console.log(data);
+        // console.log(data);
        
 
         return (
@@ -433,7 +450,7 @@ class PanelCustomer extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
+                    <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all}  staff={staff}  />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>:''}                          
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleBindWoo}>Binding Woo</Button> : ''}
                 </div>
@@ -460,7 +477,7 @@ class PanelCustomer extends React.Component {
                 
 
                 <div className="small_nav">
-                    <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all} />  
+                    <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all}   staff={staff}  />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
                 </div>                
 

@@ -185,12 +185,17 @@ class ModelCustomerCreate extends React.Component {
     render() {
     
       const {is_Open,ctype,is_alert_open,alert_msg,alert_status} = this.state;
-      const {name} = this.props;
+      const {name,staff} = this.props;
    
     
       let ctype_select  = [];
       ctype.forEach(function(item){
         ctype_select.push(<option value={item.customer_catgory_id} >{item.customer_catgory_name}</option>);
+      })
+
+      let staff_select  = [];
+      staff.forEach(function(item){
+        staff_select.push(<option value={item.staff_id} >{item.staff_name}</option>);
       })
 
 
@@ -277,8 +282,11 @@ class ModelCustomerCreate extends React.Component {
                 </Col>
                 <Col sm={5}  >
                   <label className="dfx">
-                    <div className="nf4">幣別:</div> <input type="text" onChange={this.handleChange.bind(this, "dollar_mark")} value={this.state.fields["dollar_mark"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["dollar_mark"]}</span>
+                    <div className="nf4">幣別:</div>                     
+                    <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "dollar_mark")}>
+                        <option  value="USD" >USD</option>        
+                        <option  value="NTD" >NTD</option>        
+                      </Form.Control>                    
                   </label>
                 </Col>
                   <Col sm={2}>
@@ -299,16 +307,19 @@ class ModelCustomerCreate extends React.Component {
               </Row>
 
               <Row>
-                <Col sm={5}>
-                  <label className="dfx">
-                    <div className="nf4">付款方式:</div> <input type="text" onChange={this.handleChange.bind(this, "payment")} value={this.state.fields["payment"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["payment"]}</span>
-                  </label>
+              <Col sm={5}>
+                    <Form.Group  className="dfx1"  controlId="exampleForm.SelectCustom">
+                      <Form.Label  style={{"margin-bottom":"0px"}} >負責業務</Form.Label>
+                      <Form.Control as="select" style={{"width":"100%"}} custom  onChange={this.handleChange.bind(this, "staff_id")}>
+                      <option value="">請選擇業務</option>
+                      {staff_select}                       
+                      </Form.Control>
+                    </Form.Group>
                 </Col>
-                <Col sm={7}  >
-                    <Form.Group  className="df_select"  controlId="exampleForm.SelectCustom">
-                      <Form.Label>TERM OF PAYMENT:</Form.Label><br/>
-                      <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "termofpayment")}>
+                <Col sm={5}  >
+                    <Form.Group  className="df_select1"  controlId="exampleForm.SelectCustom">
+                      <Form.Label  style={{"margin-bottom":"0px"}} >TERM OF PAYMENT:</Form.Label>
+                      <Form.Control  style={{"width":"100%"}} as="select"   onChange={this.handleChange.bind(this, "termofpayment")}>
                         {payment_select}                        
                       </Form.Control>
                     </Form.Group>

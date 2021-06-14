@@ -8,7 +8,9 @@ import PanelProduct from "./myapp/PanelProduct";
 import PanelCustomer from "./myapp/PanelCustomer";
 import PanelStaff from "./myapp/PanelStaff";
 import PanelDep from './myapp/PanelDep';
-// import PanelProductType from './myapp/PanelProductType';
+
+
+import PanelProductFix from './myapp/PanelProductFix';
 // import PanelCustomerAddr from './myapp/PanelCustomerAddr';
 import PanelCustomerType from './myapp/PanelCustomerType';
 
@@ -37,7 +39,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      table:1,
+      table:2,
       count: 6,
       postTypes: {},
       postResults: {},
@@ -78,6 +80,8 @@ class App extends React.Component {
                   
                   <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>類別轉檔</NavDropdown.Item> 
 
+                  <NavDropdown.Item onClick={()=>{ this.setState({table:8}); }}>產品校正</NavDropdown.Item> 
+
                   
                 </NavDropdown>
 
@@ -93,6 +97,9 @@ class App extends React.Component {
           {(table==6) ? <PanelStaff  /> : ''}
 
           {(table==7) ? <PanelSetCategory /> : ''}
+
+          
+          {(table==8) ? <PanelProductFix /> : ''}
          
        
        

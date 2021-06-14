@@ -7,7 +7,7 @@ import {
          Form
         } from 'react-bootstrap';
 
-// import {create_dep } from '../rest/func_restdep';
+ import {create_staff,edit_staff } from '../rest/func_reststaff';
 
         
 
@@ -43,10 +43,10 @@ class ModelStaffCreate extends React.Component {
 
 
     handleValidation(){
-      let fields = this.state.fields;
+     // let fields = this.state.fields;
       let errors = {};
       let formIsValid = true;
-
+      /*
      if(!fields["dep_name"]){
         formIsValid = false;
         errors["dep_name"] = "Cannot be empty";
@@ -55,6 +55,7 @@ class ModelStaffCreate extends React.Component {
       formIsValid = false;
        errors["dep_id"] = "Cannot be empty";
     }
+    */
 
      this.setState({errors: errors});
      return formIsValid;
@@ -76,7 +77,7 @@ class ModelStaffCreate extends React.Component {
          // console.log(fields);
           
        
-          create_dep(fields,function(data){
+          create_staff(fields,function(data){
             me.setState({
               is_Open:false,
               fields: {}
@@ -137,8 +138,8 @@ class ModelStaffCreate extends React.Component {
 
           <Modal.Body>            
             <label>
-                員工編號: <input type="text" onChange={this.handleChange.bind(this, "staff_id")} value={this.state.fields["dep_id"]} />
-                <span className="error_text" style={{color: "red"}}>{this.state.errors["dep_id"]}</span>
+                員工編號: <input type="text" onChange={this.handleChange.bind(this, "staff_id")} value={this.state.fields["staff_id"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["staff_id"]}</span>
               </label>
 
 
@@ -158,6 +159,11 @@ class ModelStaffCreate extends React.Component {
                 英文姓名: <input type="text" onChange={this.handleChange.bind(this, "staff_eng_name")} value={this.state.fields["staff_eng_name"]} />
                 <span className="error_text" style={{color: "red"}}>{this.state.errors["staff_eng_name"]}</span>
               </label>
+
+              <label>
+                電子郵件: <input type="text" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]} />
+                <span className="error_text" style={{color: "red"}}>{this.state.errors["email"]}</span>
+              </label>                 
           </Modal.Body>
           
 
