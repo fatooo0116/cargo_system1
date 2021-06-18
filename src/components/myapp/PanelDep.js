@@ -158,7 +158,7 @@ class PanelDep extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelDepCreate name="Add"    fetch_all={this.fetch_all} />  
+                    <ModelDepCreate name="新增資料"    fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
                 </div>
 
@@ -182,7 +182,7 @@ class PanelDep extends React.Component {
                     </Card>
 
                 <div className="small_nav">
-                    <ModelDepCreate name="Add"    fetch_all={this.fetch_all} />  
+                    <ModelDepCreate name="新增資料"    fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <Button onClick={this.deleteData} >DEL</Button>:''}
                 </div>
 

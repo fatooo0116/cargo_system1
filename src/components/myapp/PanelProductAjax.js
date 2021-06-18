@@ -493,7 +493,7 @@ class PanelProductAjax extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={this.fetch_cur_page }  ptype={ptype}    />  
+                    <ModelProductCreate name="新增資料"   fetch_all={this.fetch_cur_page }  ptype={ptype}    />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleAction}>Binding Woo</Button> : ''}
                 </div>
@@ -530,7 +530,7 @@ class PanelProductAjax extends React.Component {
                     </Card>
 
                     <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={me.fetch_cur_page}  ptype={ptype} />  
+                    <ModelProductCreate name="新增資料"   fetch_all={me.fetch_cur_page}  ptype={ptype} />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
                 </div>

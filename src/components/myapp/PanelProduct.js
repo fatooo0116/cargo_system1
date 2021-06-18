@@ -319,7 +319,7 @@ class PanelProduct extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype}   fetch_all={this.fetch_all} />  
+                    <ModelProductCreate name="新增資料"   fetch_all={this.fetch_all }  ptype={ptype}   fetch_all={this.fetch_all} />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleAction}>Binding Woo</Button> : ''}
                 </div>
@@ -346,7 +346,7 @@ class PanelProduct extends React.Component {
                     </Card>
 
                     <div className="small_nav">
-                    <ModelProductCreate name="Add"   fetch_all={this.fetch_all }  ptype={ptype} />  
+                    <ModelProductCreate name="新增資料"   fetch_all={this.fetch_all }  ptype={ptype} />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; <Button onClick={this.handleAction}>Binding Woo</Button>
                 </div>

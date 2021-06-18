@@ -28,6 +28,8 @@ import {
         
         import {get_all_staff} from './rest/func_reststaff';
 
+        import PriceUpload from './modal/tpl/PriceUpload';
+
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
@@ -129,7 +131,7 @@ class PanelCustomer extends React.Component {
 
    
       let filteredItems = ori_data.filter(
-          (item) => item.cname && item.cname.includes(newFilterText) | item.customer_id.includes(newFilterText)                    
+          (item) => item.cname && item.cname.toLowerCase().includes(newFilterText.toLowerCase()) | item.customer_id.toLowerCase().includes(newFilterText.toLowerCase()) | item.cemail.toLowerCase().includes(newFilterText.toLowerCase())                         
         );
  
       
@@ -321,7 +323,7 @@ class PanelCustomer extends React.Component {
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
        
-        console.log(staff);
+        // console.log(staff);
       
 
 
@@ -450,7 +452,8 @@ class PanelCustomer extends React.Component {
             <Container id="aloha_app" >
 
                 <div className="small_nav">
-                    <ModelCustomerCreate name="Add"    fetch_all={this.fetch_all}  staff={staff}  />  
+                    <ModelCustomerCreate name="新增資料"    fetch_all={this.fetch_all}  staff={staff}  />  
+                    <PriceUpload />
                     {( checked.length >0 )? <Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>:''}                          
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleBindWoo}>Binding Woo</Button> : ''}
                 </div>

@@ -78,9 +78,11 @@ class App extends React.Component {
                   <NavDropdown.Item onClick={()=>{ this.setState({table:5}); }}>部門資料</NavDropdown.Item> 
                   <NavDropdown.Item onClick={()=>{ this.setState({table:6}); }}>人員資料</NavDropdown.Item> 
                   
+                  {/*
                   <NavDropdown.Item onClick={()=>{ this.setState({table:7}); }}>類別轉檔</NavDropdown.Item> 
 
                   <NavDropdown.Item onClick={()=>{ this.setState({table:8}); }}>產品校正</NavDropdown.Item> 
+                  */}
 
                   
                 </NavDropdown>
