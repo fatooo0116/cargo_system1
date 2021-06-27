@@ -45,7 +45,7 @@ select[name="company_address_select"]{
             font-weight: bold;
             margin-bottom: 10px;;
             input[type="text"]{
-                 margin-left:10px;
+                // margin-left:10px;
                  font-weight: normal;
              }
         }
@@ -78,7 +78,7 @@ select[name="company_address_select"]{
             display: flex;    
             align-items: center;  
             .form-label{
-                width:4em;
+                width:60px;
             }      
         }
         .dfx-wrap{
@@ -90,7 +90,7 @@ select[name="company_address_select"]{
             min-width:7em;
         }
         .nf4{
-            min-width:4em;
+            min-width:80px;
         }
         .preview{
             padding:10px;
@@ -103,6 +103,12 @@ select[name="company_address_select"]{
         }
     }
 }
+
+
+.wp-core-ui select{
+    width: calc(100% - 60px);
+}
+
 
 
 .address_list{

@@ -15,7 +15,7 @@ import { get_all_product, del_product,get_product_type } from './rest/func_rest_
 
 import DataTable, { createTheme } from 'react-data-table-component';
 
-
+import Switch from 'react-bootstrap-switch';
 
 
 
@@ -390,6 +390,34 @@ class PanelProductAjax extends React.Component {
 
 
 
+      handleSwitch = (e,state,pid) =>{
+        console.log(state);
+        let me = this;
+        axios.post('/wp-json/cargo/v1/open_hide_product', {
+          xstate:state,
+          pid:pid
+        })
+        .then(function (res){
+          if(res){
+            let data = [...me.state.data];
+            data.forEach(function(itm){
+              if(itm.woo_id==pid){
+                itm.is_open =state;
+              }
+            });
+            
+            me.setState({
+              data:data
+            });
+          }
+          
+        });
+      }
+
+
+
+
+
 
     render() {
 
@@ -401,6 +429,13 @@ class PanelProductAjax extends React.Component {
         let me = this;
 
         const columns = [
+          {
+            cell: (pid) => <Switch value={pid.is_open} onChange={(el,state) => me.handleSwitch(el, state,pid.woo_id)}  />,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,          
+          },
+
           {
             cell: (pid) => <ModelProductEdit name="Edit"  ptype={ptype}  pdata={pid}  fetch_all={me.fetch_cur_page}   />,
             ignoreRowClick: true,

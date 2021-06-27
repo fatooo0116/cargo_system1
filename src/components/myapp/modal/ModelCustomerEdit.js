@@ -279,7 +279,7 @@ class ModelCustomerEdit extends React.Component {
                 </Col>
                 <Col sm={5}  >
                   <label className="dfx">
-                    <div className="nf4">區域:</div> <input type="text" onChange={this.handleChange.bind(this, "addr_id")} value={this.state.fields["addr_id"]} />
+                    <div className="form-label">區域:</div> <input type="text" onChange={this.handleChange.bind(this, "addr_id")} value={this.state.fields["addr_id"]} />
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["addr_id"]}</span>
                   </label>
                 </Col>
@@ -298,16 +298,20 @@ class ModelCustomerEdit extends React.Component {
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["account_id"]}</span>
                   </label>
                 </Col>
-                <Col sm={5}  >
+                <Col sm={3}  >
                   <label className="dfx">
-                    <div className="nf4">幣別:</div>                     
+                    <div className="form-label">幣別:</div>                     
                     <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "dollar_mark")}>
                         <option  value="USD"  selected={(this.state.fields['dollar_mark']=='USD')} >USD</option>        
                         <option  value="NTD" selected={(this.state.fields['dollar_mark']=='NTD')} >NTD</option>        
                       </Form.Control>                    
                   </label>
                 </Col>
-                <Col sm={2}>
+                <Col sm={3}>
+                  <label className="dfx2">
+                      <div className="form-label">稅率(%):</div>  
+                      <input type="number"  onChange={this.handleChange.bind(this, "tax")}  value={this.state.fields["tax"]}  />  
+                  </label>
                 </Col>
               </Row>
 

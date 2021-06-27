@@ -7,7 +7,7 @@ import {
          
         } from 'react-bootstrap';
         
-import { XOctagonFill,CheckCircleFill } from 'react-bootstrap-icons';
+// import { XOctagonFill,CheckCircleFill } from 'react-bootstrap-icons';
 
 
 
@@ -38,9 +38,9 @@ class AlertBox extends React.Component{
 
             let title = '';
             if(alert_status==0){  /*  Error */
-                title = <h4  color={{color:"#ff3434"}}><XOctagonFill color="#ff3434" /> {name}</h4>;
+                title = <h4  color={{color:"#ff3434"}}>{name}</h4>;
             }else{ /*  Success */                
-                title = <h4 color={{color:"#28a745"}} ><CheckCircleFill color="#28a745" /> {name}</h4>;
+                title = <h4 color={{color:"#28a745"}} > {name}</h4>;
             }
       
  

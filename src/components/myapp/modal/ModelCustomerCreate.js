@@ -238,7 +238,7 @@ class ModelCustomerCreate extends React.Component {
                   </Col>
                   <Col sm={5} >
                     <Form.Group  className="dfx"  controlId="exampleForm.SelectCustom">
-                      <Form.Label>類別</Form.Label>
+                      <Form.Label>類別:</Form.Label>
                       <Form.Control as="select" custom  onChange={this.handleChange.bind(this, "customer_category_id")}>
                         {ctype_select}                        
                       </Form.Control>
@@ -260,8 +260,8 @@ class ModelCustomerCreate extends React.Component {
                   </label>
                 </Col>
                   <Col sm={5}  >
-                  <label className="dfx">
-                    <div className="nf4">區域:</div> <input type="text" onChange={this.handleChange.bind(this, "addr_id")} value={this.state.fields["addr_id"]} />
+                  <label className="dfx form-label">
+                    <div className="form-label">區域:</div> <input type="text" onChange={this.handleChange.bind(this, "addr_id")} value={this.state.fields["addr_id"]} />
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["addr_id"]}</span>
                   </label>
                 </Col>
@@ -280,17 +280,21 @@ class ModelCustomerCreate extends React.Component {
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["account_id"]}</span>
                   </label>
                 </Col>
-                <Col sm={5}  >
-                  <label className="dfx">
-                    <div className="nf4">幣別:</div>                     
+                <Col sm={3}  >
+                  <label className="dfx form-label">
+                    <div className="form-label">幣別:</div>                     
                     <Form.Control  style={{"width":"90px"}} as="select"   onChange={this.handleChange.bind(this, "dollar_mark")}>
                         <option  value="USD" >USD</option>        
                         <option  value="NTD" >NTD</option>        
                       </Form.Control>                    
                   </label>
                 </Col>
-                  <Col sm={2}>
-                  </Col>
+                <Col sm={3}>
+                  <label className="dfx2">
+                      <div className="form-label">稅率(%):</div>  
+                      <input type="number"  onChange={this.handleChange.bind(this, "tax")}  value={this.state.fields["tax"]}  />  
+                  </label>
+                </Col>
                 </Row>  
 
 

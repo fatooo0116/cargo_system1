@@ -215,6 +215,7 @@ class PanelCustomer extends React.Component {
 
           get_all_customer(function(resx){
             me.setState({data:resx});
+            me.handleClearRows();
           });
         });
         
@@ -325,6 +326,8 @@ class PanelCustomer extends React.Component {
        
         // console.log(staff);
       
+
+        console.log(data);
 
 
         const columns = [
