@@ -217,31 +217,26 @@ class ModelProductEdit extends React.Component {
                   <span className="error_text" style={{color: "red"}}>{this.state.errors["product_id"]}</span>
                 </label>
 
+                  <label>
+                    <div className="nf7">產品名稱: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
+                  </label>     
+                  
+                  <label>
+                    <div className="nf7">產品名稱英文: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
+                  </label>                              
+
                 </Col>
                 
                 <Col sm={6}>
                   <ProductTypeCheckBox ptype={ptype}   update_checked_ptype={this.update_checked_ptype} ptype_checked={ptype_checked} />
                 </Col>                                
               </Row>
-
-              <Row>
-                <Col sm={12}>
-                  <label>
-                    <div className="nf7">產品名稱: </div>
-                    <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
-                  </label>
-                </Col>
-
-                <Col sm={12}>
-                  <label>
-                    <div className="nf7">產品名稱英文: </div>
-                    <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
-                  </label> 
-                </Col>                
-              </Row>
           </Container>   
+
 
 
           <Container >
@@ -286,7 +281,12 @@ class ModelProductEdit extends React.Component {
                   <label>
                     <div className="nf7">總重:</div>  <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
-                  </label>                                                                                                     
+                  </label>      
+
+                  <label>
+                    <div className="nf7">長寬:</div>  <input type="text" onChange={this.handleChange.bind(this, "meant")} value={this.state.fields["meant"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["meant"]}</span>
+                  </label>                                                                                                                    
                 </Col>
                 <Col sm={6}>
                   {(pdata.woo_id)?

@@ -4,18 +4,19 @@ import axios from 'axios';
 import { 
         Button,
         Container,       
-         Card,TextField
+         Card,
+         TextField,
+         Dropdown
         } from 'react-bootstrap';
 
 
 import  ModelProductCreate from './modal/ModelProductCreate';
-import  ModelProductEdit from './modal/ModelProductEdit';
-        
+import  ModelProductEdit from './modal/ModelProductEdit';        
 import { get_all_product, del_product,get_product_type } from './rest/func_rest_product';        
-
 import DataTable, { createTheme } from 'react-data-table-component';
-
 import Switch from 'react-bootstrap-switch';
+
+import CatDropDown from './header/CatDropDown';
 
 
 
@@ -129,7 +130,7 @@ class PanelProductAjax extends React.Component {
       .then(function (res) {
         // console.log(res);
 
-        console.log("reload");
+       // console.log("reload");
 
         /*
         get_all_product(function(data){
@@ -181,7 +182,7 @@ class PanelProductAjax extends React.Component {
     deleteData = () =>{
       let checked = [...this.state.checked];
       if(window.confirm('確定刪除')){
-        console.log(checked );
+       //  console.log(checked );
         let me = this;
         del_product(checked,function(obj){         
  
@@ -391,14 +392,28 @@ class PanelProductAjax extends React.Component {
 
 
       handleSwitch = (e,state,pid) =>{
-        console.log(state);
+       // console.log(state);
         let me = this;
+
+        let data = [...me.state.data];
+        data.forEach(function(itm){
+          if(itm.woo_id==pid){
+            itm.is_open =state;
+          }
+        });
+        
+        me.setState({
+          data:data
+        });
+
+
         axios.post('/wp-json/cargo/v1/open_hide_product', {
           xstate:state,
           pid:pid
         })
         .then(function (res){
-          if(res){
+          if(!res){
+            /* 不成功要校正回歸 */
             let data = [...me.state.data];
             data.forEach(function(itm){
               if(itm.woo_id==pid){
@@ -419,30 +434,70 @@ class PanelProductAjax extends React.Component {
 
 
 
+
+      /*  duplicateProduct  複製 */
+      duplicateProduct = (pid) =>{
+       //  alert("duplicateProduct");
+        // console.log(pid);
+
+        if(!window.confirm('確定要複製')){
+          return false;
+        }
+
+        let me  = this;
+
+        axios.post('/wp-json/cargo/v1/product_clone', {        
+          pid:pid
+        }).then(function (res){
+          // console.log(res.data)
+           me.fetch_cur_page();
+        })
+      }
+
+
+
+
+
+
+
+
     render() {
 
         const {data,checked,ptype,loading,all_result,perPage} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
-        console.log(data);
+       // console.log(data);
         
         let me = this;
 
         const columns = [
-          {
-            cell: (pid) => <Switch value={pid.is_open} onChange={(el,state) => me.handleSwitch(el, state,pid.woo_id)}  />,
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,          
-          },
 
           {
-            cell: (pid) => <ModelProductEdit name="Edit"  ptype={ptype}  pdata={pid}  fetch_all={me.fetch_cur_page}   />,
+            cell: (pid) => <ModelProductEdit name="編輯"  ptype={ptype}  pdata={pid}  fetch_all={me.fetch_cur_page}   />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
             width: '50px' 
           },
+
+
+          {
+            cell: (pid) => <Switch value={pid.is_open} onChange={(el,state) => me.handleSwitch(el, state,pid.woo_id)}  />,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,    
+            name: '狀態',
+          },
+
+          {
+            cell: (pid) => <button size="sm"   onClick={() => this.duplicateProduct(pid)}    className="btn btn-outline-info btn-sm" >複製</button>,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+            width: '50px' 
+          },
+
+
           
           {
             name: '編號',
@@ -531,6 +586,8 @@ class PanelProductAjax extends React.Component {
                     <ModelProductCreate name="新增資料"   fetch_all={this.fetch_cur_page }  ptype={ptype}    />  
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleAction}>Binding Woo</Button> : ''}
+
+                    {/* <CatDropDown />  */}             
                 </div>
 
                 <Card>

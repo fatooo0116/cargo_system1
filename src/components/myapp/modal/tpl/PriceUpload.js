@@ -145,8 +145,12 @@ class PriceUpload extends React.Component {
               error,
               inputfile} = this.state;     
        
-
-
+          let error_detail = [];
+          if(error){
+            error.forEach(function(item){
+              error_detail.push(<div className="error_list">{item.product_id} - {item.pname}</div>);
+            });
+          }
   
 
 
@@ -170,6 +174,10 @@ class PriceUpload extends React.Component {
                                   <li><b>成功匯入:</b>{(success) ? success.length : 0}</li>
                                   <li><b>失敗匯入:</b>{(error) ? error.length : 0}</li>
                                 </ul>
+                                <div className="error_import_list" >
+                                <b>匯入失敗清單</b>  
+                                  {error_detail}
+                                </div>
                           </div>
                         </Modal.Body>     
                     </Modal>

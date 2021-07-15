@@ -64,16 +64,17 @@ class ModelProductCreate extends React.Component {
       let errors = {};
       let formIsValid = true;
 
-      /*
-     if(!fields["dep_name"]){
+      
+     if(!fields["product_id"]){
         formIsValid = false;
-        errors["dep_name"] = "Cannot be empty";
+        errors["product_id"] = "此為必填";
      }
-     if(!fields["dep_id"]){
+     
+     if(!fields["product_name"]){
       formIsValid = false;
-       errors["dep_id"] = "Cannot be empty";
+       errors["product_name"] = "此為必填";
     }
-    */
+    
 
      this.setState({errors: errors});
      return formIsValid;
@@ -122,9 +123,23 @@ class ModelProductCreate extends React.Component {
 
 
     handleChange(field, e){         
-            let fields = this.state.fields;
-            fields[field] = e.target.value;        
-            this.setState({fields});
+            // let fields = this.state.fields;
+
+            const {errors,fields } = this.state;
+
+            fields[field] = e.target.value;   
+
+            let new_errors = []; 
+            if(errors.hasOwnProperty(field) & e.target.value){
+              new_errors  = errors.filter(function(item){
+                return item.field!=field;
+              })
+            }
+            
+            this.setState({
+              fields:fields,
+              errors:new_errors
+            });
         }
 
 
@@ -141,10 +156,10 @@ class ModelProductCreate extends React.Component {
 
 
     render() {
-      const {is_Open,ptype_checked } = this.state;
+      const {is_Open,ptype_checked,errors } = this.state;
       const {name,ptype} = this.props;
 
-      console.log(this.state);
+      console.log(errors);
     
 
       return(
@@ -167,35 +182,29 @@ class ModelProductCreate extends React.Component {
               <Row>
                 <Col sm={6}>
 
-                <label>
+                <label className="box_input">
                   <div className="nf7">產品編號:</div>
                   <input type="text" onChange={this.handleChange.bind(this, "product_id")} value={this.state.fields["product_id"]} />
-                  <span className="error_text" style={{color: "red"}}>{this.state.errors["product_id"]}</span>
+                   <div className={errors.hasOwnProperty('product_id')? 'error_text shx':'error_text'} >{this.state.errors["product_id"]}</div>
                 </label>
+
+                <label className="box_input">
+                    <div className="nf7">產品名稱: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
+                    <div className={errors.hasOwnProperty('product_name')? 'error_text shx':'error_text'} >{this.state.errors["product_name"]}</div>                    
+                </label>
+
+                <label className="box_input">
+                    <div className="nf7">產品名稱英文: </div>
+                    <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
+                </label> 
 
                 </Col>
                 
                 <Col sm={6}>
                   <ProductTypeCheckBox ptype={ptype}  ptype_checked={ptype_checked}   update_checked_ptype={this.update_checked_ptype}  />
                 </Col>                  
-              </Row>
-
-              <Row>
-                <Col sm={12}>
-                  <label>
-                    <div className="nf7">產品名稱: </div>
-                    <input type="text" onChange={this.handleChange.bind(this, "product_name")} value={this.state.fields["product_name"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_name"]}</span>
-                  </label>
-                </Col>
-
-                <Col sm={12}>
-                  <label>
-                    <div className="nf7">產品名稱英文: </div>
-                    <input type="text" onChange={this.handleChange.bind(this, "product_eng_name")} value={this.state.fields["product_eng_name"]} />
-                    <span className="error_text" style={{color: "red"}}>{this.state.errors["product_eng_name"]}</span>
-                  </label> 
-                </Col>                
               </Row>
           </Container>   
 
@@ -242,7 +251,12 @@ class ModelProductCreate extends React.Component {
                   <label>
                     <div className="nf7">總重:</div>  <input type="text" onChange={this.handleChange.bind(this, "gross_weight")} value={this.state.fields["gross_weight"]} />
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["gross_weight"]}</span>
-                  </label>                                                                                                     
+                  </label>  
+                  
+                  <label>
+                    <div className="nf7">長寬:</div>  <input type="text" onChange={this.handleChange.bind(this, "meant")} value={this.state.fields["meant"]} />
+                    <span className="error_text" style={{color: "red"}}>{this.state.errors["meant"]}</span>
+                  </label>                                                                                                                       
                 </Col>
 
                 <Col sm={6}>

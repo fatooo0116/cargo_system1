@@ -255,7 +255,7 @@ class ModelCustomerCreate extends React.Component {
                 <Row>
                 <Col sm={5}>
                   <label className="dfx">
-                    <div className="nf4">客戶全稱:</div> <input type="text" onChange={this.handleChange.bind(this, "cname")} value={this.state.fields["cname"]} />
+                    <div className="nf4">客戶名稱:</div> <input type="text" onChange={this.handleChange.bind(this, "cname")} value={this.state.fields["cname"]} />
                     <span className="error_text" style={{color: "red"}}>{this.state.errors["cname"]}</span>
                   </label>
                 </Col>

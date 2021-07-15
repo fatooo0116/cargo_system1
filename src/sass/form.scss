@@ -41,13 +41,31 @@
 .modal-dialog{
     .modal-body{
         label{
+            position: relative;
+
+            &.box_input{
+                margin-bottom: 20px;;
+            }
+            
             .error_text{
-                color: red;
+                color: #fff;
                 display: block;
+                position: absolute;
+                background: #f00;
+                padding: 4px 10px;
+                border-radius: 5px;
+                /* margin-top: 5px; */
+                /* margin-right: 10px; */
+                bottom: 3px;
+                right: 3px;
                 text-align: right;
-                font-size: 14px;
-                margin-right: 20px;
-                margin-top:5px;
+                font-weight: 500;
+                font-size: 11px;
+                line-height: 1em;  
+                display: none;           
+            }
+            .error_text.shx{
+                display: block;
             }
         }
 
@@ -57,7 +75,7 @@
             border-radius: 5px;
             padding: 5px 0 5px 0;
             margin-bottom: 15px;
-            height:138px;
+            height:150px;
             overflow-y: scroll;
             .child_item{
                 padding-left:15px;
@@ -99,6 +117,33 @@
 }
 
 
+#aloha_app{
+    .dropdown-item{
+        padding: 0 13px 5px;
+        font-size: 14px;
+    }
+    .level0{
+        padding-top:5px;
+    }
+    .level1{
+        padding-top:5px;
+        padding-left:40px
+    }
+    .level2{
+        padding-top:5px;
+        padding-left:60px
+    }
+    .level3{
+        padding-top:5px;
+        padding-left:80px
+    }
+    .level4{
+        padding-top:0;
+        padding-left:100px
+    }
+}
+
+
 .dfx2{
     display: flex;    
     align-items: center;
@@ -107,5 +152,13 @@
         width:70px;
         margin-left: 10px;
         font-weight: 500;;
+    }
+}
+
+.error_import_list{
+    padding-left:20px;
+    .error_list{
+        font-size:13px;
+        padding: 2px 5px;
     }
 }

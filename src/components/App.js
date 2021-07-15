@@ -83,9 +83,11 @@ class App extends React.Component {
 
                   <NavDropdown.Item onClick={()=>{ this.setState({table:8}); }}>產品校正</NavDropdown.Item> 
                   */}
-
+                  
                   
                 </NavDropdown>
+
+               
 
               </Nav>
             </Navbar.Collapse>

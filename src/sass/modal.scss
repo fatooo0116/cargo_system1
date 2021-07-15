@@ -92,11 +92,18 @@ select[name="company_address_select"]{
         .nf4{
             min-width:80px;
         }
+
+        .dfx-wrap{
+            button{
+                margin-left:20px;
+            }
+        }
         .preview{
             padding:10px;
+            width: 100%;
             img{
                 display: block;
-                
+                margin:auto;
                 max-height: 250px;
                 width: auto;
             }
