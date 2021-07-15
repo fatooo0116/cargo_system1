@@ -148,9 +148,11 @@ class PriceUpload extends React.Component {
           let error_detail = [];
           if(error){
             error.forEach(function(item){
-              error_detail.push(<div className="error_list">{item.product_id} - {item.pname}</div>);
+              error_detail.push(<div className="error_list">{item.product_id} - {item.pname} <div className="msg">{item.msg}</div></div>);
             });
           }
+
+          
   
 
 

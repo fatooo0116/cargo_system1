@@ -415,6 +415,7 @@ class PanelProductAjax extends React.Component {
           if(!res){
             /* 不成功要校正回歸 */
             let data = [...me.state.data];
+            
             data.forEach(function(itm){
               if(itm.woo_id==pid){
                 itm.is_open =state;
