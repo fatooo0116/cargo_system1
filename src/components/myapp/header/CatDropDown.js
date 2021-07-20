@@ -36,11 +36,20 @@ class CatDropDown extends React.Component {
       }    
 
 
+      goToCat = (tid,tname) =>{
+        
+          this.props.dropDownHandler(tid,tname);
+      }
+      
+
+
 
     render(){
         const {data} = this.state;
 
         console.log(data);
+
+        let me = this;
 
         let menu_tpl = [];
         if(data){        
@@ -53,37 +62,37 @@ class CatDropDown extends React.Component {
                     if(itm.hasOwnProperty('children')){
                         let childBox1 = [];
                         itm.children.forEach(function(itm1){
-                            menu_tpl.push(<Dropdown.Item className="level0" href="#/action-1">{itm.term_name}</Dropdown.Item>);
+                            menu_tpl.push(<Dropdown.Item className="level0"  onClick={() => me.goToCat(itm.term_id,itm.term_name) } >{itm.term_name}</Dropdown.Item>);
 
 
                             if(itm1.hasOwnProperty('children')){
-                                menu_tpl.push(<Dropdown.Item className="level1" href="#/action-1">{itm1.term_name}{childBox2}</Dropdown.Item>);
+                                menu_tpl.push(<Dropdown.Item className="level1" onClick={() => me.goToCat(itm1.term_id,itm1.term_name) }  >{itm1.term_name}{childBox2}</Dropdown.Item>);
                                 
                                 let childBox2 = [];
                                 itm1.children.forEach(function(itm2){
                                     
                                     let childBox3 = [];
                                     if(itm2.hasOwnProperty('children')){
-                                        menu_tpl.push(<Dropdown.Item className="level2" href="#/action-1">{itm2.term_name}{childBox3}</Dropdown.Item>);
+                                        menu_tpl.push(<Dropdown.Item className="level2" onClick={() => me.goToCat(itm2.term_id,itm2.term_name) }  >{itm2.term_name}{childBox3}</Dropdown.Item>);
 
                                         itm2.children.forEach(function(itm3){
-                                            menu_tpl.push(<Dropdown.Item  className="level3" href="#/action-1">{itm3.term_name}</Dropdown.Item>);
+                                            menu_tpl.push(<Dropdown.Item  className="level3" onClick={() => me.goToCat(itm3.term_id,itm3.term_name) }  >{itm3.term_name}</Dropdown.Item>);
                                         });
                                        
                                        
                                     }else{
-                                        menu_tpl.push(<Dropdown.Item className="level2" href="#/action-1">{itm2.term_name}</Dropdown.Item>);
+                                        menu_tpl.push(<Dropdown.Item className="level2" onClick={() => me.goToCat(itm2.term_id, itm2.term_name) }  >{itm2.term_name}</Dropdown.Item>);
                                     }                                
                                 });
                                 
                                
                             }else{
-                                childBox1.push(<Dropdown.Item className="level1" href="#/action-1">{itm1.term_name}</Dropdown.Item>);
+                                childBox1.push(<Dropdown.Item className="level1" onClick={() => me.goToCat(itm1.term_id, itm1.term_name) }  >{itm1.term_name}</Dropdown.Item>);
                             }                        
                         });
                         
                     }else{
-                        menu_tpl.push(<Dropdown.Item className="level0" href="#/action-1">{itm.term_name}</Dropdown.Item>);
+                        menu_tpl.push(<Dropdown.Item className="level0" onClick={() => me.goToCat(itm.term_id, itm.term_name) }  >{itm.term_name}</Dropdown.Item>);
                     }       
                         
                 });

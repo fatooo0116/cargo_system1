@@ -20,12 +20,15 @@ import CatDropDown from './header/CatDropDown';
 
 
 
-const FilterComponent = ({ filterText, onFilter, onClear ,onSearch }) => (
-  <>
+const FilterComponent = ({ cur_name,filterText, onFilter, onClear ,onSearch, onRestCat }) => (
+  <div className="product_sbox">
+      <div>{(cur_name) ? <div className="left_box">{cur_name} <div className="exit"  onClick={onRestCat} >x</div></div> : '' }</div>
+    <div className="right_box">
     <input id="search" type="text" placeholder="Filter By Name" aria-label="Search Input" value={filterText} onChange={onFilter} />
     <Button type="button"   onClick={onSearch}>搜尋</Button>
     <Button type="button" variant="secondary" onClick={onClear}>清除</Button>
-  </>
+    </div>
+  </div>
 );
 
 
@@ -71,6 +74,8 @@ class PanelProductAjax extends React.Component {
           sort_column:'',
           sort_dir:'',
           cur_page:1,
+          cur_cat:0,
+          cur_name:''
         }
     }
 
@@ -211,10 +216,12 @@ class PanelProductAjax extends React.Component {
 
 
 
-        getSubHeaderComponent = () => {
+        getSubHeaderComponent = (cur_name) => {
           let me =this;
           return (
             <FilterComponent
+
+              cur_name={cur_name}
 
               onFilter={(e) => {       
                   me.setState({                     
@@ -226,11 +233,34 @@ class PanelProductAjax extends React.Component {
                 this.onSearchHandler
               }
 
+              onRestCat = { this.onRestCat }
+
+
               onClear={this.handleClear}
               filterText={this.state.filterText}
             />
           );
         };
+
+
+
+        onRestCat = () => {
+          this.setState({
+            cur_cat:0,
+            cur_name:'',
+            cur_page:0
+          });
+
+          const {cur_page} = this.state;
+          let me = this;
+          setTimeout(function(){
+            me.handlePageChange(cur_page);     
+          },100);
+                 
+        }
+
+
+
 
         onSearchHandler = () =>{
           // console.log("search");
@@ -263,7 +293,6 @@ class PanelProductAjax extends React.Component {
         handleClear = () => {
 
           let me = this;
-
           console.log("clear");
           const {perPage} = this.state;
           axios.post('/wp-json/cargo/v1/get_products_ajax', {
@@ -322,13 +351,27 @@ class PanelProductAjax extends React.Component {
 
 
 
-
       handlePageChange = (page) =>{
-        const {perPage,sort_column,sort_dir,filterText} = this.state;
-        let me = this;  
+        const {perPage,sort_column,sort_dir,filterText,cur_cat} = this.state;
 
-       // me.setState({loading:true});
-     
+        this.setState({
+          cur_page:page,
+          loading:true,
+        });
+
+        if(cur_cat>0){
+          let me = this; 
+          setTimeout(function(){
+            me.searchByCategory();
+          },100);
+
+
+
+        }else{
+
+
+          let me = this;  
+
           axios.post('/wp-json/cargo/v1/sort_products_ajax', {
               perpage:perPage,
               page:page,
@@ -342,7 +385,7 @@ class PanelProductAjax extends React.Component {
               me.setState({
                 data:res.data.results,               
                 all_result:res.data.count,
-            //    loading:false,
+               loading:false,
                 cur_page:page,               
               }); 
       
@@ -351,9 +394,9 @@ class PanelProductAjax extends React.Component {
             })
             .catch(function (error) {
               console.log(error);
-            });  
-        
-               
+            }); 
+
+        }    
       }
 
 
@@ -438,8 +481,6 @@ class PanelProductAjax extends React.Component {
 
       /*  duplicateProduct  複製 */
       duplicateProduct = (pid) =>{
-       //  alert("duplicateProduct");
-        // console.log(pid);
 
         if(!window.confirm('確定要複製')){
           return false;
@@ -458,13 +499,66 @@ class PanelProductAjax extends React.Component {
 
 
 
+      dropDownHandler = (tid,tname) =>{
+        console.log(tid);
+        this.setState({
+          cur_cat:tid,
+          cur_name:tname,
+          loading:true,
+          page:1
+        });    
+        let me = this; 
+        setTimeout(function(){
+          me.searchByCategory();
+        },100);
+      }
+
+
+
+      searchByCategory = () =>{
+
+        let me = this;
+        const {
+                cur_cat,
+                cur_page,              
+                perPage
+              } = this.state;
+
+        axios.post('/wp-json/cargo/v1/get_products_by_cat', {          
+          cur_page:cur_page,
+          post_per_page:perPage,
+          cat:cur_cat
+        })
+        .then(function (res){
+        
+          console.log(res);
+
+          me.setState({
+            data:res.data.results,           
+            all_result:res.data.count,
+            loading:false,
+          }); 
+
+        }); 
+      }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
     render() {
 
-        const {data,checked,ptype,loading,all_result,perPage} = this.state;
+        const {data,checked,ptype,loading,all_result,perPage,cur_cat,cur_name} = this.state;
         // const data = [{ id: 1, title: 'Conan the Barbarian', year: '1982' }];
 
        // console.log(data);
@@ -588,7 +682,7 @@ class PanelProductAjax extends React.Component {
                     {( checked.length >0 )? <><Button onClick={this.deleteData} > 刪除  {this.state.checked.length} </Button>  </>:''}
                     &nbsp; {( checked.length >0 )? <Button onClick={this.handleAction}>Binding Woo</Button> : ''}
 
-                    {/* <CatDropDown />  */}             
+                     <CatDropDown  dropDownHandler={this.dropDownHandler}/>              
                 </div>
 
                 <Card>
@@ -612,7 +706,7 @@ class PanelProductAjax extends React.Component {
                         selectableRowsVisibleOnly={true}
                         onSelectedRowsChange={this.handleChange}
                         clearSelectedRows={this.state.toggledClearRows}
-                        subHeaderComponent={this.getSubHeaderComponent()}  
+                        subHeaderComponent={this.getSubHeaderComponent(cur_name)}  
                         paginationPerPage={perPage}
                         paginationRowsPerPageOptions={["30","50","100"]}      
                         onChangeRowsPerPage={this.handlePerRowsChange}
